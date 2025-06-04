@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Существующие ключи -->
+    <key>CFBundleDevelopmentRegion</key>
+    <string>$(DEVELOPMENT_LANGUAGE)</string>
+    <key>CFBundleExecutable</key>
+    <string>$(EXECUTABLE_NAME)</string>
+    <key>CFBundleIdentifier</key>
+    <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+    <key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>
+    <key>CFBundleName</key>
+    <string>$(PRODUCT_NAME)</string>
+    <key>NSFaceIDUsageDescription</key>
+    <string>Приложение использует Face ID для безопасной аутентификации пользователя.</string>
+
+    <key>CFBundlePackageType</key>
+    <string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
+    <key>CFBundleShortVersionString</key>
+    <string>1.0</string>
+    <key>CFBundleVersion</key>
+    <string>1</string>
+    <key>LSRequiresIPhoneOS</key>
+    <true/>
+    
+    <!-- StoreKit ключи -->
+    <key>SKAdNetworkItems</key>
+    <array>
+        <dict>
+            <key>SKAdNetworkIdentifier</key>
+            <string>com.aidream</string>
+        </dict>
+    </array>
+    
+    <!-- Добавьте эти ключи -->
+    <key>StoreKit</key>
+    <dict>
+        <key>Configuration</key>
+        <string>Configuration</string>
+    </dict>
+    
+    <!-- Существующие разрешения -->
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Для записи голосовых заметок о снах</string>
+    <key>NSSpeechRecognitionUsageDescription</key>
+    <string>Для преобразования голосовых заметок в текст</string>
+    <key>NSFaceIDUsageDescription</key>
+    <string>Для защиты ваших личных данных</string>
+    <key>NSUserNotificationsUsageDescription</key>
+    <string>Для напоминаний о записи снов</string>
+    
+    <!-- URL-схемы для Google Sign-In -->
+    <key>GIDClientID</key>
+    <string>308207137740-c4mohdt4m35hjgc3dusmet4r39e21s5g.apps.googleusercontent.com</string>
+
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>com.googleusercontent.apps.308207137740-c4mohdt4m35hjgc3dusmet4r39e21s5g</string>
+            </array>
+        </dict>
+    </array>
+
+    <!-- Остальные существующие ключи -->
+    <key>UIApplicationSceneManifest</key>
+    <dict>
+        <key>UIApplicationSupportsMultipleScenes</key>
+        <false/>
+    </dict>
+    <key>UILaunchScreen</key>
+    <dict/>
+    <key>UIRequiredDeviceCapabilities</key>
+    <array>
+        <string>armv7</string>
+    </array>
+    <key>UISupportedInterfaceOrientations</key>
+    <array>
+        <string>UIInterfaceOrientationPortrait</string>
+    </array>
+    <key>UISupportedInterfaceOrientations~ipad</key>
+    <array>
+        <string>UIInterfaceOrientationPortrait</string>
+        <string>UIInterfaceOrientationPortraitUpsideDown</string>
+        <string>UIInterfaceOrientationLandscapeLeft</string>
+        <string>UIInterfaceOrientationLandscapeRight</string>
+    </array>
+    <key>UIApplicationSupportsIndirectInputEvents</key>
+    <true/>
+</dict>
+</plist>
+
