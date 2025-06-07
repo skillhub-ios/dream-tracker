@@ -51,7 +51,7 @@ struct AuthSheetView: View {
                 .padding(.top, 8)
             VStack(spacing: 12) {
                 // Native Apple Sign In Button
-                SignInWithAppleButton(authMode: mode == .signup ? .signIn : .signUp) { request in
+                SignInWithAppleButton(mode == .signup ? .signIn : .signUp) { request in
                     request.requestedScopes = [.email, .fullName]
                 } onCompletion: { result in
                     Task {
