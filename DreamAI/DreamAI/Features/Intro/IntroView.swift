@@ -54,33 +54,9 @@ struct IntroBottomCard: View {
                     .multilineTextAlignment(.leading)
             }
             
-            Button(action: {
+            DButton(title: "Get Started") {
                 authMode = .signup
                 showAuthSheet = true
-            }) {
-                Text("Get Started")
-                    .font(.title3.bold())
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(
-                        LinearGradient(
-                            gradient: Gradient(
-                                colors: [
-                                    Color.black.opacity(0.5),
-                                    Color.purple.opacity(0.7),
-                                    Color.black.opacity(0.5)
-                                ]
-                            ),
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
-                    .foregroundColor(.white)
-                    .cornerRadius(20)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 13)
-                            .stroke(Color.purple.opacity(0.4), lineWidth: 1)
-                    )
             }
             .padding(.horizontal, 8)
             HStack(spacing: 4) {
