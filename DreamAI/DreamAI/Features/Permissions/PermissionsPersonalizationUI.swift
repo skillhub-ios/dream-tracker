@@ -117,6 +117,5 @@ struct PermissionsPersonalizationUI: View {
 
 #Preview {
     PermissionsPersonalizationUI()
-        .padding()
         .background(Color.black)
 } 

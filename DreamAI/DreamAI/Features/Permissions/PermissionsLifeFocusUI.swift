@@ -83,6 +83,5 @@ struct PermissionsLifeFocusUI: View {
 
 #Preview {
     PermissionsLifeFocusUI()
-        .padding()
         .background(Color.black)
 } 
