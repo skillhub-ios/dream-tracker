@@ -24,8 +24,8 @@ struct PermissionContainerView: View {
                         .tag(0)
                     PermissionsLifeFocusUI()
                         .tag(1)
-                    // PermissionsPrivacyUI()
-                    //     .tag(2)
+                    PermissionsPersonalizationUI()
+                        .tag(2)
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .indexViewStyle(.page(backgroundDisplayMode: .never))
