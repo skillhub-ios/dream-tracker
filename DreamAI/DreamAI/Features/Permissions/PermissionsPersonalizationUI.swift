@@ -23,6 +23,8 @@ struct PermissionsPersonalizationUI: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             ageGenderCard
             beliefCard
+            
+            Spacer()
         }
         .padding(.horizontal, 16)
     }

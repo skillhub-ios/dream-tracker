@@ -13,12 +13,19 @@ struct PermissionContainerView: View {
     var body: some View {
         ZStack {
             LinearGradient(
-                gradient: Gradient(colors: [Color(.sRGB, red: 38/255, green: 18/255, blue: 44/255, opacity: 1), Color(.sRGB, red: 18/255, green: 18/255, blue: 28/255, opacity: 1)]),
-                startPoint: .top, endPoint: .bottom
+                gradient: Gradient(
+                    colors: [
+                        Color(.sRGB, red: 38/255, green: 18/255, blue: 44/255, opacity: 1),
+                        Color.black
+                    ]
+                ),
+                startPoint: .top,
+                endPoint: .bottom
             )
             .ignoresSafeArea()
             
             VStack(spacing: 24) {
+                paginationIndicator
                 TabView(selection: $currentStep) {
                     PermissionsFeelingsUI()
                         .tag(0)
@@ -29,6 +36,7 @@ struct PermissionContainerView: View {
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .indexViewStyle(.page(backgroundDisplayMode: .never))
+                .frame(maxHeight: .infinity, alignment: .top)
                 .onChange(of: currentStep) { oldValue, newValue in
                     print("Current step: \(newValue)")
                 }
@@ -45,6 +53,18 @@ struct PermissionContainerView: View {
 // MARK: - Private UI
 
 private extension PermissionContainerView {
+    
+    var paginationIndicator: some View {
+        HStack(spacing: 8) {
+            ForEach(0..<3) { idx in
+                Capsule()
+                    .frame(width: 28, height: 5)
+                    .foregroundColor(idx == currentStep ? Color.appPurple : Color.white.opacity(0.18))
+            }
+        }
+        .padding(.top, 32)
+        .padding(.bottom, 8)
+    }
     
     var nextButton: some View {
         DButton(title: "Next") {
