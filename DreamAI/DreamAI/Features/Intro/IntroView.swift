@@ -8,25 +8,33 @@
 import SwiftUI
 
 struct IntroView: View {
+    @StateObject private var authManager = AuthManager.shared
     @State private var animateGradient = false
     @State private var showAuthSheet = false
+    @State private var authMode: AuthSheetMode = .login
     
     var body: some View {
-        VStack {
-            Spacer()
-            IntroBottomCard(showAuthSheet: $showAuthSheet)
-        }
-        .animatedGradientBackground()
-        .sheet(isPresented: $showAuthSheet) {
-            AuthSheetView(mode: .login)
-                .presentationDetents([.fraction(0.28)])
-                .presentationDragIndicator(.visible)
+        NavigationStack {
+            VStack {
+                Spacer()
+                IntroBottomCard(showAuthSheet: $showAuthSheet, authMode: $authMode)
+            }
+            .animatedGradientBackground()
+            .sheet(isPresented: $showAuthSheet) {
+                AuthSheetView(mode: authMode)
+                    .presentationDetents([.fraction(0.28)])
+                    .presentationDragIndicator(.visible)
+            }
+            .navigationDestination(isPresented: $authManager.isAuthenticated) {
+                MainTabView()
+            }
         }
     }
 }
 
 struct IntroBottomCard: View {
     @Binding var showAuthSheet: Bool
+    @Binding var authMode: AuthSheetMode
     
     var body: some View {
         VStack(spacing: 20) {
@@ -46,7 +54,10 @@ struct IntroBottomCard: View {
                     .multilineTextAlignment(.leading)
             }
             
-            Button(action: {}) {
+            Button(action: {
+                authMode = .signup
+                showAuthSheet = true
+            }) {
                 Text("Get Started")
                     .font(.title3.bold())
                     .frame(maxWidth: .infinity)
@@ -76,7 +87,10 @@ struct IntroBottomCard: View {
                 Text("Do you already have an account?")
                     .foregroundColor(.white)
                     .font(.footnote)
-                Button(action: { showAuthSheet = true }) {
+                Button(action: { 
+                    authMode = .login
+                    showAuthSheet = true 
+                }) {
                     Text("Log in")
                         .underline()
                         .foregroundColor(.white)
@@ -85,7 +99,6 @@ struct IntroBottomCard: View {
             }
             .padding(.bottom, 8)
         }
-        
     }
 }
 

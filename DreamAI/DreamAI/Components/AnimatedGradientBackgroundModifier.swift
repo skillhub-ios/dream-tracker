@@ -6,7 +6,6 @@
 //
 import SwiftUI
 
-
 extension View {
     func animatedGradientBackground() -> some View {
         self.modifier(AnimatedGradientBackgroundModifier())
@@ -38,10 +37,10 @@ struct AnimatedGradientBackground: View {
             startPoint: animate ? .topLeading : .topTrailing,
             endPoint: animate ? .bottomTrailing : .bottomLeading
         )
-        .animation(
-            Animation.easeInOut(duration: 6).repeatForever(autoreverses: true),
-            value: animate
-        )
+//        .animation(
+//            Animation.easeInOut(duration: 6).repeatForever(autoreverses: true),
+//            value: animate
+//        )
         .onAppear { animate.toggle() }
         .overlay(
             RadialGradient(

@@ -6,13 +6,37 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		3429D1572DF459B50066B0DF /* Auth in Frameworks */ = {isa = PBXBuildFile; productRef = 3429D1562DF459B50066B0DF /* Auth */; };
+		3429D1592DF459B50066B0DF /* Functions in Frameworks */ = {isa = PBXBuildFile; productRef = 3429D1582DF459B50066B0DF /* Functions */; };
+		3429D15B2DF459B50066B0DF /* PostgREST in Frameworks */ = {isa = PBXBuildFile; productRef = 3429D15A2DF459B50066B0DF /* PostgREST */; };
+		3429D15D2DF459B50066B0DF /* Realtime in Frameworks */ = {isa = PBXBuildFile; productRef = 3429D15C2DF459B50066B0DF /* Realtime */; };
+		3429D15F2DF459B50066B0DF /* Storage in Frameworks */ = {isa = PBXBuildFile; productRef = 3429D15E2DF459B50066B0DF /* Storage */; };
+		3429D1812DF45E240066B0DF /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 3429D1802DF45E240066B0DF /* Supabase */; };
+		3429D1982DF46C6C0066B0DF /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 3429D1972DF46C6C0066B0DF /* GoogleSignIn */; };
+		3429D19A2DF46C6C0066B0DF /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 3429D1992DF46C6C0066B0DF /* GoogleSignInSwift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		3429D13A2DF44ABB0066B0DF /* DreamAI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DreamAI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		3429D1832DF461060066B0DF /* Exceptions for "DreamAI" folder in "DreamAI" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 3429D1392DF44ABB0066B0DF /* DreamAI */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		3429D13C2DF44ABB0066B0DF /* DreamAI */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				3429D1832DF461060066B0DF /* Exceptions for "DreamAI" folder in "DreamAI" target */,
+			);
 			path = DreamAI;
 			sourceTree = "<group>";
 		};
@@ -23,6 +47,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3429D15B2DF459B50066B0DF /* PostgREST in Frameworks */,
+				3429D1592DF459B50066B0DF /* Functions in Frameworks */,
+				3429D1812DF45E240066B0DF /* Supabase in Frameworks */,
+				3429D19A2DF46C6C0066B0DF /* GoogleSignInSwift in Frameworks */,
+				3429D1572DF459B50066B0DF /* Auth in Frameworks */,
+				3429D15F2DF459B50066B0DF /* Storage in Frameworks */,
+				3429D15D2DF459B50066B0DF /* Realtime in Frameworks */,
+				3429D1982DF46C6C0066B0DF /* GoogleSignIn in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -33,6 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				3429D13C2DF44ABB0066B0DF /* DreamAI */,
+				3429D17F2DF45E240066B0DF /* Frameworks */,
 				3429D13B2DF44ABB0066B0DF /* Products */,
 			);
 			sourceTree = "<group>";
@@ -43,6 +76,13 @@
 				3429D13A2DF44ABB0066B0DF /* DreamAI.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		3429D17F2DF45E240066B0DF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -65,6 +105,14 @@
 			);
 			name = DreamAI;
 			packageProductDependencies = (
+				3429D1562DF459B50066B0DF /* Auth */,
+				3429D1582DF459B50066B0DF /* Functions */,
+				3429D15A2DF459B50066B0DF /* PostgREST */,
+				3429D15C2DF459B50066B0DF /* Realtime */,
+				3429D15E2DF459B50066B0DF /* Storage */,
+				3429D1802DF45E240066B0DF /* Supabase */,
+				3429D1972DF46C6C0066B0DF /* GoogleSignIn */,
+				3429D1992DF46C6C0066B0DF /* GoogleSignInSwift */,
 			);
 			productName = DreamAI;
 			productReference = 3429D13A2DF44ABB0066B0DF /* DreamAI.app */;
@@ -94,6 +142,10 @@
 			);
 			mainGroup = 3429D1312DF44ABB0066B0DF;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				3429D1552DF459B50066B0DF /* XCRemoteSwiftPackageReference "supabase-swift" */,
+				3429D1962DF46C6C0066B0DF /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 3429D13B2DF44ABB0066B0DF /* Products */;
 			projectDirPath = "";
@@ -251,11 +303,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = DreamAI/DreamAI.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4V6HY9M86Z;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DreamAI/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -279,11 +333,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = DreamAI/DreamAI.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4V6HY9M86Z;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DreamAI/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -324,6 +380,68 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3429D1552DF459B50066B0DF /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/supabase/supabase-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.1;
+			};
+		};
+		3429D1962DF46C6C0066B0DF /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3429D1562DF459B50066B0DF /* Auth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3429D1552DF459B50066B0DF /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Auth;
+		};
+		3429D1582DF459B50066B0DF /* Functions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3429D1552DF459B50066B0DF /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Functions;
+		};
+		3429D15A2DF459B50066B0DF /* PostgREST */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3429D1552DF459B50066B0DF /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = PostgREST;
+		};
+		3429D15C2DF459B50066B0DF /* Realtime */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3429D1552DF459B50066B0DF /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Realtime;
+		};
+		3429D15E2DF459B50066B0DF /* Storage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3429D1552DF459B50066B0DF /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Storage;
+		};
+		3429D1802DF45E240066B0DF /* Supabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3429D1552DF459B50066B0DF /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Supabase;
+		};
+		3429D1972DF46C6C0066B0DF /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3429D1962DF46C6C0066B0DF /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		3429D1992DF46C6C0066B0DF /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3429D1962DF46C6C0066B0DF /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 3429D1322DF44ABB0066B0DF /* Project object */;
 }
