@@ -11,7 +11,7 @@ struct PermissionsSettingsUI: View {
     @StateObject private var viewModel = PermissionsSettingsViewModel()
     @State private var showBedtimePicker = false
     @State private var showWakeupPicker = false
-    @State private var showLanguagePicker = true
+    @State private var showLanguagePicker = false
     
     var body: some View {
         ZStack {
@@ -32,13 +32,11 @@ struct PermissionsSettingsUI: View {
             .padding(.horizontal, 16)
             .padding(.top, 24)
         }
+        .navigationTitle("Notifications")
+        .navigationBarTitleDisplayMode(.large)
     }
     
     private var notificationsSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Notifications")
-                .font(.headline)
-                .foregroundColor(.white)
             VStack(spacing: 0) {
                 HStack {
                     Text("Reminders")
@@ -57,10 +55,11 @@ struct PermissionsSettingsUI: View {
                     DatePicker("Bedtime", selection: $viewModel.bedtime, displayedComponents: .hourAndMinute)
                         .datePickerStyle(.compact)
                         .labelsHidden()
-                        .colorInvert()
                         .disabled(!viewModel.remindersEnabled)
                         .colorMultiply(viewModel.remindersEnabled ? .purple : .gray)
                         .opacity(viewModel.remindersEnabled ? 1 : 0.5)
+                        .accentColor(.white)
+                        .colorScheme(.dark)
                 }
                 .padding(.vertical, 8)
                 Divider()
@@ -71,17 +70,18 @@ struct PermissionsSettingsUI: View {
                     DatePicker("Wake-up", selection: $viewModel.wakeup, displayedComponents: .hourAndMinute)
                         .datePickerStyle(.compact)
                         .labelsHidden()
-                        .colorInvert()
                         .disabled(!viewModel.remindersEnabled)
                         .colorMultiply(viewModel.remindersEnabled ? .purple : .gray)
                         .opacity(viewModel.remindersEnabled ? 1 : 0.5)
+                        .accentColor(.white)
+                        .colorScheme(.dark)
+                    
                 }
                 .padding(.vertical, 8)
             }
             .padding(12)
             .background(Color.appPurpleDark)
             .cornerRadius(14)
-        }
     }
     
     private var privacySection: some View {
@@ -129,6 +129,16 @@ struct PermissionsSettingsUI: View {
         .sheet(isPresented: $showLanguagePicker) {
             LanguagePicker(selectedLanguage: $viewModel.selectedLanguage, showLanguagePicker: $showLanguagePicker)
                 .presentationDetents([.large])
+        }
+    }
+}
+
+extension View {
+    @ViewBuilder func changeTextColor(_ color: Color) -> some View {
+        if UITraitCollection.current.userInterfaceStyle == .light {
+            self.colorInvert().colorMultiply(color)
+        } else {
+            self.colorMultiply(color)
         }
     }
 }
@@ -192,5 +202,8 @@ struct LanguagePicker: View {
 
 
 #Preview {
-     PermissionsSettingsUI()
+     NavigationStack {
+         PermissionsSettingsUI()
+     }
+     .colorScheme(.dark)
 }

@@ -12,6 +12,7 @@ struct DreamAIApp: App {
     var body: some Scene {
         WindowGroup {
             IntroView()
+            .colorScheme(.dark)
 //            PermissionContainerView()
         }
     }

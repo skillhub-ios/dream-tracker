@@ -9,42 +9,49 @@ import SwiftUI
 
 struct PermissionContainerView: View {
     @State private var currentStep: Int = 0
+    @State private var showSettings = false
     
     var body: some View {
-        ZStack {
-            LinearGradient(
-                gradient: Gradient(
-                    colors: [
-                        Color(.sRGB, red: 38/255, green: 18/255, blue: 44/255, opacity: 1),
-                        Color.black
-                    ]
-                ),
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .ignoresSafeArea()
-            
-            VStack(spacing: 24) {
-                paginationIndicator
-                TabView(selection: $currentStep) {
-                    PermissionsFeelingsUI()
-                        .tag(0)
-                    PermissionsLifeFocusUI()
-                        .tag(1)
-                    PermissionsPersonalizationUI()
-                        .tag(2)
-                }
-                .tabViewStyle(.page(indexDisplayMode: .never))
-                .indexViewStyle(.page(backgroundDisplayMode: .never))
-                .frame(maxHeight: .infinity, alignment: .top)
-                .onChange(of: currentStep) { oldValue, newValue in
-                    print("Current step: \(newValue)")
-                }
+        NavigationStack {
+            ZStack {
+                LinearGradient(
+                    gradient: Gradient(
+                        colors: [
+                            Color(.sRGB, red: 38/255, green: 18/255, blue: 44/255, opacity: 1),
+                            Color.black
+                        ]
+                    ),
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .ignoresSafeArea()
                 
-                Spacer()
-                nextButton
-                    .padding(.horizontal, 16)
-                skipButton
+                VStack(spacing: 24) {
+                    paginationIndicator
+                    TabView(selection: $currentStep) {
+                        PermissionsFeelingsUI()
+                            .tag(0)
+                        PermissionsLifeFocusUI()
+                            .tag(1)
+                        PermissionsPersonalizationUI()
+                            .tag(2)
+                    }
+                    .tabViewStyle(.page(indexDisplayMode: .never))
+                    .indexViewStyle(.page(backgroundDisplayMode: .never))
+                    .frame(maxHeight: .infinity, alignment: .top)
+                    .onChange(of: currentStep) { oldValue, newValue in
+                        print("Current step: \(newValue)")
+                    }
+                    
+                    Spacer()
+                    nextButton
+                        .padding(.horizontal, 16)
+                    skipButton
+                }
+            }
+            .toolbarVisibility(.hidden, for: .navigationBar)
+            .navigationDestination(isPresented: $showSettings) {
+                PermissionsSettingsUI()
             }
         }
     }
@@ -62,14 +69,17 @@ private extension PermissionContainerView {
                     .foregroundColor(idx == currentStep ? Color.appPurple : Color.white.opacity(0.18))
             }
         }
-        .padding(.top, 32)
-        .padding(.bottom, 8)
+        .padding(.top, 20)
     }
     
     var nextButton: some View {
         DButton(title: "Next") {
-            withAnimation {
-                currentStep += 1
+            if currentStep < 2 {
+                withAnimation {
+                    currentStep += 1
+                }
+            } else {
+                showSettings = true
             }
         }
         .padding(.bottom, 4)
@@ -77,9 +87,7 @@ private extension PermissionContainerView {
     
     var skipButton: some View {
         Button(action: {
-            withAnimation {
-                currentStep -= 1
-            }
+            showSettings = true
         }) {
             Text("Skip")
                 .font(.subheadline)
