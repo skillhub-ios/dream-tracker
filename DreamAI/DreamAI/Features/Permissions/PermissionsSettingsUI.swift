@@ -139,39 +139,35 @@ struct LanguagePicker: View {
     
     var body: some View {
         NavigationStack {
-           ZStack {
-
-            Color.appGray4.ignoresSafeArea()
-
-             VStack {
+            ZStack {
+                Color.appGray4.ignoresSafeArea()
                 
-                List(selection: $selectedLanguage) {
-                    ForEach(Language.allCases, id: \.self) { language in
-                        HStack(spacing: 9) {
-                            
-                            Image(systemName: selectedLanguage == language ? "checkmark.circle.fill" : "circle")
-                                    .foregroundColor(selectedLanguage == language ? .purple : .gray.opacity(0.5))
-                                    .font(.system(size: 24))
+                VStack {
+                    List(selection: $selectedLanguage) {
+                        ForEach(Language.allCases, id: \.self) { language in
+                            HStack(spacing: 9) {
+                                
+                                Image(systemName: selectedLanguage == language ? "checkmark.circle.fill" : "circle")
+                                        .foregroundColor(selectedLanguage == language ? .purple : .gray.opacity(0.5))
+                                        .font(.system(size: 24))
 
-                            Image(language.flag)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 24, height: 24)
-                                .padding(.leading, 3)
+                                Image(language.flag)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 24, height: 24)
+                                    .padding(.leading, 3)
 
-                            Text(language.title)
-                                .font(.headline)
-                                .foregroundColor(.white)
-                            Spacer()
+                                Text(language.title)
+                                    .font(.headline)
+                                    .foregroundColor(.white)
+                                Spacer()
+                            }
                         }
+                        .listRowBackground(Color.appGray3)
                     }
-                    .listRowBackground(Color.appGray3)
+                    .scrollContentBackground(.hidden)
                 }
-                
-    
             }
-           }
-            
             .navigationTitle("Language")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -185,8 +181,12 @@ struct LanguagePicker: View {
                     }
                 }
             }
+            .toolbarColorScheme(.dark, for: .navigationBar)
+            .toolbarBackground(Color.appGray4, for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
         }
         .presentationDetents([.large])
+        .background(Color.appGray4)
     }
 }
 
