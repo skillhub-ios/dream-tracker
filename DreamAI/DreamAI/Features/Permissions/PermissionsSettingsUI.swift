@@ -104,27 +104,31 @@ struct PermissionsSettingsUI: View {
     }
     
     private var languageSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Language")
-                .font(.headline)
-                .foregroundColor(.white)
-            Button(action: { showLanguagePicker = true }) {
-                HStack {
-                    Text(viewModel.selectedLanguage?.title ?? "")
-                    Text("Language")
-                        .foregroundColor(.white)
-                    Spacer()
-                    Image(systemName: "chevron.right")
-                        .foregroundColor(.white.opacity(0.5))
+        Button(action: { showLanguagePicker = true }) {
+            HStack(spacing: 12) {
+                if let flag = viewModel.selectedLanguage?.flag {
+                    Image(flag)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 24, height: 24)
                 }
-                .padding(12)
-                .background(Color.appPurpleDark)
-                .cornerRadius(14)
+                
+                Text(viewModel.selectedLanguage?.title ?? "Language")
+                    .foregroundColor(.white)
+                
+                Spacer()
+                
+                Image(systemName: "chevron.right")
+                    .foregroundColor(.white.opacity(0.5))
+                
             }
-            .sheet(isPresented: $showLanguagePicker) {
-                LanguagePicker(selectedLanguage: $viewModel.selectedLanguage, showLanguagePicker: $showLanguagePicker)
-                    .presentationDetents([.large])
-            }
+            .padding(12)
+            .background(Color.appPurpleDark)
+            .cornerRadius(14)
+        }
+        .sheet(isPresented: $showLanguagePicker) {
+            LanguagePicker(selectedLanguage: $viewModel.selectedLanguage, showLanguagePicker: $showLanguagePicker)
+                .presentationDetents([.large])
         }
     }
 }
@@ -183,7 +187,6 @@ struct LanguagePicker: View {
             }
         }
         .presentationDetents([.large])
-//        .background(Color.appGray4)
     }
 }
 
