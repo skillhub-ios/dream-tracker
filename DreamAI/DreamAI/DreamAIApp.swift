@@ -11,8 +11,8 @@ import SwiftUI
 struct DreamAIApp: App {
     var body: some Scene {
         WindowGroup {
-//            IntroView()
-            PermissionContainerView()
+            IntroView()
+//            PermissionContainerView()
         }
     }
 }

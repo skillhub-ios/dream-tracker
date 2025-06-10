@@ -87,7 +87,6 @@ private extension PermissionContainerView {
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 8)
         }
-        .accessibilityLabel("Skip")
     }
 }
 
