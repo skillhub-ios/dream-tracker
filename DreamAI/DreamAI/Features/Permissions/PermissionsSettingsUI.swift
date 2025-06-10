@@ -110,7 +110,7 @@ struct PermissionsSettingsUI: View {
                 .foregroundColor(.white)
             Button(action: { showLanguagePicker = true }) {
                 HStack {
-                    Text(viewModel.selectedLanguage.flag)
+                    Text(viewModel.selectedLanguage?.title ?? "")
                     Text("Language")
                         .foregroundColor(.white)
                     Spacer()
@@ -122,35 +122,72 @@ struct PermissionsSettingsUI: View {
                 .cornerRadius(14)
             }
             .sheet(isPresented: $showLanguagePicker) {
-                VStack(spacing: 0) {
-                    Text("Select Language")
-                        .font(.headline)
-                        .padding()
-                    ForEach(viewModel.allLanguages) { lang in
-                        Button(action: {
-                            viewModel.selectedLanguage = lang
-                            showLanguagePicker = false
-                        }) {
-                            HStack {
-                                Text(lang.flag)
-                                Text(lang.rawValue)
-                                    .foregroundColor(.primary)
-                                Spacer()
-                                if viewModel.selectedLanguage == lang {
-                                    Image(systemName: "checkmark")
-                                        .foregroundColor(.purple)
-                                }
-                            }
-                            .padding()
-                        }
-                    }
-                }
-                .presentationDetents([.height(400)])
+                LanguagePicker(selectedLanguage: $viewModel.selectedLanguage, showLanguagePicker: $showLanguagePicker)
+                    .presentationDetents([.large])
             }
         }
     }
 }
 
+struct LanguagePicker: View {
+    @Binding var selectedLanguage: Language?
+    @Binding var showLanguagePicker: Bool
+    
+    var body: some View {
+        NavigationStack {
+           ZStack {
+
+            Color.appGray4.ignoresSafeArea()
+
+             VStack {
+                
+                List(selection: $selectedLanguage) {
+                    ForEach(Language.allCases, id: \.self) { language in
+                        HStack(spacing: 9) {
+                            
+                            Image(systemName: selectedLanguage == language ? "checkmark.circle.fill" : "circle")
+                                    .foregroundColor(selectedLanguage == language ? .purple : .gray.opacity(0.5))
+                                    .font(.system(size: 24))
+
+                            Image(language.flag)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 24, height: 24)
+                                .padding(.leading, 3)
+
+                            Text(language.title)
+                                .font(.headline)
+                                .foregroundColor(.white)
+                            Spacer()
+                        }
+                    }
+                    .listRowBackground(Color.appGray3)
+                }
+                
+    
+            }
+           }
+            
+            .navigationTitle("Language")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: {
+                        showLanguagePicker = false
+                    }) {
+                        Text("Done")
+                            .font(.headline)
+                            .foregroundColor(.purple)
+                    }
+                }
+            }
+        }
+        .presentationDetents([.large])
+//        .background(Color.appGray4)
+    }
+}
+
+
 #Preview {
-    PermissionsSettingsUI()
-} 
+     PermissionsSettingsUI()
+}
