@@ -1,0 +1,133 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+
+    },
+    "🧚‍♀️" : {
+
+    },
+    "🪐" : {
+
+    },
+    "1–3" : {
+
+    },
+    "A few quick details to personalize insights" : {
+
+    },
+    "Authentication Error" : {
+
+    },
+    "Bedtime" : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ұйқы уақыты"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "취침 시간"
+          }
+        }
+      }
+    },
+    "Do you already have an account?" : {
+
+    },
+    "Do you believe dreams have meaning?" : {
+
+    },
+    "Done" : {
+
+    },
+    "Dreams" : {
+
+    },
+    "Explore your subconscious, one dream at a time." : {
+
+    },
+    "Face ID" : {
+
+    },
+    "Hello, world!" : {
+
+    },
+    "Hi there 👋" : {
+
+    },
+    "How did you hear about us?" : {
+
+    },
+    "How do your dreams usually feel?" : {
+
+    },
+    "Language" : {
+
+    },
+    "Let's help you get more accurate dream insights" : {
+
+    },
+    "Life Focus" : {
+
+    },
+    "Log in" : {
+
+    },
+    "New Dream" : {
+
+    },
+    "No dreams recorded yet" : {
+
+    },
+    "Not signed in" : {
+
+    },
+    "Notifications" : {
+
+    },
+    "OK" : {
+
+    },
+    "Privacy" : {
+
+    },
+    "Profile" : {
+
+    },
+    "Quick Personalization" : {
+
+    },
+    "Reminders" : {
+
+    },
+    "Save Dream" : {
+
+    },
+    "Sign Out" : {
+
+    },
+    "Skip" : {
+
+    },
+    "To understand your dreams better" : {
+
+    },
+    "Uncover Your Dreams with AI" : {
+
+    },
+    "Wake-up" : {
+
+    },
+    "What's currently top of mind for you?" : {
+
+    },
+    "Your Dreams" : {
+
+    }
+  },
+  "version" : "1.0"
+}
