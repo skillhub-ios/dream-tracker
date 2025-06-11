@@ -8,16 +8,19 @@
 import SwiftUI
 
 struct FloatingActionButton: View {
+    let mode: DreamListItemMode
     var action: () -> Void = {}
+    
     var body: some View {
         Button(action: action) {
             ZStack {
                 Circle()
-                    .fill(Color.purple.opacity(0.2))
+                    .fill(mode == .edit ? Color.appRed.opacity(0.55) : Color.appPurple.opacity(0.2))
                     .frame(width: 72, height: 72)
-                Image(systemName: "plus")
+
+                Image(systemName: mode == .edit ? "trash.fill" : "plus")
                     .font(.system(size: 32, weight: .bold))
-                    .foregroundColor(Color.purple)
+                    .foregroundColor(mode == .edit ? Color.red : Color.appPurple)
             }
         }
         .shadow(color: Color.purple.opacity(0.3), radius: 8, x: 0, y: 4)
@@ -31,7 +34,7 @@ struct FloatingActionButton: View {
             Spacer()
             HStack {
                 Spacer()
-                FloatingActionButton()
+                FloatingActionButton(mode: .edit)
                     .padding(.bottom, 32)
                     .padding(.trailing, 32)
             }

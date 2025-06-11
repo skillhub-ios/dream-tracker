@@ -57,4 +57,8 @@ class MainViewModel: ObservableObject {
             return dreams.sorted(by: { $0.tags.count > $1.tags.count })
         }
     }
+
+    func deleteDreams(ids: [UUID]) {
+        dreams = dreams.filter { !ids.contains($0.id) }
+    }
 }

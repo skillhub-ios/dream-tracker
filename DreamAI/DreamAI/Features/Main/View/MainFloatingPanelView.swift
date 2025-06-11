@@ -64,8 +64,14 @@ struct MainFloatingPanelView: View {
                     }
                 }
             }
-            FloatingActionButton() {
-                // Action for adding a new dream
+            FloatingActionButton(mode: dreamlistmode) {
+                if dreamlistmode == .edit {
+                    viewModel.deleteDreams(ids: selectedDreamIds)
+                    selectedDreamIds.removeAll()
+                    dreamlistmode = .view
+                } else {
+                    // Action for adding a new dream
+                }
             }
             .padding(.bottom, 15)
         }
