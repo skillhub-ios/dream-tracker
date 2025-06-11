@@ -26,7 +26,6 @@ struct IntroView: View {
                     .presentationDragIndicator(.visible)
             }
             .navigationDestination(isPresented: $authManager.isAuthenticated) {
-//                MainTabView()
                 PermissionContainerView()
             }
         }

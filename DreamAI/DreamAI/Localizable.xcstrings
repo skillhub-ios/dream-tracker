@@ -10,6 +10,9 @@
     "🪐" : {
 
     },
+    "😞" : {
+
+    },
     "1–3" : {
 
     },
@@ -44,13 +47,16 @@
     "Done" : {
 
     },
-    "Dreams" : {
-
-    },
     "Explore your subconscious, one dream at a time." : {
 
     },
     "Face ID" : {
+
+    },
+    "Filter" : {
+
+    },
+    "Good morning!" : {
 
     },
     "Hello, world!" : {
@@ -77,13 +83,10 @@
     "Log in" : {
 
     },
-    "New Dream" : {
+    "Log your first dream 🌙" : {
 
     },
-    "No dreams recorded yet" : {
-
-    },
-    "Not signed in" : {
+    "No dreams yet" : {
 
     },
     "Notifications" : {
@@ -95,19 +98,16 @@
     "Privacy" : {
 
     },
-    "Profile" : {
+    "Quick Personalization" : {
 
     },
-    "Quick Personalization" : {
+    "Ready to log a dream?" : {
 
     },
     "Reminders" : {
 
     },
-    "Save Dream" : {
-
-    },
-    "Sign Out" : {
+    "Search" : {
 
     },
     "Skip" : {
@@ -123,9 +123,6 @@
 
     },
     "What's currently top of mind for you?" : {
-
-    },
-    "Your Dreams" : {
 
     }
   },
