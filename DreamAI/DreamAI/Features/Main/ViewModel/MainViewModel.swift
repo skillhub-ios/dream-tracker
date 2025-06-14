@@ -6,13 +6,15 @@
 //
 
 import SwiftUI
+import Combine
 
 class MainViewModel: ObservableObject {
     @Published var searchBarFilter: SearchBarFilter = .newestFirst
     @Published var searchText: String = ""
     @Published var dreams: [Dream] = []
     @Published var lastDream: Dream?
-
+    private var cancellables = Set<AnyCancellable>()
+    
     init() {
         self.dreams = [
             Dream(
@@ -38,6 +40,12 @@ class MainViewModel: ObservableObject {
             )
         ]
         self.lastDream = dreams.first
+        
+        $searchBarFilter
+            .sink { _ in
+                self.dreams = self.filterBySearchBarFilter()
+            }
+            .store(in: &cancellables)
     }
 
     func filterDreams() -> [Dream] {

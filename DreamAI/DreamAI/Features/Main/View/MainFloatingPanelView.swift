@@ -64,6 +64,8 @@ struct MainFloatingPanelView: View {
                     }
                 }
             }
+            .padding(.top, 24)
+            
             FloatingActionButton(mode: dreamlistmode) {
                 if dreamlistmode == .edit {
                     viewModel.deleteDreams(ids: selectedDreamIds)

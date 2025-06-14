@@ -38,6 +38,15 @@
         }
       }
     },
+    "Cancel" : {
+
+    },
+    "Create Dream" : {
+
+    },
+    "Describe the dream" : {
+
+    },
     "Do you already have an account?" : {
 
     },
@@ -71,6 +80,9 @@
     "How do your dreams usually feel?" : {
 
     },
+    "I dreamed..." : {
+
+    },
     "Language" : {
 
     },
@@ -84,6 +96,9 @@
 
     },
     "Log your first dream 🌙" : {
+
+    },
+    "Mood before sleep" : {
 
     },
     "No dreams yet" : {
@@ -117,6 +132,9 @@
 
     },
     "Uncover Your Dreams with AI" : {
+
+    },
+    "Use Microphone" : {
 
     },
     "Wake-up" : {

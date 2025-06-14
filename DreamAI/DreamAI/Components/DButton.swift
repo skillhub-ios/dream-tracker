@@ -25,28 +25,28 @@ struct DButton: View {
     
     init(
         title: String,
-        action: @escaping () -> Void,
         isDisabled: Binding<Bool> = .constant(false),
         isLoading: Binding<Bool>? = nil,
+        action: @escaping () -> Void
     ) {
         self.title = title
-        self.action = action
         self.asyncAction = nil
         self._isDisabled = isDisabled
         self.isLoadingBinding = isLoading
+        self.action = action
     }
     
     init(
         title: String,
-        asyncAction: @escaping () async -> Void,
         isDisabled: Binding<Bool> = .constant(false),
         isLoading: Binding<Bool>? = nil,
+        asyncAction: @escaping () async -> Void
     ) {
         self.title = title
-        self.action = {}
-        self.asyncAction = asyncAction
         self._isDisabled = isDisabled
         self.isLoadingBinding = isLoading
+        self.action = {}
+        self.asyncAction = asyncAction
     }
     
     var body: some View {
@@ -86,9 +86,15 @@ struct DButton: View {
                 )
         }
         .disabled(isDisabled || effectiveIsLoading.wrappedValue)
+        .opacity(isDisabled || effectiveIsLoading.wrappedValue ? 0.65 : 1)
     }
 }
 
 #Preview {
-    DButton(title: "Get Started", action: {})
+    DButton(
+        title: "Get Started",
+        isDisabled: .constant(true),
+        action: {}
+    )
+    .padding()
 }
