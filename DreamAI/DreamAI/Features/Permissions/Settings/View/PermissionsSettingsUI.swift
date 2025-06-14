@@ -12,6 +12,7 @@ struct PermissionsSettingsUI: View {
     @State private var showBedtimePicker = false
     @State private var showWakeupPicker = false
     @State private var showLanguagePicker = false
+    @State private var showMainView = false
     
     var body: some View {
         ZStack {
@@ -26,65 +27,72 @@ struct PermissionsSettingsUI: View {
                 languageSection
                 Spacer()
                 DButton(title: "Done") {
-                    // Handle done
+                    showMainView = true
                 }
             }
             .padding(.horizontal, 16)
             .padding(.top, 24)
+            .navigationDestination(isPresented: $showMainView) {
+                NavigationStack {
+                    MainView()
+                }   
+            }
         }
         .navigationTitle("Notifications")
         .navigationBarTitleDisplayMode(.large)
     }
-    
-    private var notificationsSection: some View {
-            VStack(spacing: 0) {
-                HStack {
-                    Text("Reminders")
-                        .foregroundColor(.white)
-                    Spacer()
-                    Toggle("", isOn: $viewModel.remindersEnabled)
-                        .toggleStyle(SwitchToggleStyle(tint: .purple))
-                        .labelsHidden()
-                }
-                .padding(.vertical, 8)
-                Divider()
-                HStack {
-                    Text("Bedtime")
-                        .foregroundColor(.white)
-                    Spacer()
-                    DatePicker("Bedtime", selection: $viewModel.bedtime, displayedComponents: .hourAndMinute)
-                        .datePickerStyle(.compact)
-                        .labelsHidden()
-                        .disabled(!viewModel.remindersEnabled)
-                        .colorMultiply(viewModel.remindersEnabled ? .purple : .gray)
-                        .opacity(viewModel.remindersEnabled ? 1 : 0.5)
-                        .accentColor(.white)
-                        .colorScheme(.dark)
-                }
-                .padding(.vertical, 8)
-                Divider()
-                HStack {
-                    Text("Wake-up")
-                        .foregroundColor(.white)
-                    Spacer()
-                    DatePicker("Wake-up", selection: $viewModel.wakeup, displayedComponents: .hourAndMinute)
-                        .datePickerStyle(.compact)
-                        .labelsHidden()
-                        .disabled(!viewModel.remindersEnabled)
-                        .colorMultiply(viewModel.remindersEnabled ? .purple : .gray)
-                        .opacity(viewModel.remindersEnabled ? 1 : 0.5)
-                        .accentColor(.white)
-                        .colorScheme(.dark)
-                    
-                }
-                .padding(.vertical, 8)
+}
+
+private extension PermissionsSettingsUI {
+    var notificationsSection: some View {
+        VStack(spacing: 0) {
+            HStack {
+                Text("Reminders")
+                    .foregroundColor(.white)
+                Spacer()
+                Toggle("", isOn: $viewModel.remindersEnabled)
+                    .toggleStyle(SwitchToggleStyle(tint: .purple))
+                    .labelsHidden()
             }
-            .padding(12)
-            .background(Color.appPurpleDark)
-            .cornerRadius(14)
+            .padding(.vertical, 8)
+            Divider()
+            HStack {
+                Text("Bedtime")
+                    .foregroundColor(.white)
+                Spacer()
+                DatePicker("Bedtime", selection: $viewModel.bedtime, displayedComponents: .hourAndMinute)
+                    .datePickerStyle(.compact)
+                    .labelsHidden()
+                    .disabled(!viewModel.remindersEnabled)
+                    .colorMultiply(viewModel.remindersEnabled ? .purple : .gray)
+                    .opacity(viewModel.remindersEnabled ? 1 : 0.5)
+                    .accentColor(.white)
+                    .colorScheme(.dark)
+            }
+            .padding(.vertical, 8)
+            Divider()
+            HStack {
+                Text("Wake-up")
+                    .foregroundColor(.white)
+                Spacer()
+                DatePicker("Wake-up", selection: $viewModel.wakeup, displayedComponents: .hourAndMinute)
+                    .datePickerStyle(.compact)
+                    .labelsHidden()
+                    .disabled(!viewModel.remindersEnabled)
+                    .colorMultiply(viewModel.remindersEnabled ? .purple : .gray)
+                    .opacity(viewModel.remindersEnabled ? 1 : 0.5)
+                    .accentColor(.white)
+                    .colorScheme(.dark)
+                
+            }
+            .padding(.vertical, 8)
+        }
+        .padding(12)
+        .background(Color.appPurpleDark)
+        .cornerRadius(14)
     }
     
-    private var privacySection: some View {
+    var privacySection: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Privacy")
                 .font(.headline)
@@ -103,7 +111,7 @@ struct PermissionsSettingsUI: View {
         }
     }
     
-    private var languageSection: some View {
+    var languageSection: some View {
         Button(action: { showLanguagePicker = true }) {
             HStack(spacing: 12) {
                 if let flag = viewModel.selectedLanguage?.flag {
@@ -158,15 +166,15 @@ struct LanguagePicker: View {
                             HStack(spacing: 9) {
                                 
                                 Image(systemName: selectedLanguage == language ? "checkmark.circle.fill" : "circle")
-                                        .foregroundColor(selectedLanguage == language ? .purple : .gray.opacity(0.5))
-                                        .font(.system(size: 24))
-
+                                    .foregroundColor(selectedLanguage == language ? .purple : .gray.opacity(0.5))
+                                    .font(.system(size: 24))
+                                
                                 Image(language.flag)
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 24, height: 24)
                                     .padding(.leading, 3)
-
+                                
                                 Text(language.title)
                                     .font(.headline)
                                     .foregroundColor(.white)
@@ -202,8 +210,8 @@ struct LanguagePicker: View {
 
 
 #Preview {
-     NavigationStack {
-         PermissionsSettingsUI()
-     }
-     .colorScheme(.dark)
+    NavigationStack {
+        PermissionsSettingsUI()
+    }
+    .colorScheme(.dark)
 }

@@ -11,7 +11,8 @@ struct EmptyStateCardView: View {
     var action: () -> Void = {}
     var body: some View {
         Button(action: action) {
-            HStack(spacing: 24) {
+            HStack(spacing: 12) {
+                
                 ZStack {
                     Circle()
                         .fill(Color(hex: "#523761"))
@@ -30,8 +31,8 @@ struct EmptyStateCardView: View {
                     .foregroundColor(Color.appPurple)
             }
             .padding()
-            .background(RoundedRectangle(cornerRadius: 18).stroke(Color(hex: "523761")))
-            .background(RoundedRectangle(cornerRadius: 18).fill(Color(hex: "#382A40").opacity(0.75)))
+            .background(RoundedRectangle(cornerRadius: 18).stroke(Color.appPurpleDarkStroke))
+            .background(RoundedRectangle(cornerRadius: 18).fill(Color.appPurpleDarkBackground.opacity(0.75)))
         }
         .padding(.horizontal)
     }
@@ -39,4 +40,5 @@ struct EmptyStateCardView: View {
 
 #Preview {
     EmptyStateCardView()
-} 
+        .padding(.horizontal)
+}

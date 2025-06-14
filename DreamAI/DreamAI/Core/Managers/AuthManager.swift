@@ -24,6 +24,13 @@ final class AuthManager: ObservableObject, AuthManaging {
     static let shared = AuthManager()
     private let client = SupabaseService.shared.client
     
+    // MARK: - Debug Mode
+    #if DEBUG
+    let isDebugMode = true
+    #else
+    let isDebugMode = false
+    #endif
+    
     @Published private(set) var user: User?
     @Published var isAuthenticated: Bool = false
 
@@ -39,6 +46,30 @@ final class AuthManager: ObservableObject, AuthManaging {
                 self.isAuthenticated = !session.user.isAnonymous
             }
         } catch {
+            // If in debug mode and not authenticated, try to sign in anonymously
+            if isDebugMode && !isAuthenticated {
+                await signInAnonymously()
+            } else {
+                await MainActor.run {
+                    self.user = nil
+                    self.isAuthenticated = false
+                }
+            }
+        }
+    }
+    
+    // MARK: - Debug Authentication
+    private func signInAnonymously() async {
+        do {
+            try await client.auth.signInAnonymously()
+            let session = try await client.auth.session
+            await MainActor.run {
+                self.user = session.user
+                self.isAuthenticated = true
+            }
+            print("DEBUG: Successfully signed in anonymously")
+        } catch {
+            print("DEBUG: Failed to sign in anonymously: \(error.localizedDescription)")
             await MainActor.run {
                 self.user = nil
                 self.isAuthenticated = false
@@ -87,4 +118,4 @@ final class AuthManager: ObservableObject, AuthManaging {
         try await client.auth.signOut()
         await refreshSession()
     }
-} 
+}

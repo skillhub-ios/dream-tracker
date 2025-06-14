@@ -46,12 +46,11 @@ struct SearchBarView: View {
                 Label("Filter", systemImage: "line.3.horizontal.decrease")
                     .labelStyle(.iconOnly)
                     .foregroundStyle(Color.gray)
-                
+                    .padding(10)
+                    .frame(height: 40)
+                    .background(Color.appGray8.opacity(0.24))
+                    .cornerRadius(10)
             }
-            .padding(10)
-            .frame(height: 40)
-            .background(Color.appGray8.opacity(0.24))
-            .cornerRadius(10)
         }
         .padding(.horizontal)
     }

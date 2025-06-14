@@ -15,6 +15,10 @@ extension Color {
     static let appPurpleDark = Color(hex: "261A2C")
     /// #EBEBF5 - appPurpleLight
     static let appPurpleLight = Color(hex: "EBEBF5")
+    /// #382A40 - appPurpleDarkBackground
+    static let appPurpleDarkBackground = Color(hex: "382A40")
+    /// #523761 - appPurpleDarkStroke
+    static let appPurpleDarkStroke = Color(hex: "523761")
     
     // MARK: - Grays
     /// #FFFFFF - appWhite

@@ -14,6 +14,7 @@ struct MainFloatingPanelView: View {
     @State private var dreamlistmode: DreamListItemMode = .view
     @State private var selectedDreamIds: [UUID] = []
     @State private var hapticTrigger = false
+    @State private var showCreateDreamView = false
     
     var filteredDreams: [Dream] {
         viewModel.filterDreams()
@@ -29,7 +30,7 @@ struct MainFloatingPanelView: View {
                     .padding(.top, 12)
                 if filteredDreams.isEmpty {
                     EmptyStateCardView() {
-                        // Action for logging first dream
+                        showCreateDreamView = true
                     }
                     Spacer()
                 } else {
@@ -72,10 +73,16 @@ struct MainFloatingPanelView: View {
                     selectedDreamIds.removeAll()
                     dreamlistmode = .view
                 } else {
-                    // Action for adding a new dream
+                    showCreateDreamView = true
                 }
             }
             .padding(.bottom, 15)
+        }
+        .sheet(isPresented: $showCreateDreamView) {
+            NavigationStack {
+                CreateDreamView()
+            }
+            .presentationDetents([.large])
         }
     }
 }

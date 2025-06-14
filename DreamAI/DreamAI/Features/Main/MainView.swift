@@ -11,51 +11,54 @@ struct MainView: View {
     @StateObject private var viewModel = MainViewModel()
     
     var body: some View {
-        ZStack {
-            lineGradient
-            
-            VStack {
-                VStack(spacing: 0) {
-                    Text("Good morning!")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                    
-                    Text("Ready to log a dream?")
-                        .font(.subheadline)
-                        .foregroundStyle(.gray)
-                        .padding(.top, 10)
-                    
-                    VStack {
-                        if let lastDream = viewModel.lastDream {
-                            lastDreamView(lastDream: lastDream)
-                        } else {
-                            noDreamsView
+        NavigationStack {
+            ZStack {
+                lineGradient
+                
+                VStack {
+                    VStack(spacing: 0) {
+                        Text("Good morning!")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                        
+                        Text("Ready to log a dream?")
+                            .font(.subheadline)
+                            .foregroundStyle(.gray)
+                            .padding(.top, 10)
+                        
+                        VStack {
+                            if let lastDream = viewModel.lastDream {
+                                lastDreamView(lastDream: lastDream)
+                            } else {
+                                noDreamsView
+                            }
                         }
                     }
+                    .frame(maxHeight: .infinity, alignment: .bottom)
+                    
+                    Color.clear
+                        .frame(height: SCREEN_HEIGHT * 0.7)
                 }
-                .frame(maxHeight: .infinity, alignment: .bottom)
-                
-                Color.clear
-                    .frame(height: SCREEN_HEIGHT * 0.7)
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Image(systemName: "person.circle")
+                        .font(.title)
+                        .foregroundStyle(.white)
+                }
+            }
+            .sheet(isPresented: .constant(true)) {
+                MainFloatingPanelView()
+                    .presentationDetents([.fraction(0.7), .large])
+                    .presentationDragIndicator(.visible)
+                    .presentationBackground(.ultraThickMaterial)
+                    .presentationBackgroundInteraction(.enabled)
+                    .presentationBackground(Color.red)
+                    .interactiveDismissDisabled()
+                    .environmentObject(viewModel)
             }
         }
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Image(systemName: "person.circle")
-                    .font(.title)
-                    .foregroundStyle(.white)
-            }
-        }
-        .sheet(isPresented: .constant(true)) {
-            MainFloatingPanelView()
-                .presentationDetents([.fraction(0.7), .large])
-                .presentationDragIndicator(.visible)
-                .presentationBackground(.ultraThickMaterial)
-                .presentationBackgroundInteraction(.enabled)
-                .presentationBackground(Color.red)
-                .interactiveDismissDisabled()
-                .environmentObject(viewModel)
-        }
+        .toolbarVisibility(.hidden, for: .navigationBar)
     }
 }
 
@@ -81,7 +84,7 @@ private extension MainView {
             Text(dream.emoji)
                 .frame(width: 24, height: 24)
                 .padding(5)
-                .background(Color(hex: "#382A40"))
+                .background(Color.appPurpleDarkBackground)
                 .clipShape(Circle())
             
             Text(dream.date.formatted())
@@ -100,7 +103,7 @@ private extension MainView {
             Text("😞")
                 .frame(width: 24, height: 24)
                 .padding(5)
-                .background(Color(hex: "#382A40"))
+                .background(Color.appPurpleDarkBackground)
                 .clipShape(Circle())
             
             Text("No dreams yet")

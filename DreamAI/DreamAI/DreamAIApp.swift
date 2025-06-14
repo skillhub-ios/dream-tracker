@@ -9,11 +9,16 @@ import SwiftUI
 
 @main
 struct DreamAIApp: App {
+
+    @StateObject private var authManager = AuthManager.shared
+    
     var body: some Scene {
         WindowGroup {
-            CreateDreamView()
-            .colorScheme(.dark)
-//            PermissionContainerView()
+            if authManager.isAuthenticated || authManager.isDebugMode {
+                MainView()
+            } else {
+                IntroView()
+            }
         }
     }
 }

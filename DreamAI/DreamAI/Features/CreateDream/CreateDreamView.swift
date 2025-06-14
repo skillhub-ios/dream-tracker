@@ -12,6 +12,8 @@ struct CreateDreamView: View {
     // MARK: - Properties
     @StateObject private var viewModel = CreateDreamViewModel()
     @Environment(\.dismiss) private var dismiss
+    @FocusState private var isInputActive: Bool
+    @State private var isShowingInterpretation: Bool = false
     
     // MARK: - Body
     var body: some View {
@@ -19,26 +21,28 @@ struct CreateDreamView: View {
             Color.appGray4
                 .ignoresSafeArea()  
             
-            VStack(spacing: 12) {
-                headerUI(dreamDate: $viewModel.selectedDate)
-                
-                dreamTextEditor($viewModel.dreamText)
-                
-                microphoneButton {
-                    Task {
-                        await viewModel.toggleRecording()
+            ScrollView {
+                VStack(spacing: 12) {
+                    headerUI(dreamDate: $viewModel.selectedDate)
+                    
+                    dreamTextEditor($viewModel.dreamText)
+                    
+                    microphoneButton {
+                        Task {
+                            await viewModel.toggleRecording()
+                        }
+                    }
+                    
+                    moodPicker($viewModel.selectedMood)
+
+                    Spacer()
+                    
+                    DButton(title: "Generate Dream", isDisabled: $viewModel.isButtonDisabled) {
+                        print("Generate dream button pressed")
                     }
                 }
-                
-                moodPicker($viewModel.selectedMood)
-
-                Spacer()
-                
-                DButton(title: "Generate Dream", isDisabled: $viewModel.isButtonDisabled) {
-                    print("Generate dream button pressed")
-                }
+                .padding(.horizontal, 16)
             }
-            .padding(.horizontal, 16)
         }
         .navigationTitle("Create Dream")
         .navigationBarTitleDisplayMode(.inline)
@@ -60,6 +64,9 @@ struct CreateDreamView: View {
                 viewModel.updateDreamText()
             }
         }
+        .sheet(isPresented: $isShowingInterpretation) {
+            DreamInterpretationView()
+        }
     }
 }
 
@@ -79,6 +86,16 @@ private extension CreateDreamView {
             
             TextEditor(text: dreamText)
                 .font(.system(size: 17))
+                .focused($isInputActive)
+                .toolbar {
+                    ToolbarItemGroup(placement: .keyboard) {
+                        Spacer()
+
+                        Button("Done") {
+                            isInputActive = false
+                        }
+                    }
+                }
                 .scrollContentBackground(.hidden)
                 .foregroundStyle(Color.appWhite)
         }
@@ -171,7 +188,7 @@ private extension CreateDreamView {
     
     func doneNavigationButton() -> some View {
         Button(action: {
-            dismiss()
+            isShowingInterpretation = true
         }) {
             Text("Done")
                 .foregroundColor(.appPurple)

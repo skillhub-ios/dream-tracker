@@ -86,7 +86,7 @@ struct AuthSheetView: View {
                 AuthButton(
                     icon: Image("google-icon"),
                     text: mode.googleButtonText,
-                    background: Color.white.opacity(0.04),
+                    background: Color.gray.opacity(0.04),
                     foreground: .white,
                     isLoading: isLoading
                 ) {
@@ -109,6 +109,7 @@ struct AuthSheetView: View {
             Text(errorMessage)
         }
         .background(bridge.frame(width: 0, height: 0))
+        .preferredColorScheme(.dark)
     }
     
     private func signInWithGoogle() async {
@@ -173,10 +174,9 @@ struct AuthButton: View {
 }
 
 #Preview {
-    Group {
+    Text("Hello, World!")
+    .sheet(isPresented: .constant(true)) {
         AuthSheetView(mode: .signup)
-            .preferredColorScheme(.dark)
-        AuthSheetView(mode: .login)
             .preferredColorScheme(.dark)
     }
 }
