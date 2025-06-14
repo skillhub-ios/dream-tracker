@@ -25,7 +25,9 @@ struct CreateDreamView: View {
                 dreamTextEditor($viewModel.dreamText)
                 
                 microphoneButton {
-                    print("Microphone button pressed")
+                    Task {
+                        await viewModel.toggleRecording()
+                    }
                 }
                 
                 moodPicker($viewModel.selectedMood)
@@ -46,6 +48,16 @@ struct CreateDreamView: View {
             }
             ToolbarItem(placement: .navigationBarTrailing) {
                 doneNavigationButton()
+            }
+        }
+        .alert("Permission Required", isPresented: $viewModel.showPermissionAlert) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text(viewModel.permissionAlertMessage)
+        }
+        .onChange(of: viewModel.isRecording) { old, isRecording in
+            if !isRecording {
+                viewModel.updateDreamText()
             }
         }
     }
@@ -79,7 +91,7 @@ private extension CreateDreamView {
     
     func microphoneButton(_ action: @escaping () -> Void) -> some View {
         Button(action: action) {
-            Label("Use Microphone", systemImage: "microphone.fill")
+            Label(viewModel.isRecording ? "Stop Recording" : "Use Microphone", systemImage: viewModel.isRecording ? "stop.circle.fill" : "microphone.fill")
                 .labelStyle(LeftImageLabel())
                 .font(.system(size: 17))
                 .foregroundStyle(Color.appWhite)
@@ -87,7 +99,7 @@ private extension CreateDreamView {
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 10)
                 .padding(.horizontal, 16)
-                .background(Color.appGray1)
+                .background(viewModel.isRecording ? Color.appRed : Color.appGray1)
                 .clipShape(RoundedRectangle(cornerRadius: 10))
         }
     }

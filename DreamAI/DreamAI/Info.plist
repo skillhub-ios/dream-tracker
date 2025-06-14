@@ -29,5 +29,9 @@
 	</array>
 	<key>GIDClientID</key>
 	<string>308207137740-c4mohdt4m35hjgc3dusmet4r39e21s5g.apps.googleusercontent.com</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>We need access to your microphone to record your dream narration.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>We need speech recognition to convert your spoken dream into text.</string>
 </dict>
 </plist>
