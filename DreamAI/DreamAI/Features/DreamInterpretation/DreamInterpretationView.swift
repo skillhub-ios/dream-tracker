@@ -11,80 +11,67 @@ struct DreamInterpretationView: View {
     @StateObject private var viewModel = DreamInterpretationViewModel()
     @Environment(\.dismiss) private var dismiss
     
-    private var model: DreamInterpretationFullModel? {
-        viewModel.model
+    private var model: DreamInterpretationFullModel {
+        viewModel.model ?? dreamInterpretationFullModel
     }
     
     var body: some View {
         NavigationStack {
-            ZStack {
-                if let model = model {
-                    ScrollView(showsIndicators: false) {
-                        VStack(alignment: .leading, spacing: 20) {
-                            
-                            // Title
-                            Text(model.dreamTitle)
-                                .font(.title)
-                                .foregroundStyle(
-                                    .linearGradient(
-                                        colors: [Color(hex: "BF5AF2"), Color(hex: "DA8FFF ")],
-                                        startPoint: .leading,
-                                        endPoint: .trailing
-                                    )
-                                )
-                            
-                            
-                            // Dream description
-                            dreamDescription
-                            
-                            // Progress bars and tags
-                            HStack(spacing: 16) {
-                                moodProgressUI(model.moodInsights)
-                                
-                                dreamTypeUI(model.symbolism)
-                                
-                            }
-                            .frame(height: 105)
-                            
-                            // Interpretation
-                            interpretationTextUI(model.fullInterpretation)
-                            
-                            // Real reflections (collapsible)
-                            DisclosureGroup {
-                                Text(model.reflectionPrompts.joined())
-                                    .font(.body)
-                                    .foregroundColor(.appWhite)
-                            } label: {
-                                Text("🔍  Real reflections")
-                                    .font(.headline)
-                                    .foregroundColor(.appWhite)
-                            }
-                            .tint(.appPurple)
-                            .padding()
-                            .background(Color.appPurpleDarkBackground)
-                            .cornerRadius(16)
-                            
-                            // Quote
-                            quoteUI(quote: model.quote)
-                            
-                            // Resonance
-                            resonanceUI($viewModel.selectedResonance)
-                            
-                            // Done button
-                            DButton(title: "Done", action: { dismiss() })
-                        }
-                        .padding()
-                        //                        // shimmer effect
-                        //                        .redacted(reason: .placeholder)
+            ScrollView(showsIndicators: false) {
+                VStack(alignment: .leading, spacing: 20) {
+                    
+                    // Title
+                    Text(model.dreamTitle)
+                        .font(.title)
+                        .foregroundStyle(
+                            .linearGradient(
+                                colors: [Color(hex: "BF5AF2"), Color(hex: "DA8FFF ")],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                    
+                    // Dream description
+                    dreamDescription
+                    
+                    // Progress bars and tags
+                    HStack(spacing: 16) {
+                        moodProgressUI(model.moodInsights)
+                        
+                        dreamTypeUI(model.symbolism)
+                        
                     }
-                    .refreshable {
-                        await viewModel.fetchInterpretation()
+                    .frame(height: 105)
+                    
+                    // Interpretation
+                    interpretationTextUI(model.fullInterpretation)
+                    
+                    // Real reflections (collapsible)
+                    DisclosureGroup {
+                        Text(model.reflectionPrompts.joined())
+                            .font(.body)
+                            .foregroundColor(.appWhite)
+                    } label: {
+                        Text("🔍  Real reflections")
+                            .font(.headline)
+                            .foregroundColor(.appWhite)
                     }
-                } else {
-                    ProgressView()
-                        .tint(.appPurple)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .tint(.appPurple)
+                    .padding()
+                    .background(Color.appPurpleDarkBackground)
+                    .cornerRadius(16)
+                    
+                    // Quote
+                    quoteUI(quote: model.quote)
+                    
+                    // Resonance
+                    resonanceUI($viewModel.selectedResonance)
+                    
+                    // Done button
+                    DButton(title: "Done", action: { dismiss() })
                 }
+                .padding()
+                .makeshimmer(state: viewModel.contentState)
             }
             .background(Color.appPurpleDark.ignoresSafeArea())
             .navigationTitle("Dream Interpretation")
@@ -109,7 +96,7 @@ struct DreamInterpretationView: View {
 private extension DreamInterpretationView {
     
     var dreamDescription: some View {
-        Text(model?.dreamSummary ?? "")
+        Text(model.dreamSummary)
             .font(.body)
             .foregroundColor(.appWhite)
             .padding()
