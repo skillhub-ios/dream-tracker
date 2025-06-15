@@ -11,48 +11,63 @@ struct DreamInterpretationView: View {
     @StateObject private var viewModel = DreamInterpretationViewModel()
     @Environment(\.dismiss) private var dismiss
     
+    private var model: DreamInterpretationFullModel? {
+        viewModel.model
+    }
+    
     var body: some View {
         NavigationStack {
-            ScrollView(showsIndicators: false) {
-                VStack(alignment: .leading, spacing: 20) {
-                    
-                    // Dream description
-                    dreamDescription
-                    
-                    // Progress bars and tags
-                    HStack(spacing: 16) {
-                        moodProgressUI(viewModel.feelingProgress)
-                        
-                        dreamTypeUI(viewModel.tags)
-                        
+            ZStack {
+                if let model = model {
+                    ScrollView(showsIndicators: false) {
+                        VStack(alignment: .leading, spacing: 20) {
+                            
+                            // Dream description
+                            dreamDescription
+                            
+                            // Progress bars and tags
+                            HStack(spacing: 16) {
+                                moodProgressUI(model.moodInsights)
+                                
+                                dreamTypeUI(model.symbolism)
+                                
+                            }
+                            .frame(height: 105)
+                            
+                            // Interpretation
+                            interpretationTextUI(model.fullInterpretation)
+                            
+                            // Real reflections (collapsible)
+                            DisclosureGroup {
+                                Text(model.reflectionPrompts.joined())
+                                    .font(.body)
+                                    .foregroundColor(.appWhite)
+                            } label: {
+                                Text("🔍  Real reflections")
+                                    .font(.headline)
+                                    .foregroundColor(.appWhite)
+                            }
+                            .tint(.appPurple)
+                            .padding()
+                            .background(Color.appPurpleDarkBackground)
+                            .cornerRadius(16)
+                            
+                            // Quote
+                            quoteUI(quote: model.quote)
+                            
+                            // Done button
+                            DButton(title: "Done", action: { dismiss() })
+                        }
+                        .padding()
                     }
-                    .frame(height: 105)
-                    
-                    // Interpretation
-                    interpretationTextUI(viewModel.interpretation)
-                    
-                    // Real reflections (collapsible)
-                    DisclosureGroup {
-                        Text(viewModel.realReflections)
-                            .font(.body)
-                            .foregroundColor(.appWhite)
-                    } label: {
-                        Text("🔍  Real reflections")
-                            .font(.headline)
-                            .foregroundColor(.appWhite)
+                    .refreshable {
+                        await viewModel.fetchInterpretation()
                     }
-                    .tint(.appPurple)
-                    .padding()
-                    .background(Color.appPurpleDarkBackground)
-                    .cornerRadius(16)
-                    
-                    // Quote
-                    quoteUI(viewModel.quote, "Some One")
-                    
-                    // Done button
-                    DButton(title: "Done", action: {})
+                } else {
+                    ProgressView()
+                        .tint(.appPurple)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
-                .padding()
             }
             .background(Color.appPurpleDark.ignoresSafeArea())
             .navigationTitle("Dream Interpretation")
@@ -66,6 +81,9 @@ struct DreamInterpretationView: View {
                     .foregroundColor(.appPurple)
                 }
             }
+            .task {
+                await viewModel.fetchInterpretation()
+            }
         }
     }
 }
@@ -74,7 +92,7 @@ struct DreamInterpretationView: View {
 private extension DreamInterpretationView {
     
     var dreamDescription: some View {
-        Text(viewModel.dreamDescription)
+        Text(model?.dreamSummary ?? "")
             .font(.body)
             .foregroundColor(.appWhite)
             .padding()
@@ -85,12 +103,12 @@ private extension DreamInterpretationView {
             )
     }
     
-    func moodProgressUI(_ feelingProgress: [FeelingProgress]) -> some View {
+    func moodProgressUI(_ feelingProgress: [MoodInsight]) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             ForEach(feelingProgress, id: \.emoji) { item in
                 HStack {
                     Text(item.emoji)
-                    MoodProgressUI(progress: item.progress)
+                    MoodProgressUI(progress: item.score)
                 }
             }
         }
@@ -103,10 +121,10 @@ private extension DreamInterpretationView {
         }
     }
     
-    func dreamTypeUI(_ dreamTags: [DreamTag]) -> some View {
+    func dreamTypeUI(_ dreamTags: [SymbolMeaning]) -> some View {
         VStack(alignment: .leading, spacing: 12) {
-            ForEach(dreamTags, id: \.self) { tag in
-                Text("\(tag.icon) \(tag.title)")
+            ForEach(dreamTags, id: \.icon) { tag in
+                Text("\(tag.icon) \(tag.meaning)")
                     .font(.subheadline)
                     .foregroundColor(.appWhite)
             }
@@ -135,9 +153,9 @@ private extension DreamInterpretationView {
         .cornerRadius(16)
     }
     
-    func quoteUI(_ quote: String, _ author: String) -> some View {
+    func quoteUI(quote: Quote) -> some View {
         VStack(alignment: .leading, spacing: 2) {
-            Text("✨ '\(quote)'\n— \(author)")
+            Text("✨ '\(quote.text)'\n— \(quote.author)")
                 .font(.body.italic())
                 .foregroundColor(.appWhite)
         }
