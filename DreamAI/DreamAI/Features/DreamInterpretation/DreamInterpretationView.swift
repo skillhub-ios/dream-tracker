@@ -22,6 +22,18 @@ struct DreamInterpretationView: View {
                     ScrollView(showsIndicators: false) {
                         VStack(alignment: .leading, spacing: 20) {
                             
+                            // Title
+                            Text(model.dreamTitle)
+                                .font(.title)
+                                .foregroundStyle(
+                                    .linearGradient(
+                                        colors: [Color(hex: "BF5AF2"), Color(hex: "DA8FFF ")],
+                                        startPoint: .leading,
+                                        endPoint: .trailing
+                                    )
+                                )
+                            
+                            
                             // Dream description
                             dreamDescription
                             
@@ -55,10 +67,15 @@ struct DreamInterpretationView: View {
                             // Quote
                             quoteUI(quote: model.quote)
                             
+                            // Resonance
+                            resonanceUI($viewModel.selectedResonance)
+                            
                             // Done button
                             DButton(title: "Done", action: { dismiss() })
                         }
                         .padding()
+                        //                        // shimmer effect
+                        //                        .redacted(reason: .placeholder)
                     }
                     .refreshable {
                         await viewModel.fetchInterpretation()
@@ -163,6 +180,24 @@ private extension DreamInterpretationView {
         .padding(.horizontal, 16)
         .background(Color.appPurpleDarkBackground)
         .cornerRadius(16)
+    }
+    
+    func resonanceUI(_ selectedResonance: Binding<ResonanceOption>) -> some View {
+        HStack(spacing: 15) {
+            ForEach(ResonanceOption.allCases, id: \.self) { option in
+                Button(action: { selectedResonance.wrappedValue = option }) {
+                    Text(option.rawValue)
+                        .font(.body)
+                        .foregroundColor(.appWhite)
+                        .frame(height: 50)
+                        .frame(maxWidth: .infinity)
+                        .background(
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(selectedResonance.wrappedValue == option ? Color.appPurpleDarkStroke : Color.appGray8.opacity(0.24))
+                        )
+                }
+            }
+        }
     }
 }
 
