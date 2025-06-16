@@ -18,12 +18,11 @@ enum DButtonState {
 
 struct DButton: View {
     let title: String
-    let state: DButtonState
+    @Binding var state: DButtonState
     let action: () -> Void
     let asyncAction: (() async -> Void)?
     @Binding var isDisabled: Bool
     
-    @State private var internalIsLoading: Bool = false
     @State private var loadingProgress: Double = 0.0
     @State private var timer: Timer? = nil
     
@@ -34,12 +33,12 @@ struct DButton: View {
     
     init(
         title: String,
-        state: DButtonState = .normal,
+        state: Binding<DButtonState> = .constant(.normal),
         isDisabled: Binding<Bool> = .constant(false),
         action: @escaping () -> Void
     ) {
         self.title = title
-        self.state = state
+        self._state = state
         self.asyncAction = nil
         self._isDisabled = isDisabled
         self.action = action
@@ -47,29 +46,19 @@ struct DButton: View {
     
     init(
         title: String,
-        state: DButtonState = .normal,
+        state: Binding<DButtonState> = .constant(.normal),
         isDisabled: Binding<Bool> = .constant(false),
         asyncAction: @escaping () async -> Void
     ) {
         self.title = title
-        self.state = state
+        self._state = state
         self._isDisabled = isDisabled
         self.action = {}
         self.asyncAction = asyncAction
     }
     
     var body: some View {
-        Button(action: {
-            if let asyncAction = asyncAction {
-                Task {
-                    internalIsLoading = true
-                    await asyncAction()
-                    internalIsLoading = false
-                }
-            } else {
-                action()
-            }
-        }) {
+        Button(action: buttonAction) {
             HStack(spacing: 8) {
                 switch state {
                 case .normal:
@@ -118,7 +107,6 @@ struct DButton: View {
         }
         .disabled(isDisabled || state == .locked || effectiveIsLoading)
         .opacity(isDisabled || state == .locked || effectiveIsLoading ? 0.65 : 1)
-        .accessibilityLabel(accessibilityLabel)
         .onChange(of: state) { _, newState in
             if newState == .loading {
                 startLoadingAnimation()
@@ -152,26 +140,42 @@ struct DButton: View {
         timer = nil
         loadingProgress = 0.5 // fallback for static preview
     }
-    
-    private var accessibilityLabel: String {
+
+    private func buttonAction() {
+
+        let internalAction = {
+            if let asyncAction = asyncAction {
+                Task {
+                    state = .loading
+                    await asyncAction()
+                    state = .normal
+                }
+            } else {
+                action()
+            }
+        }
         switch state {
-        case .normal: return title
-        case .loading: return "Loading"
-        case .tryAgain: return "Try again"
-        case .locked: return "Interpret Dream, locked"
+        case .normal:
+            internalAction()
+        case .loading:
+            startLoadingAnimation()
+        case .tryAgain:
+            internalAction()
+        case .locked:
+            break
         }
     }
 }
 
 #Preview {
     VStack(spacing: 16) {
-        DButton(title: "Interpret Dream", state: .locked, isDisabled: .constant(false), action: {})
+        DButton(title: "Interpret Dream", state: .constant(.locked), isDisabled: .constant(false), action: {})
             .padding()
-        DButton(title: "Done", state: .normal, isDisabled: .constant(false), action: {})
+        DButton(title: "Done", state: .constant(.normal), isDisabled: .constant(false), action: {})
             .padding()
-        DButton(title: "Loading...", state: .loading, isDisabled: .constant(false), action: {})
+        DButton(title: "Loading...", state: .constant(.loading), isDisabled: .constant(false), action: {})
             .padding()
-        DButton(title: "Try again", state: .tryAgain, isDisabled: .constant(false), action: {})
+        DButton(title: "Try again", state: .constant(.tryAgain), isDisabled: .constant(false), action: {})
             .padding()
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)

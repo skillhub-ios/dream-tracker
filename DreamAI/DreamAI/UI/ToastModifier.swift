@@ -18,16 +18,16 @@ struct ToastData: Equatable {
     var duration: Double = 3
 }
 
-struct ToastModifier: ViewModifier {
+struct ToastModifier<ButtonUI: View>: ViewModifier {
     @Binding var toast: ToastData?
-    var retryAction: (() -> Void)?
+    var retryButtonUI: ButtonUI
     @State private var workItem: DispatchWorkItem?
-
+    
     func body(content: Content) -> some View {
         ZStack(alignment: .bottom) {
             content
             if let toast = toast {
-                ToastView(style: toast.style, message: toast.message, retryAction: retryAction)
+                ToastView(style: toast.style, message: toast.message, retryButtonUI: retryButtonUI)
                     .padding(.horizontal, 8)
                     .padding(.bottom, 0)
                     .ignoresSafeArea(.container, edges: .bottom)
@@ -37,7 +37,7 @@ struct ToastModifier: ViewModifier {
         }
         .animation(.spring(), value: toast)
     }
-
+    
     private func showToast(_ toast: ToastData) {
         workItem?.cancel()
         if toast.duration > 0 {
@@ -48,7 +48,7 @@ struct ToastModifier: ViewModifier {
             DispatchQueue.main.asyncAfter(deadline: .now() + toast.duration, execute: task)
         }
     }
-
+    
     private func dismissToast() {
         withAnimation {
             toast = nil
@@ -59,19 +59,28 @@ struct ToastModifier: ViewModifier {
 }
 
 extension View {
-    func toast(toast: Binding<ToastData?>, retryAction: (() -> Void)? = nil) -> some View {
-        self.modifier(ToastModifier(toast: toast, retryAction: retryAction))
+    func toast(toast: Binding<ToastData?>) -> some View {
+        self.modifier(ToastModifier(toast: toast, retryButtonUI: EmptyView()))
+    }
+    
+    func toast<ButtonUI: View>(toast: Binding<ToastData?>, retryButtonUI: ButtonUI) -> some View {
+        self.modifier(ToastModifier(toast: toast, retryButtonUI: retryButtonUI))
     }
 }
 
-private struct ToastView: View {
+private struct ToastView<ButtonUI: View>: View {
     let style: ToastStyle
     let message: String
-    var retryAction: (() -> Void)?
-
+    let retryButtonUI: ButtonUI
+    
+    init(style: ToastStyle, message: String, retryButtonUI: ButtonUI) {
+        self.style = style
+        self.message = message
+        self.retryButtonUI = retryButtonUI
+    }
+    
     var body: some View {
         VStack(spacing: 12) {
-            
             HStack(alignment: .center, spacing: 8) {
                 Image(systemName: "exclamationmark.circle.fill")
                     .foregroundColor(.appOrange)
@@ -95,38 +104,34 @@ private struct ToastView: View {
             )
             .shadow(radius: 8)
             
-            
-            if let retry = retryAction {
-                Button(action: retry) {
-                    HStack {
-                        Spacer()
-                        Text("Try again  ")
-                            .font(.headline)
-                            .foregroundColor(.white)
-                        Image(systemName: "sparkles")
-                            .foregroundColor(.white)
-                        Spacer()
-                    }
-                    .padding(.vertical, 12)
-                    .background(
-                        RoundedRectangle(cornerRadius: 12)
-                            .stroke(Color.white.opacity(0.3), lineWidth: 1)
-                            .background(Color.clear)
-                    )
-                }
+            retryButtonUI
                 .padding(.horizontal, 8)
                 .padding(.bottom, 8)
-            }
         }
-        
     }
-} 
-
+}
 
 #Preview {
+    @Previewable @State var buttonState: DButtonState = .tryAgain
     VStack {
         Text("Hello, world!")
             .frame(maxHeight: .infinity)
-            .toast(toast: .constant(ToastData(style: .error, message: "Hello, world!", duration: 3)), retryAction: {})
+            .toast(
+                toast: .constant(
+                    ToastData(
+                        style: .error,
+                        message: "Hello, world!",
+                        duration: 3
+                    )
+                ),
+                retryButtonUI: DButton(
+                    title: "Try again",
+                    state: $buttonState,
+                    isDisabled: .constant(false),
+                    asyncAction: {
+                        try? await Task.sleep(nanoseconds: 10_000_000_000)
+                    }
+                )
+            )
     }
 }
