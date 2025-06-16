@@ -70,6 +70,9 @@
     "Create Dream" : {
 
     },
+    "Data Deletion" : {
+
+    },
     "Describe the dream" : {
 
     },
@@ -85,10 +88,19 @@
     "Dream Interpretation" : {
 
     },
+    "Exit" : {
+
+    },
     "Explore your subconscious, one dream at a time." : {
 
     },
+    "Export/Import" : {
+
+    },
     "Face ID" : {
+
+    },
+    "Feedback section placeholder" : {
 
     },
     "Filter" : {
@@ -110,6 +122,9 @@
 
     },
     "I dreamed..." : {
+
+    },
+    "iCloud" : {
 
     },
     "Interpret Dream" : {
@@ -151,6 +166,12 @@
     "Privacy" : {
 
     },
+    "Privacy Policy" : {
+
+    },
+    "Profile" : {
+
+    },
     "Quick Personalization" : {
 
     },
@@ -169,6 +190,12 @@
     "Stop Recording" : {
 
     },
+    "Subscription" : {
+
+    },
+    "Terms" : {
+
+    },
     "To understand your dreams better" : {
 
     },
@@ -178,6 +205,9 @@
     "Uncover Your Dreams with AI" : {
 
     },
+    "Upgrade" : {
+
+    },
     "Use Microphone" : {
 
     },
@@ -185,6 +215,9 @@
 
     },
     "What's currently top of mind for you?" : {
+
+    },
+    "Your Plan" : {
 
     }
   },

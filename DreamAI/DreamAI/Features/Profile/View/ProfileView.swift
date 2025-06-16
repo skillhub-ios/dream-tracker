@@ -17,33 +17,25 @@ struct ProfileView: View {
                 Color.appGray4
                     .ignoresSafeArea()
                 
-                ScrollView(showsIndicators: false) {
-                    VStack(spacing: 0) {
+                    List {
 
                         // Subscription Section
                         ProfileSubscriptionSection(isPremium: viewModel.isSubscribed, plan: viewModel.subscriptionPlan, expiry: viewModel.subscriptionExpiry)
-                            .padding(.bottom, 16)
                         
                         // Settings Section
-                        ProfileSettingsSection(viewModel: viewModel)
-                            .padding(.bottom, 16)
+                        ProfileSettingsSection(exportImportAction: {})
                         
                         // Feedback
                         ProfileFeedbackSection()
-                            .padding(.bottom, 16)
-                        
-                        // Exit Button
+//                        
+//                        // Exit Button
                         ProfileExitButton()
-                            .padding(.bottom, 16)
-                        
-                        // Footer
+//                        
+//                        // Footer
                         ProfileFooterLinks()
-                            .padding(.bottom, 8)
-                        
-                        Spacer()
                     }
-                    .padding(.horizontal, 16)
-                }
+                    .environmentObject(viewModel)
+                
             }
             .navigationTitle("Profile")
             .navigationBarTitleDisplayMode(.inline)

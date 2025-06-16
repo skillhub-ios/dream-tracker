@@ -15,8 +15,7 @@ final class ProfileViewModel: ObservableObject {
     @Published var subscriptionExpiry: String = "18.07.2024" // Placeholder
     
     // Settings
-    @Published var isICloudEnabled: Bool = false
-    @Published var isExportImportEnabled: Bool = false
+    @Published var isICloudEnabled: Bool = true
     @Published var selectedLanguage: String = "English"
     @Published var isFaceIDEnabled: Bool = false
     @Published var areNotificationsEnabled: Bool = false
