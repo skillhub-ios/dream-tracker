@@ -9,20 +9,26 @@ import SwiftUI
 
 struct MagicLoadingUI: View {
     let progress: Double
+    let lineWidth: CGFloat
+
+    init(progress: Double, lineWidth: CGFloat = 4) {
+        self.progress = progress
+        self.lineWidth = lineWidth
+    }
     
     var body: some View {
         ZStack {
             Circle()
                 .stroke(
                     Color.appGray7.opacity(0.37),
-                    lineWidth: 4
+                    lineWidth: lineWidth
                 )
             Circle()
                 .trim(from: 0, to: progress)
                 .stroke(
                     Color.appPurple,
                     style: StrokeStyle(
-                        lineWidth: 4,
+                        lineWidth: lineWidth,
                         lineCap: .round
                     )
                 )
@@ -40,6 +46,6 @@ struct MagicLoadingUI: View {
 }
 
 #Preview {
-    MagicLoadingUI(progress: 0.5)
+    MagicLoadingUI(progress: 0.5, lineWidth: 4)
         .frame(width: 26, height: 26)
 }

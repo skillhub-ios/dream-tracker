@@ -4,7 +4,33 @@
     "" : {
 
     },
+    "%@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$@"
+          }
+        }
+      }
+    },
+    "✨ '%@'\n— %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "✨ '%1$@'\n— %2$@"
+          }
+        }
+      }
+    },
+    "🔍  Real reflections" : {
+
+    },
     "🧚‍♀️" : {
+
+    },
+    "🧠  Interpretation" : {
 
     },
     "🪐" : {
@@ -54,6 +80,9 @@
 
     },
     "Done" : {
+
+    },
+    "Dream Interpretation" : {
 
     },
     "Explore your subconscious, one dream at a time." : {
@@ -135,6 +164,9 @@
 
     },
     "To understand your dreams better" : {
+
+    },
+    "Try again  " : {
 
     },
     "Uncover Your Dreams with AI" : {

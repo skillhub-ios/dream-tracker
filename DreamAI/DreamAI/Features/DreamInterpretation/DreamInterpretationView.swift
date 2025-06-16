@@ -71,8 +71,8 @@ struct DreamInterpretationView: View {
                     DButton(title: "Done", action: { dismiss() })
                 }
                 .padding()
-                .makeshimmer(state: viewModel.contentState)
             }
+            .makeshimmer(state: viewModel.contentState)
             .background(Color.appPurpleDark.ignoresSafeArea())
             .navigationTitle("Dream Interpretation")
             .navigationBarTitleDisplayMode(.inline)

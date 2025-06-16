@@ -18,12 +18,12 @@ class DreamInterpretationViewModel: ObservableObject {
     func fetchInterpretation() async {
         contentState = .loading
         model = nil
-        do {
-            try await Task.sleep(nanoseconds: 3_000_000_000) // 2 second delay
-            model = dreamInterpretationFullModel
-            contentState = Bool.random() ? .success : .error(NSError(domain: "Test", code: 1)) 
-        } catch {
-            contentState = .error(error)
-        }
+//        do {
+//            try await Task.sleep(nanoseconds: 3_000_000_000) // 2 second delay
+//            model = dreamInterpretationFullModel
+//            contentState = Bool.random() ? .success : .error(NSError(domain: "Test", code: 1)) 
+//        } catch {
+            contentState = .error(NSError(domain: "Test", code: 1))
+//        }
     }
 }

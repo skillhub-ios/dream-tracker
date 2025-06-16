@@ -7,44 +7,51 @@
 
 import SwiftUI
 
+// MARK: - DButtonState Enum
+
+enum DButtonState {
+    case normal
+    case loading
+    case tryAgain
+    case locked
+}
+
 struct DButton: View {
     let title: String
+    let state: DButtonState
     let action: () -> Void
     let asyncAction: (() async -> Void)?
     @Binding var isDisabled: Bool
-    private var isLoadingBinding: Binding<Bool>?
     
     @State private var internalIsLoading: Bool = false
     
-    private var effectiveIsLoading: Binding<Bool> {
-        isLoadingBinding ?? .init(
-            get: { internalIsLoading },
-            set: { internalIsLoading = $0 }
-        )
+    private var effectiveIsLoading: Bool {
+        if case .loading = state { return true }
+        return false
     }
     
     init(
         title: String,
+        state: DButtonState = .normal,
         isDisabled: Binding<Bool> = .constant(false),
-        isLoading: Binding<Bool>? = nil,
         action: @escaping () -> Void
     ) {
         self.title = title
+        self.state = state
         self.asyncAction = nil
         self._isDisabled = isDisabled
-        self.isLoadingBinding = isLoading
         self.action = action
     }
     
     init(
         title: String,
+        state: DButtonState = .normal,
         isDisabled: Binding<Bool> = .constant(false),
-        isLoading: Binding<Bool>? = nil,
         asyncAction: @escaping () async -> Void
     ) {
         self.title = title
+        self.state = state
         self._isDisabled = isDisabled
-        self.isLoadingBinding = isLoading
         self.action = {}
         self.asyncAction = asyncAction
     }
@@ -53,48 +60,86 @@ struct DButton: View {
         Button(action: {
             if let asyncAction = asyncAction {
                 Task {
-                    effectiveIsLoading.wrappedValue = true
+                    internalIsLoading = true
                     await asyncAction()
-                    effectiveIsLoading.wrappedValue = false
+                    internalIsLoading = false
                 }
             } else {
                 action()
             }
         }) {
-            Text(title)
-                .font(.title3.bold())
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(
-                    LinearGradient(
-                        gradient: Gradient(
-                            colors: [
-                                Color.black.opacity(0.5),
-                                Color.purple.opacity(0.7),
-                                Color.black.opacity(0.5)
-                            ]
-                        ),
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    )
+            HStack(spacing: 8) {
+                switch state {
+                case .normal:
+                    Text(title)
+                        .font(.title3.bold())
+                case .loading:
+                    Text("Loading")
+                        .font(.title3.bold())
+                    MagicLoadingUI(progress: 0.5, lineWidth: 2)
+                        .frame(width: 25, height: 25)
+                case .tryAgain:
+                    Text("Try again")
+                        .font(.title3.bold())
+                    Image(.magic)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 23, height: 23)
+                case .locked:
+                    Text("Interpret Dream")
+                        .font(.title3.bold())
+                    Image(systemName: "lock.fill")
+                        .font(.title3)
+                }
+            }
+            .frame(maxWidth: .infinity)
+            .padding()
+            .background(
+                LinearGradient(
+                    gradient: Gradient(
+                        colors: [
+                            Color.black.opacity(0.5),
+                            Color.purple.opacity(0.7),
+                            Color.black.opacity(0.5)
+                        ]
+                    ),
+                    startPoint: .leading,
+                    endPoint: .trailing
                 )
-                .foregroundColor(.white)
-                .cornerRadius(13)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 13)
-                        .stroke(Color.purple.opacity(0.4), lineWidth: 1)
-                )
+            )
+            .foregroundColor(.white)
+            .cornerRadius(13)
+            .overlay(
+                RoundedRectangle(cornerRadius: 13)
+                    .stroke(Color.purple.opacity(0.4), lineWidth: 1)
+            )
         }
-        .disabled(isDisabled || effectiveIsLoading.wrappedValue)
-        .opacity(isDisabled || effectiveIsLoading.wrappedValue ? 0.65 : 1)
+        .disabled(isDisabled || state == .locked || effectiveIsLoading)
+        .opacity(isDisabled || state == .locked || effectiveIsLoading ? 0.65 : 1)
+        .accessibilityLabel(accessibilityLabel)
+    }
+    
+    private var accessibilityLabel: String {
+        switch state {
+        case .normal: return title
+        case .loading: return "Loading"
+        case .tryAgain: return "Try again"
+        case .locked: return "Interpret Dream, locked"
+        }
     }
 }
 
 #Preview {
-    DButton(
-        title: "Get Started",
-        isDisabled: .constant(true),
-        action: {}
-    )
-    .padding()
+    VStack(spacing: 16) {
+        DButton(title: "Interpret Dream", state: .locked, isDisabled: .constant(false), action: {})
+            .padding()
+        DButton(title: "Done", state: .normal, isDisabled: .constant(false), action: {})
+            .padding()
+        DButton(title: "Loading...", state: .loading, isDisabled: .constant(false), action: {})
+            .padding()
+        DButton(title: "Try again", state: .tryAgain, isDisabled: .constant(false), action: {})
+            .padding()
+    }
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
+    .background(.black)
 }
