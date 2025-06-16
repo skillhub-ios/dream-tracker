@@ -24,6 +24,8 @@ struct DButton: View {
     @Binding var isDisabled: Bool
     
     @State private var internalIsLoading: Bool = false
+    @State private var loadingProgress: Double = 0.0
+    @State private var timer: Timer? = nil
     
     private var effectiveIsLoading: Bool {
         if case .loading = state { return true }
@@ -76,7 +78,7 @@ struct DButton: View {
                 case .loading:
                     Text("Loading")
                         .font(.title3.bold())
-                    MagicLoadingUI(progress: 0.5, lineWidth: 2)
+                    MagicLoadingUI(progress: loadingProgress, lineWidth: 2)
                         .frame(width: 25, height: 25)
                 case .tryAgain:
                     Text("Try again")
@@ -117,6 +119,38 @@ struct DButton: View {
         .disabled(isDisabled || state == .locked || effectiveIsLoading)
         .opacity(isDisabled || state == .locked || effectiveIsLoading ? 0.65 : 1)
         .accessibilityLabel(accessibilityLabel)
+        .onChange(of: state) { _, newState in
+            if newState == .loading {
+                startLoadingAnimation()
+            } else {
+                stopLoadingAnimation()
+            }
+        }
+        .onAppear {
+            if state == .loading {
+                startLoadingAnimation()
+            }
+        }
+        .onDisappear {
+            stopLoadingAnimation()
+        }
+    }
+    
+    private func startLoadingAnimation() {
+        stopLoadingAnimation()
+        loadingProgress = 0.0
+        timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
+            loadingProgress += 0.02
+//            if loadingProgress > 1.0 {
+//                loadingProgress = 0.0
+//            }
+        }
+    }
+    
+    private func stopLoadingAnimation() {
+        timer?.invalidate()
+        timer = nil
+        loadingProgress = 0.5 // fallback for static preview
     }
     
     private var accessibilityLabel: String {
