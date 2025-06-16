@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ShimmerView: ViewModifier {
     let state: ContentStateType
-    var retryAction: (() -> Void)? = nil
+    var retryButtonUI: AnyView? = nil
 
     @State private var toast: ToastData? = nil
 
@@ -36,14 +36,19 @@ struct ShimmerView: ViewModifier {
             }
         }()
         return mainContent
-            .toast(toast: $toast)
+            .toast(toast: $toast, retryButtonUI: retryButtonUI)
             .animation(.spring(), value: toast)
+            .onChange(of: state) { oldValue, newValue in
+                if [ContentStateType.success, ContentStateType.loading].contains(newValue) {
+                    toast = nil
+                }   
+            }
     }
 }
 
 extension View {
-    func makeshimmer(state: ContentStateType, retryAction: (() -> Void)? = nil) -> some View {
-        self.modifier(ShimmerView(state: state, retryAction: retryAction))
+    func makeshimmer(state: ContentStateType, retryButtonUI: AnyView? = nil) -> some View {
+        self.modifier(ShimmerView(state: state, retryButtonUI: retryButtonUI))
     }
 }   
 
@@ -58,5 +63,5 @@ extension View {
             }
         }
     }
-    .makeshimmer(state: .error(NSError(domain: "asd", code: 200)))
+    .makeshimmer(state: .error(NSError(domain: "asd", code: 200)), retryButtonUI: AnyView(DButton(title: "Try again", state: .constant(.tryAgain), isDisabled: .constant(false), action: {})))
 }

@@ -25,7 +25,7 @@ struct DreamInterpretationView: View {
                         .font(.title)
                         .foregroundStyle(
                             .linearGradient(
-                                colors: [Color(hex: "BF5AF2"), Color(hex: "DA8FFF ")],
+                                colors: [Color(hex: "BF5AF2"), Color(hex: "DA8FFF")],
                                 startPoint: .leading,
                                 endPoint: .trailing
                             )
@@ -68,11 +68,11 @@ struct DreamInterpretationView: View {
                     resonanceUI($viewModel.selectedResonance)
                     
                     // Done button
-                    DButton(title: "Done", action: { dismiss() })
+                    DButton(title: "Done", state: $viewModel.buttonState, action: { dismiss() })
                 }
                 .padding()
             }
-            .makeshimmer(state: viewModel.contentState)
+            .makeshimmer(state: viewModel.contentState, retryButtonUI: retryButtonUI($viewModel.buttonState))
             .background(Color.appPurpleDark.ignoresSafeArea())
             .navigationTitle("Dream Interpretation")
             .navigationBarTitleDisplayMode(.inline)
@@ -185,6 +185,14 @@ private extension DreamInterpretationView {
                 }
             }
         }
+    }
+
+    func retryButtonUI(_ buttonState: Binding<DButtonState>) -> AnyView {
+        AnyView(
+            DButton(title: "Try again", state: buttonState) {
+                await viewModel.fetchInterpretation()
+            }
+        )
     }
 }
 

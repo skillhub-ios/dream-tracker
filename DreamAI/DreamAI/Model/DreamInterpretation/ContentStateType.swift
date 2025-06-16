@@ -11,13 +11,15 @@ enum ContentStateType {
     case loading
     case success
     case error(Error)
+}
 
-    var buttonState: DButtonState {
-        switch self {
-        case .loading: return .loading
-        case .success: return .normal
-        case .error: return .normal
+extension ContentStateType: Equatable {
+    static func == (lhs: ContentStateType, rhs: ContentStateType) -> Bool {
+        switch (lhs, rhs) {
+        case (.loading, .loading): return true
+        case (.success, .success): return true
+        case (.error(let lhsError), .error(let rhsError)): return lhsError.localizedDescription == rhsError.localizedDescription
+        default: return false
         }
     }
 }
-
