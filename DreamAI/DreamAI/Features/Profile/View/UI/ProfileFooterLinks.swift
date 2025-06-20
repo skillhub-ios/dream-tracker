@@ -9,22 +9,37 @@ import SwiftUI
 
 struct ProfileFooterLinks: View {
     var body: some View {
-        HStack(spacing: 16) {
-            // TODO: Implement footer links
-            Text("Privacy Policy")
-                .font(.footnote)
-                .foregroundColor(.secondary)
-            Text("Terms")
-                .font(.footnote)
-                .foregroundColor(.secondary)
-            Text("Data Deletion")
-                .font(.footnote)
-                .foregroundColor(.secondary)
+        // Footer
+        Section {
+            HStack(spacing: 16) {
+                // TODO: Implement footer links
+                Button(action: {}) {
+                    Text("Privacy Policy")
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
+                    .underline()
+                }
+                Button(action: {}) {
+                    Text("Terms")
+                        .font(.footnote)
+                        .foregroundColor(.secondary)
+                        .underline()
+                }
+                Button(action: {}) {
+                    Text("Data Deletion")
+                        .font(.footnote)
+                        .foregroundColor(.secondary)
+                        .underline()
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .center)
         }
-        .frame(maxWidth: .infinity)
     }
 }
 
 #Preview {
-    ProfileFooterLinks()
-} 
+    Section {
+        ProfileFooterLinks()
+    }
+    .listRowBackground(Color.appGray4)
+}

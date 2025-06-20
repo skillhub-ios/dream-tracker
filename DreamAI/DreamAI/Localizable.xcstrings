@@ -100,9 +100,6 @@
     "Face ID" : {
 
     },
-    "Feedback section placeholder" : {
-
-    },
     "Filter" : {
 
     },
@@ -215,6 +212,9 @@
 
     },
     "What's currently top of mind for you?" : {
+
+    },
+    "Write feedback" : {
 
     },
     "Your Plan" : {

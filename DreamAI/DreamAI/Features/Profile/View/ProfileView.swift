@@ -27,12 +27,13 @@ struct ProfileView: View {
                         
                         // Feedback
                         ProfileFeedbackSection()
-//                        
-//                        // Exit Button
+
+                        // Exit Button
                         ProfileExitButton()
-//                        
-//                        // Footer
+                        
+                        // Footer
                         ProfileFooterLinks()
+                            .listRowBackground(Color.appGray4)
                     }
                     .environmentObject(viewModel)
                 

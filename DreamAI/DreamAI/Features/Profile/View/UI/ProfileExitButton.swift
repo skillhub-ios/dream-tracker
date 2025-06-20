@@ -9,19 +9,18 @@ import SwiftUI
 
 struct ProfileExitButton: View {
     var body: some View {
-        Button(action: {
-            // TODO: Implement exit action
-        }) {
-            Text("Exit")
-                .foregroundColor(.red)
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(Color(.secondarySystemBackground))
-                .cornerRadius(12)
+        Section {
+            Button("Exit") {
+                
+            }
+            .tint(.red)
+            .frame(maxWidth: .infinity, alignment: .center)
         }
     }
 }
 
 #Preview {
-    ProfileExitButton()
-} 
+    List {
+        ProfileExitButton()
+    }
+}
