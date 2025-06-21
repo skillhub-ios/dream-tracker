@@ -10,6 +10,7 @@ import SwiftUI
 struct ProfileView: View {
     @StateObject private var viewModel = ProfileViewModel()
     @Environment(\.dismiss) private var dismiss
+    @State private var showExportImport = false
 
     var body: some View {
         NavigationStack {
@@ -23,7 +24,9 @@ struct ProfileView: View {
                         ProfileSubscriptionSection(isPremium: viewModel.isSubscribed, plan: viewModel.subscriptionPlan, expiry: viewModel.subscriptionExpiry)
                         
                         // Settings Section
-                        ProfileSettingsSection(exportImportAction: {})
+                        ProfileSettingsSection(exportImportAction: {
+                            showExportImport = true
+                        })
                         
                         // Feedback
                         ProfileFeedbackSection()
@@ -47,6 +50,11 @@ struct ProfileView: View {
                         dismiss()
                     }
                     .tint(.appPurple)
+                }
+            }
+            .sheet(isPresented: $showExportImport) {
+                NavigationStack {
+                    ExportImportView()
                 }
             }
         }

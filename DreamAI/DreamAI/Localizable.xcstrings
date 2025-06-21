@@ -88,10 +88,19 @@
     "Dream Interpretation" : {
 
     },
+    "Error (Incorrect file)" : {
+
+    },
     "Exit" : {
 
     },
     "Explore your subconscious, one dream at a time." : {
+
+    },
+    "Export" : {
+
+    },
+    "Export or import a file from your phone to restore data" : {
 
     },
     "Export/Import" : {
@@ -124,6 +133,9 @@
     "iCloud" : {
 
     },
+    "Import" : {
+
+    },
     "Interpret Dream" : {
 
     },
@@ -134,6 +146,9 @@
 
     },
     "Life Focus" : {
+
+    },
+    "Load..." : {
 
     },
     "Loading" : {
