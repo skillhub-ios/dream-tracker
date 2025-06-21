@@ -8,6 +8,7 @@
 import SwiftUI
 import Combine
 
+@MainActor
 class DreamInterpretationViewModel: ObservableObject {   
     
     //MARK: - Published Properties
@@ -44,14 +45,12 @@ class DreamInterpretationViewModel: ObservableObject {
     func fetchInterpretation() async {
         model = nil
         contentState = .loading
+        
         do {
-            try await Task.sleep(nanoseconds: 3_000_000_000) // 2 second delay
+            try await Task.sleep(nanoseconds: 3_000_000_000) // 3 second delay
+            
             model = dreamInterpretationFullModel
-            if contentState != .success {
-                contentState = .error(NSError(domain: "Test", code: 1))
-            } else {
-                contentState = .success
-            }
+            contentState = .success
         } catch {
             contentState = .error(NSError(domain: "Test", code: 1))
         }
