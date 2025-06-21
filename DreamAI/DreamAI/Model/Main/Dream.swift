@@ -7,6 +7,13 @@
 
 import SwiftUI
 
+enum RequestStatus: Equatable {
+    case idle
+    case loading(progress: Double)
+    case success
+    case error
+}
+
 struct Dream: Identifiable {
     let id = UUID()
     let emoji: String
@@ -14,4 +21,5 @@ struct Dream: Identifiable {
     let title: String
     let tags: [Tags]
     let date: Date
+    var requestStatus: RequestStatus = .idle
 }

@@ -11,8 +11,15 @@ struct DreamInterpretationView: View {
     @StateObject private var viewModel = DreamInterpretationViewModel()
     @Environment(\.dismiss) private var dismiss
     
+    let dreamId: UUID?
+    private let dreamManager = DreamManager.shared
+    
     private var model: DreamInterpretationFullModel {
         viewModel.model ?? dreamInterpretationFullModel
+    }
+    
+    init(dreamId: UUID? = nil) {
+        self.dreamId = dreamId
     }
     
     var body: some View {
@@ -86,6 +93,9 @@ struct DreamInterpretationView: View {
                 }
             }
             .task {
+                if let dreamId = dreamId {
+                    dreamManager.startDreamInterpretation(dreamId: dreamId)
+                }
                 await viewModel.fetchInterpretation()
             }
         }

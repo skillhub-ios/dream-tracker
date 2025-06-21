@@ -8,49 +8,42 @@
 import SwiftUI
 import Combine
 
+@MainActor
 class MainViewModel: ObservableObject {
     @Published var searchBarFilter: SearchBarFilter = .newestFirst
     @Published var searchText: String = ""
-    @Published var dreams: [Dream] = []
     @Published var lastDream: Dream?
+    
     private var cancellables = Set<AnyCancellable>()
+    private let dreamManager = DreamManager.shared
+    
+    var dreams: [Dream] {
+        dreamManager.dreams
+    }
     
     init() {
-        self.dreams = [
-            Dream(
-                emoji: "😰",
-                emojiBackground: .appGreen,
-                title: "Falling from a great height",
-                tags: [.nightmare, .epicDream],
-                date: Date(timeIntervalSinceNow: -100000)
-            ),
-            Dream(
-                emoji: "🏃‍♂️",
-                emojiBackground: .appBlue,
-                title: "Running but can't escape",
-                tags: [.nightmare, .epicDream, .continuousDream, .propheticDream],
-                date: Date()
-            ),
-            Dream(
-                emoji: "☁️",
-                emojiBackground: .appRed,
-                title: "Flying over the city",
-                tags: [.nightmare, .epicDream, .continuousDream],
-                date: Date()
-            )
-        ]
-        self.lastDream = dreams.first
+        // Subscribe to dreamManager's changes
+        dreamManager.$dreams
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.objectWillChange.send()
+                self?.lastDream = self?.dreamManager.dreams.first
+            }
+            .store(in: &cancellables)
+        
+        self.lastDream = dreamManager.dreams.first
         
         $searchBarFilter
             .sink { _ in
-                self.dreams = self.filterBySearchBarFilter()
+                self.objectWillChange.send()
             }
             .store(in: &cancellables)
     }
 
     func filterDreams() -> [Dream] {
-        if searchText.isEmpty { return dreams }
-        return dreams.filter { $0.title.localizedCaseInsensitiveContains(searchText) || $0.tags.contains(where: { $0.rawValue.localizedCaseInsensitiveContains(searchText) }) }
+        let sortedDreams = filterBySearchBarFilter()
+        if searchText.isEmpty { return sortedDreams }
+        return sortedDreams.filter { $0.title.localizedCaseInsensitiveContains(searchText) || $0.tags.contains(where: { $0.rawValue.localizedCaseInsensitiveContains(searchText) }) }
     }
 
     func filterBySearchBarFilter() -> [Dream] {
@@ -67,6 +60,14 @@ class MainViewModel: ObservableObject {
     }
 
     func deleteDreams(ids: [UUID]) {
-        dreams = dreams.filter { !ids.contains($0.id) }
+        dreamManager.deleteDreams(ids: ids)
+    }
+    
+    func addDream(_ dream: Dream) {
+        dreamManager.addDream(dream)
+    }
+    
+    func startDreamInterpretation(dreamId: UUID) {
+        dreamManager.startDreamInterpretation(dreamId: dreamId)
     }
 }

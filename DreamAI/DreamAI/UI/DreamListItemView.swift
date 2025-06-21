@@ -12,13 +12,6 @@ enum DreamListItemMode {
     case view
 }
 
-enum RequestStatus: Equatable {
-    case idle
-    case loading(progress: Double)
-    case success
-    case error
-}
-
 struct DreamListItemView: View {
     let dream: Dream
     let isSelected: Bool

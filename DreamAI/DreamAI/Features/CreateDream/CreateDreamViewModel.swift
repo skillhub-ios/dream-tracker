@@ -8,6 +8,7 @@
 import SwiftUI
 import Combine
 
+@MainActor
 class CreateDreamViewModel: ObservableObject {
     
     // MARK: - PROPERTIES
@@ -21,6 +22,7 @@ class CreateDreamViewModel: ObservableObject {
     
     // MARK: - Dependencies
     private let speechRecognizer: SpeechRecognizing = SpeechRecognizerManager.shared
+    private let dreamManager = DreamManager.shared
     private var cancellables = Set<AnyCancellable>()
     
     init() {
@@ -73,6 +75,38 @@ class CreateDreamViewModel: ObservableObject {
             // Reset the transcribed text
             speechRecognizer.reset()
         }
+    }
+
+    func generateDream() async -> UUID {
+        let dream = Dream(
+            emoji: generateRandomEmoji(),
+            emojiBackground: generateRandomColor(),
+            title: dreamText.trimmingCharacters(in: .whitespacesAndNewlines),
+            tags: generateRandomTags(),
+            date: selectedDate,
+            requestStatus: .idle
+        )
+        
+        dreamManager.addDream(dream)
+        dreamManager.startDreamInterpretation(dreamId: dream.id)
+        
+        return dream.id
+    }
+    
+    private func generateRandomEmoji() -> String {
+        let emojis = ["😴", "🌙", "✨", "🌟", "💫", "🌈", "☁️", "🦋", "🎭", "🎪"]
+        return emojis.randomElement() ?? "😴"
+    }
+    
+    private func generateRandomColor() -> Color {
+        let colors: [Color] = [.appPurple, .appBlue, .appGreen, .appOrange, .appRed]
+        return colors.randomElement() ?? .appPurple
+    }
+    
+    private func generateRandomTags() -> [Tags] {
+        let allTags = Tags.allCases
+        let numberOfTags = Int.random(in: 1...3)
+        return Array(allTags.shuffled().prefix(numberOfTags))
     }
 
     private func subscribers() {

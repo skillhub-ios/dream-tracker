@@ -14,6 +14,7 @@ struct CreateDreamView: View {
     @Environment(\.dismiss) private var dismiss
     @FocusState private var isInputActive: Bool
     @State private var isShowingInterpretation: Bool = false
+    @State private var currentDreamId: UUID?
     
     // MARK: - Body
     var body: some View {
@@ -38,7 +39,13 @@ struct CreateDreamView: View {
                     Spacer()
                     
                     DButton(title: "Generate Dream", isDisabled: $viewModel.isButtonDisabled) {
-                        print("Generate dream button pressed")
+                        Task {
+                            let dreamId = await viewModel.generateDream()
+                            await MainActor.run {
+                                currentDreamId = dreamId
+                                dismiss()
+                            }
+                        }
                     }
                 }
                 .padding(.horizontal, 16)
@@ -65,7 +72,7 @@ struct CreateDreamView: View {
             }
         }
         .sheet(isPresented: $isShowingInterpretation) {
-            DreamInterpretationView()
+            DreamInterpretationView(dreamId: currentDreamId)
         }
     }
 }
@@ -188,7 +195,7 @@ private extension CreateDreamView {
     
     func doneNavigationButton() -> some View {
         Button(action: {
-            isShowingInterpretation = true
+            dismiss()
         }) {
             Text("Done")
                 .foregroundColor(.appPurple)
