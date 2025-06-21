@@ -9,6 +9,7 @@ import SwiftUI
 
 struct MainView: View {
     @StateObject private var viewModel = MainViewModel()
+    @State private var showProfileView = false
     
     var body: some View {
         NavigationStack {
@@ -42,9 +43,13 @@ struct MainView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Image(systemName: "person.circle")
-                        .font(.title)
-                        .foregroundStyle(.white)
+                    Button {
+                        showProfileView.toggle()
+                    } label: {
+                        Image(systemName: "person.circle")
+                            .font(.title)
+                            .foregroundStyle(.white)
+                    }
                 }
             }
             .sheet(isPresented: .constant(true)) {
@@ -53,10 +58,15 @@ struct MainView: View {
                     .presentationDragIndicator(.visible)
                     .presentationBackground(.ultraThickMaterial)
                     .presentationBackgroundInteraction(.enabled)
-                    .presentationBackground(Color.red)
                     .interactiveDismissDisabled()
                     .environmentObject(viewModel)
-            }
+                    .sheet(isPresented: $showProfileView) {
+                        NavigationStack {
+                            ProfileView()
+                                .presentationDetents([.large])
+                        }
+                    }
+                }
         }
         .toolbarVisibility(.hidden, for: .navigationBar)
     }

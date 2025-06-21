@@ -15,8 +15,23 @@ struct ProfileSettingsSection: View {
         Section {
             iCloudRow(toggle: $viewModel.isICloudEnabled)
                 .frame(height: 40)
+                .onChange(of: viewModel.isICloudEnabled) { newValue in
+                    viewModel.iCloudToggleChanged(newValue: newValue)
+                }
             exportImportRow(action: exportImportAction)
                 .frame(height: 40)
+        }
+        .alert("iCloud Sync", isPresented: $viewModel.showiCloudSignInAlert) {
+            Button("Sign In") {
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                    UIApplication.shared.open(url)
+                }
+            }
+            Button("Cancel", role: .cancel) {
+                viewModel.isICloudEnabled = false
+            }
+        } message: {
+            Text("To enable sync, you need to sign in to your Apple account")
         }
         .disabled(!viewModel.isSubscribed)
         .applyIf(!viewModel.isSubscribed) {

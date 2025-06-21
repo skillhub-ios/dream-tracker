@@ -42,10 +42,31 @@
     "1–3" : {
 
     },
+    "1. Open the Files app on your iPhone" : {
+
+    },
+    "2. Tap 'On My iPhone' or 'On My iPad'" : {
+
+    },
+    "3. Look for a folder with your app name" : {
+
+    },
+    "4. Your backup files will be there" : {
+
+    },
     "A few quick details to personalize insights" : {
 
     },
     "Authentication Error" : {
+
+    },
+    "Backup & Restore" : {
+
+    },
+    "Backup Files" : {
+
+    },
+    "Backup Files (%lld)" : {
 
     },
     "Bedtime" : {
@@ -67,10 +88,16 @@
     "Cancel" : {
 
     },
+    "Clear All" : {
+
+    },
     "Create Dream" : {
 
     },
     "Data Deletion" : {
+
+    },
+    "Debug Info" : {
 
     },
     "Describe the dream" : {
@@ -88,7 +115,7 @@
     "Dream Interpretation" : {
 
     },
-    "Error (Incorrect file)" : {
+    "Error" : {
 
     },
     "Exit" : {
@@ -97,16 +124,22 @@
     "Explore your subconscious, one dream at a time." : {
 
     },
-    "Export" : {
+    "Export Dreams" : {
 
     },
-    "Export or import a file from your phone to restore data" : {
+    "Export or import a file from your phone to backup and restore your dreams" : {
 
     },
     "Export/Import" : {
 
     },
     "Face ID" : {
+
+    },
+    "File Debug Info" : {
+
+    },
+    "File Path Information" : {
 
     },
     "Filter" : {
@@ -127,13 +160,19 @@
     "How do your dreams usually feel?" : {
 
     },
+    "How to Find Your Files" : {
+
+    },
     "I dreamed..." : {
 
     },
     "iCloud" : {
 
     },
-    "Import" : {
+    "iCloud Sync" : {
+
+    },
+    "Import Dreams" : {
 
     },
     "Interpret Dream" : {
@@ -148,9 +187,6 @@
     "Life Focus" : {
 
     },
-    "Load..." : {
-
-    },
     "Loading" : {
 
     },
@@ -163,6 +199,12 @@
     "Mood before sleep" : {
 
     },
+    "New Export" : {
+
+    },
+    "No backup files found" : {
+
+    },
     "No dreams yet" : {
 
     },
@@ -172,6 +214,9 @@
     "OK" : {
 
     },
+    "Path: %@" : {
+
+    },
     "Permission Required" : {
 
     },
@@ -179,6 +224,12 @@
 
     },
     "Privacy Policy" : {
+
+    },
+    "Processing..." : {
+
+    },
+    "Processing... %lld%%" : {
 
     },
     "Profile" : {
@@ -196,6 +247,12 @@
     "Search" : {
 
     },
+    "Share Export" : {
+
+    },
+    "Sign In" : {
+
+    },
     "Skip" : {
 
     },
@@ -205,13 +262,22 @@
     "Subscription" : {
 
     },
+    "Success" : {
+
+    },
     "Terms" : {
+
+    },
+    "To enable sync, you need to sign in to your Apple account" : {
 
     },
     "To understand your dreams better" : {
 
     },
     "Try again" : {
+
+    },
+    "Try Again" : {
 
     },
     "Uncover Your Dreams with AI" : {

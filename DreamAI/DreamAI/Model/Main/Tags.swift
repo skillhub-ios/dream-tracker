@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum Tags: String, CaseIterable {
+enum Tags: String, CaseIterable, Codable {
     case daydream = "Daydream"
     case epicDream = "Epic Dream"
     case continuousDream = "Continuous Dream"

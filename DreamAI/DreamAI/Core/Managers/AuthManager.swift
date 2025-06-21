@@ -10,10 +10,14 @@ import Supabase
 import AuthenticationServices
 import GoogleSignIn
 import UIKit
+import CloudKit
 
 protocol AuthManaging {
     var isAuthenticated: Bool { get }
     var user: User? { get }
+    var showiCloudSignInAlert: Bool { get set }
+    var isSyncingWithiCloud: Bool { get set }
+    func attemptToEnableiCloudSync()
     func signInWithGoogle(presentingViewController: UIViewController) async throws
     func signInWithApple(credential: ASAuthorizationAppleIDCredential) async throws
     func signOut() async throws
@@ -33,6 +37,8 @@ final class AuthManager: ObservableObject, AuthManaging {
     
     @Published private(set) var user: User?
     @Published var isAuthenticated: Bool = false
+    @Published var showiCloudSignInAlert = false
+    @Published var isSyncingWithiCloud: Bool = false
 
     private init() {
         Task { await refreshSession() }
@@ -117,5 +123,39 @@ final class AuthManager: ObservableObject, AuthManaging {
     func signOut() async throws {
         try await client.auth.signOut()
         await refreshSession()
+    }
+    
+    func attemptToEnableiCloudSync() {
+        CKContainer(identifier: "iCloud.com.get.DreamAI").accountStatus { [weak self] status, error in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+
+                if let error = error {
+                    print("Error checking iCloud status: \(error.localizedDescription)")
+                    self.isSyncingWithiCloud = false
+                    return
+                }
+
+                switch status {
+                case .available:
+                    print("iCloud is available.")
+                    self.isSyncingWithiCloud = true
+                    // Start actual data sync here
+                case .noAccount:
+                    print("No iCloud account found.")
+                    self.showiCloudSignInAlert = true
+                    self.isSyncingWithiCloud = false
+                case .restricted:
+                    print("iCloud access is restricted.")
+                    // Optionally, show an alert to the user about the restriction.
+                    self.isSyncingWithiCloud = false
+                case .couldNotDetermine:
+                    print("Could not determine iCloud account status.")
+                    self.isSyncingWithiCloud = false
+                @unknown default:
+                    self.isSyncingWithiCloud = false
+                }
+            }
+        }
     }
 }
