@@ -35,6 +35,7 @@ struct ProfileView: View {
                         ProfileFooterLinks()
                             .listRowBackground(Color.appGray4)
                     }
+                    .listSectionSpacing(12)
                     .environmentObject(viewModel)
                 
             }
