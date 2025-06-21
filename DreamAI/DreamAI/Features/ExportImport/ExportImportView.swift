@@ -18,28 +18,13 @@ struct ExportImportView: View {
             VStack(spacing: 12) {
                 
                 // Description
-                Text("Export or import a file from your phone to restore data")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-                    .multilineTextAlignment(.center)
-                    .padding(16)
+                description
                 
                 List {
+                    // Icon
                     Section {
-                        // Icon
-                        ZStack {
-                            Circle()
-                                .fill(Color.appPurple)
-                                .frame(width: 120, height: 120)
-                            
-                            Image(systemName: "link")
-                                .font(.system(size: 48, weight: .medium))
-                                .foregroundColor(.white)
-                                .frame(maxWidth: .infinity, alignment: .center)
-                        }
-                        .frame(height: 154)
+                        icon
                     }
-                    
                     // Action Buttons
                     if viewModel.currentState == .initial {
                         Section {
@@ -72,6 +57,28 @@ struct ExportImportView: View {
 // MARK: - Private Views
 
 private extension ExportImportView {
+    
+    var description: some View {
+        Text("Export or import a file from your phone to restore data")
+            .font(.subheadline)
+            .foregroundColor(.secondary)
+            .multilineTextAlignment(.center)
+            .padding(16)
+    }
+    
+    var icon: some View {
+        ZStack {
+            Circle()
+                .fill(Color.appPurple)
+                .frame(width: 120, height: 120)
+            
+            Image(systemName: "link")
+                .font(.system(size: 48, weight: .medium))
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity, alignment: .center)
+        }
+        .frame(height: 154)
+    }
     
     var exportButton: some View {
         Button(action: {
