@@ -17,6 +17,9 @@ final class ProfileViewModel: ObservableObject {
     // Settings
     @Published var isICloudEnabled: Bool
     @Published var showiCloudSignInAlert: Bool = false
+    @Published var isICloudToggleLoading: Bool = false
+    @Published var showiCloudStatusAlert: Bool = false
+    @Published var iCloudStatusMessage: String = ""
     @Published var selectedLanguage: String = "English"
     @Published var isFaceIDEnabled: Bool = false
     @Published var areNotificationsEnabled: Bool = false
@@ -36,6 +39,9 @@ final class ProfileViewModel: ObservableObject {
                 .sink { [weak self] _ in
                     self?.isICloudEnabled = authManager.isSyncingWithiCloud
                     self?.showiCloudSignInAlert = authManager.showiCloudSignInAlert
+                    self?.isICloudToggleLoading = authManager.isSyncingWithiCloudInProgress
+                    self?.showiCloudStatusAlert = authManager.showiCloudStatusAlert
+                    self?.iCloudStatusMessage = authManager.iCloudStatusMessage
                 }
                 .store(in: &cancellables)
         }
@@ -46,12 +52,16 @@ final class ProfileViewModel: ObservableObject {
         // Navigation or action for feedback
     }
     
-    func iCloudToggleChanged(newValue: Bool) {
+    func userTogglediCloud(to newValue: Bool) {
         if newValue {
             authManager.attemptToEnableiCloudSync()
         } else {
             authManager.isSyncingWithiCloud = false
         }
+    }
+    
+    func resetSyncStatusAlert() {
+        authManager.showiCloudStatusAlert = false
     }
     
     // Exit

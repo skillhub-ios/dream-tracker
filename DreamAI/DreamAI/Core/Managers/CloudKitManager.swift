@@ -16,24 +16,30 @@ class CloudKitManager {
     
     func saveDream(_ dream: Dream, completion: @escaping (Result<CKRecord, Error>) -> Void) {
         let record = CKRecord(recordType: "Dream", recordID: CKRecord.ID(recordName: dream.id.uuidString))
-        record["emoji"] = dream.emoji
-        record["emojiBackground"] = dream.emojiBackground.toHex()
-        record["title"] = dream.title
-        record["tags"] = dream.tags.map { $0.rawValue }
-        record["date"] = dream.date
-        record["requestStatus"] = dream.requestStatus.toString()
         
-        privateDB.save(record) { (savedRecord, error) in
-            if let error = error {
+        record.setValue(dream.emoji, forKey: "emoji")
+        record.setValue(dream.emojiBackground.toHex(), forKey: "emojiBackground")
+        record.setValue(dream.title, forKey: "title")
+        record.setValue(dream.tags.map { $0.rawValue }, forKey: "tags")
+        record.setValue(dream.date, forKey: "date")
+        record.setValue(dream.requestStatus.toString(), forKey: "requestStatus")
+
+        let modifyOperation = CKModifyRecordsOperation(recordsToSave: [record], recordIDsToDelete: nil)
+        
+        // This policy ensures that if the record already exists, it will be updated with the new data.
+        // If it does not exist, it will be created.
+        modifyOperation.savePolicy = .allKeys
+        
+        modifyOperation.modifyRecordsResultBlock = { result in
+            switch result {
+            case .success:
+                completion(.success(record))
+            case .failure(let error):
                 completion(.failure(error))
-                return
             }
-            guard let savedRecord = savedRecord else {
-                completion(.failure(NSError(domain: "CloudKitManager", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to save record"])))
-                return
-            }
-            completion(.success(savedRecord))
         }
+        
+        privateDB.add(modifyOperation)
     }
     
     func fetchDreams(completion: @escaping (Result<[Dream], Error>) -> Void) {

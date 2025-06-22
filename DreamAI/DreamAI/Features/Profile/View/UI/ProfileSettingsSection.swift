@@ -11,13 +11,17 @@ struct ProfileSettingsSection: View {
     @EnvironmentObject var viewModel: ProfileViewModel
     let exportImportAction: () -> Void
     
+    private var iCloudBinding: Binding<Bool> {
+        Binding<Bool>(
+            get: { viewModel.isICloudEnabled },
+            set: { viewModel.userTogglediCloud(to: $0) }
+        )
+    }
+    
     var body: some View {
         Section {
-            iCloudRow(toggle: $viewModel.isICloudEnabled)
+            iCloudRow(toggle: iCloudBinding)
                 .frame(height: 40)
-                .onChange(of: viewModel.isICloudEnabled) { newValue in
-                    viewModel.iCloudToggleChanged(newValue: newValue)
-                }
             exportImportRow(action: exportImportAction)
                 .frame(height: 40)
         }
@@ -32,6 +36,13 @@ struct ProfileSettingsSection: View {
             }
         } message: {
             Text("To enable sync, you need to sign in to your Apple account")
+        }
+        .alert("iCloud Status", isPresented: $viewModel.showiCloudStatusAlert) {
+            Button("OK", role: .cancel) {
+                viewModel.resetSyncStatusAlert()
+            }
+        } message: {
+            Text(viewModel.iCloudStatusMessage)
         }
         .disabled(!viewModel.isSubscribed)
         .applyIf(!viewModel.isSubscribed) {

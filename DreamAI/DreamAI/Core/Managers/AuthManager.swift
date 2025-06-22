@@ -17,6 +17,9 @@ protocol AuthManaging {
     var user: User? { get }
     var showiCloudSignInAlert: Bool { get set }
     var isSyncingWithiCloud: Bool { get set }
+    var isSyncingWithiCloudInProgress: Bool { get }
+    var showiCloudStatusAlert: Bool { get set }
+    var iCloudStatusMessage: String { get set }
     func attemptToEnableiCloudSync()
     func signInWithGoogle(presentingViewController: UIViewController) async throws
     func signInWithApple(credential: ASAuthorizationAppleIDCredential) async throws
@@ -39,6 +42,9 @@ final class AuthManager: ObservableObject, AuthManaging {
     @Published var isAuthenticated: Bool = false
     @Published var showiCloudSignInAlert = false
     @Published var isSyncingWithiCloud: Bool = false
+    @Published var isSyncingWithiCloudInProgress = false
+    @Published var showiCloudStatusAlert = false
+    @Published var iCloudStatusMessage = ""
 
     private init() {
         Task { await refreshSession() }
@@ -126,13 +132,17 @@ final class AuthManager: ObservableObject, AuthManaging {
     }
     
     func attemptToEnableiCloudSync() {
+        isSyncingWithiCloudInProgress = true
         CKContainer(identifier: "iCloud.com.get.DreamAI").accountStatus { [weak self] status, error in
             DispatchQueue.main.async {
                 guard let self = self else { return }
+                self.isSyncingWithiCloudInProgress = false
 
                 if let error = error {
                     print("Error checking iCloud status: \(error.localizedDescription)")
                     self.isSyncingWithiCloud = false
+                    self.iCloudStatusMessage = "Error checking iCloud status: \(error.localizedDescription)"
+                    self.showiCloudStatusAlert = true
                     return
                 }
 
@@ -140,18 +150,22 @@ final class AuthManager: ObservableObject, AuthManaging {
                 case .available:
                     print("iCloud is available.")
                     self.isSyncingWithiCloud = true
-                    // Start actual data sync here
+                    self.iCloudStatusMessage = "iCloud sync has been enabled successfully."
+                    self.showiCloudStatusAlert = true
                 case .noAccount:
                     print("No iCloud account found.")
                     self.showiCloudSignInAlert = true
                     self.isSyncingWithiCloud = false
                 case .restricted:
                     print("iCloud access is restricted.")
-                    // Optionally, show an alert to the user about the restriction.
                     self.isSyncingWithiCloud = false
+                    self.iCloudStatusMessage = "iCloud access is restricted by your device settings."
+                    self.showiCloudStatusAlert = true
                 case .couldNotDetermine:
                     print("Could not determine iCloud account status.")
                     self.isSyncingWithiCloud = false
+                    self.iCloudStatusMessage = "Could not determine iCloud account status. Please try again."
+                    self.showiCloudStatusAlert = true
                 @unknown default:
                     self.isSyncingWithiCloud = false
                 }
