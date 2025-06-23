@@ -7,6 +7,7 @@
 
 import UIKit
 import UserNotifications
+import SuperwallKit
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     
@@ -16,6 +17,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         Task {
             await PushNotificationManager.shared.requestPermissions()
         }
+        
+//        Superwall.configure(apiKey: "pk_8b...6eca1")
         
         return true
     }

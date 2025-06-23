@@ -15,6 +15,7 @@
 		3429D1812DF45E240066B0DF /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 3429D1802DF45E240066B0DF /* Supabase */; };
 		3429D1982DF46C6C0066B0DF /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 3429D1972DF46C6C0066B0DF /* GoogleSignIn */; };
 		3429D19A2DF46C6C0066B0DF /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 3429D1992DF46C6C0066B0DF /* GoogleSignInSwift */; };
+		345DE1132E0953DB00D88F88 /* SuperwallKit in Frameworks */ = {isa = PBXBuildFile; productRef = 345DE1122E0953DB00D88F88 /* SuperwallKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +50,7 @@
 			files = (
 				3429D15B2DF459B50066B0DF /* PostgREST in Frameworks */,
 				3429D1592DF459B50066B0DF /* Functions in Frameworks */,
+				345DE1132E0953DB00D88F88 /* SuperwallKit in Frameworks */,
 				3429D1812DF45E240066B0DF /* Supabase in Frameworks */,
 				3429D19A2DF46C6C0066B0DF /* GoogleSignInSwift in Frameworks */,
 				3429D1572DF459B50066B0DF /* Auth in Frameworks */,
@@ -113,6 +115,7 @@
 				3429D1802DF45E240066B0DF /* Supabase */,
 				3429D1972DF46C6C0066B0DF /* GoogleSignIn */,
 				3429D1992DF46C6C0066B0DF /* GoogleSignInSwift */,
+				345DE1122E0953DB00D88F88 /* SuperwallKit */,
 			);
 			productName = DreamAI;
 			productReference = 3429D13A2DF44ABB0066B0DF /* DreamAI.app */;
@@ -159,6 +162,7 @@
 			packageReferences = (
 				3429D1552DF459B50066B0DF /* XCRemoteSwiftPackageReference "supabase-swift" */,
 				3429D1962DF46C6C0066B0DF /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				345DE1112E0953DB00D88F88 /* XCRemoteSwiftPackageReference "Superwall-iOS" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 3429D13B2DF44ABB0066B0DF /* Products */;
@@ -319,6 +323,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ALLOW_ENTITLEMENTS_MODIFICATION = YES;
 				CODE_SIGN_ENTITLEMENTS = DreamAI/DreamAI.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -352,6 +357,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ALLOW_ENTITLEMENTS_MODIFICATION = YES;
 				CODE_SIGN_ENTITLEMENTS = DreamAI/DreamAI.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -420,6 +426,14 @@
 				minimumVersion = 8.0.0;
 			};
 		};
+		345DE1112E0953DB00D88F88 /* XCRemoteSwiftPackageReference "Superwall-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/superwall/Superwall-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -462,6 +476,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3429D1962DF46C6C0066B0DF /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
 			productName = GoogleSignInSwift;
+		};
+		345DE1122E0953DB00D88F88 /* SuperwallKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 345DE1112E0953DB00D88F88 /* XCRemoteSwiftPackageReference "Superwall-iOS" */;
+			productName = SuperwallKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

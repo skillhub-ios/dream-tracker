@@ -66,11 +66,6 @@ struct CreateDreamView: View {
         } message: {
             Text(viewModel.permissionAlertMessage)
         }
-        .onChange(of: viewModel.isRecording) { old, isRecording in
-            if !isRecording {
-                viewModel.updateDreamText()
-            }
-        }
         .sheet(isPresented: $isShowingInterpretation) {
             DreamInterpretationView(viewModel: DreamInterpretationViewModel())
         }

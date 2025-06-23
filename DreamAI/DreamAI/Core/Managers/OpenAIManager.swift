@@ -19,7 +19,7 @@ class OpenAIManager {
     }
 
     func getDreamInterpretation(dreamText: String, mood: String?, tags: [String]) async throws -> DreamInterpretationFullModel {
-        guard !apiKey.isEmpty && apiKey != "YOUR_OPENAI_API_KEY" else {
+        guard !apiKey.isEmpty else {
             throw NSError(domain: "OpenAIManager", code: -1, userInfo: [NSLocalizedDescriptionKey: "OpenAI API key is missing."])
         }
         

@@ -19,6 +19,7 @@ protocol SpeechRecognizing {
     func startRecording() async
     func stopRecording()
     func reset()
+    func clearTranscribedText()
 }
 
 final class SpeechRecognizerManager: ObservableObject, SpeechRecognizing {
@@ -29,7 +30,9 @@ final class SpeechRecognizerManager: ObservableObject, SpeechRecognizing {
     @Published private(set) var isRecording: Bool = false
     @Published private(set) var transcribedText: String = "" {
         didSet {
-            if !transcribedText.isEmpty {
+            // Only post notification if we have new text and it's different from the previous
+            if !transcribedText.isEmpty && transcribedText != oldValue {
+                print("🔊 SpeechRecognizer: Text updated to '\(transcribedText)'")
                 NotificationCenter.default.post(name: .speechRecognizerDidUpdateText, object: nil)
             }
         }
@@ -91,12 +94,18 @@ final class SpeechRecognizerManager: ObservableObject, SpeechRecognizing {
     }
     
     func startRecording() async {
+        print("🔊 SpeechRecognizer: Starting recording...")
         // Reset any previous state
         reset()
         
         // Check permissions
         let permissionsGranted = await requestPermissions()
-        guard permissionsGranted else { return }
+        guard permissionsGranted else { 
+            print("🔊 SpeechRecognizer: Permissions not granted")
+            return 
+        }
+        
+        print("🔊 SpeechRecognizer: Permissions granted, setting up audio...")
         
         // Configure audio session
         do {
@@ -123,13 +132,16 @@ final class SpeechRecognizerManager: ObservableObject, SpeechRecognizing {
             guard let self = self else { return }
             
             if let error = error {
+                print("🔊 SpeechRecognizer: Error - \(error.localizedDescription)")
                 self.errorMessage = "Recognition error: \(error.localizedDescription)"
                 self.stopRecording()
                 return
             }
             
             if let result = result {
-                self.transcribedText = result.bestTranscription.formattedString
+                let newText = result.bestTranscription.formattedString
+                print("🔊 SpeechRecognizer: Recognition result - '\(newText)'")
+                self.transcribedText = newText
             }
         }
         
@@ -154,13 +166,16 @@ final class SpeechRecognizerManager: ObservableObject, SpeechRecognizing {
             audioEngine.prepare()
             try audioEngine.start()
             isRecording = true
+            print("🔊 SpeechRecognizer: Recording started successfully")
         } catch {
+            print("🔊 SpeechRecognizer: Failed to start audio engine - \(error.localizedDescription)")
             errorMessage = "Failed to start audio engine: \(error.localizedDescription)"
             stopRecording()
         }
     }
     
     func stopRecording() {
+        print("🔊 SpeechRecognizer: Stopping recording...")
         // Stop the audio engine
         audioEngine.stop()
         audioEngine.inputNode.removeTap(onBus: 0)
@@ -174,12 +189,17 @@ final class SpeechRecognizerManager: ObservableObject, SpeechRecognizing {
         recognitionTask = nil
         
         isRecording = false
+        print("🔊 SpeechRecognizer: Recording stopped")
     }
     
     func reset() {
         stopRecording()
-        transcribedText = ""
+        // Don't clear transcribed text here - let the ViewModel handle it
         errorMessage = nil
+    }
+    
+    func clearTranscribedText() {
+        transcribedText = ""
     }
 }
 
