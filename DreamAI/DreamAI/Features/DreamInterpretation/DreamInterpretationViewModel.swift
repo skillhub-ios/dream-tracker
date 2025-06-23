@@ -20,7 +20,7 @@ class DreamInterpretationViewModel: ObservableObject {
     //MARK: - Private Properties
     private var cancellables: Set<AnyCancellable> = []
     private let userManager: UserManager = .shared
-    private let openAIManager: OpenAIManager = .shared
+    private let dreamInterpreter: DreamInterpreter = .shared
     
     private var interpretationModel: DreamInterpretationFullModel?
     private var dream: Dream?
@@ -29,6 +29,12 @@ class DreamInterpretationViewModel: ObservableObject {
         self.interpretationModel = interpretationModel
         self.dream = dream
         subscribers()
+        
+        // If we have an interpretation model passed in, set it immediately
+        if let interpretationModel = interpretationModel {
+            self.model = interpretationModel
+            self.contentState = .success
+        }
     }
 
 
@@ -49,6 +55,7 @@ class DreamInterpretationViewModel: ObservableObject {
     }
     
     func fetchInterpretation() async {
+        // If we already have an interpretation model, don't fetch again
         if let interpretationModel = interpretationModel {
             self.model = interpretationModel
             self.contentState = .success
@@ -56,21 +63,14 @@ class DreamInterpretationViewModel: ObservableObject {
         }
         
         guard let dream = dream else {
-            // Fallback to mock data if no dream or model is provided
-            contentState = .loading
-            do {
-                try await Task.sleep(nanoseconds: 1_000_000_000)
-                model = dreamInterpretationFullModel
-                contentState = .success
-            } catch {
-                contentState = .error(error)
-            }
+            // If no dream is provided, show error
+            contentState = .error(DreamInterpreterError.invalidResponse)
             return
         }
         
         contentState = .loading
         do {
-            let fetchedModel = try await openAIManager.getDreamInterpretation(
+            let fetchedModel = try await dreamInterpreter.interpretDream(
                 dreamText: dream.title, // Assuming title is the full text for now
                 mood: nil, // We don't have mood for old dreams here
                 tags: dream.tags.map { $0.rawValue }

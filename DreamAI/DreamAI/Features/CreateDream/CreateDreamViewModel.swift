@@ -28,7 +28,7 @@ class CreateDreamViewModel: ObservableObject {
     // MARK: - Dependencies
     private let speechRecognizer: SpeechRecognizing = SpeechRecognizerManager.shared
     private let dreamManager = DreamManager.shared
-    private let openAIManager = OpenAIManager.shared
+    private let dreamInterpreter = DreamInterpreter.shared
     private var cancellables = Set<AnyCancellable>()
     
     init() {
@@ -124,7 +124,7 @@ class CreateDreamViewModel: ObservableObject {
         dreamManager.addDream(newDream)
         
         do {
-            let interpretation = try await openAIManager.getDreamInterpretation(
+            let interpretation = try await dreamInterpreter.interpretDream(
                 dreamText: dreamText,
                 mood: selectedMood?.rawValue,
                 tags: []
@@ -133,7 +133,7 @@ class CreateDreamViewModel: ObservableObject {
             return (newDream.id, interpretation)
         } catch {
             print("Failed to get interpretation: \(error)")
-            // Handle error appropriately
+            // Handle error appropriately - the error will be propagated to the UI
             return (newDream.id, nil)
         }
     }

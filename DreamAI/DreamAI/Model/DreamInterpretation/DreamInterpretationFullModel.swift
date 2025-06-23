@@ -7,7 +7,7 @@
 import Foundation
 
 struct DreamInterpretationFullModel: Codable {
-    let hasSubscription: Bool
+    let hasSubscription: Bool?
     let dreamTitle: String
     let dreamSummary: String
     let fullInterpretation: String
@@ -15,6 +15,11 @@ struct DreamInterpretationFullModel: Codable {
     let symbolism: [SymbolMeaning]
     let reflectionPrompts: [String]
     let quote: Quote
+    
+    // Computed property to provide default value
+    var hasSubscriptionValue: Bool {
+        return hasSubscription ?? false
+    }
 }
 
 struct MoodInsight: Codable {

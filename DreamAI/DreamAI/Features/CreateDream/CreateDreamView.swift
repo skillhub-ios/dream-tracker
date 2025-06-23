@@ -67,7 +67,11 @@ struct CreateDreamView: View {
             Text(viewModel.permissionAlertMessage)
         }
         .sheet(isPresented: $isShowingInterpretation) {
-            DreamInterpretationView(viewModel: DreamInterpretationViewModel())
+            if let interpretation = interpretationModel {
+                DreamInterpretationView(viewModel: DreamInterpretationViewModel(interpretationModel: interpretation))
+            } else {
+                DreamInterpretationView(viewModel: DreamInterpretationViewModel())
+            }
         }
         .onChange(of: isShowingInterpretation) {
             if !isShowingInterpretation {
