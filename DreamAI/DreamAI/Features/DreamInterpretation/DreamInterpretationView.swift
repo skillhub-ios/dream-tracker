@@ -8,18 +8,11 @@
 import SwiftUI
 
 struct DreamInterpretationView: View {
-    @StateObject private var viewModel = DreamInterpretationViewModel()
+    @ObservedObject var viewModel: DreamInterpretationViewModel
     @Environment(\.dismiss) private var dismiss
-    
-    let dreamId: UUID?
-    private let dreamManager = DreamManager.shared
     
     private var model: DreamInterpretationFullModel {
         viewModel.model ?? dreamInterpretationFullModel
-    }
-    
-    init(dreamId: UUID? = nil) {
-        self.dreamId = dreamId
     }
     
     var body: some View {
@@ -93,9 +86,6 @@ struct DreamInterpretationView: View {
                 }
             }
             .task {
-                if let dreamId = dreamId {
-                    dreamManager.startDreamInterpretation(dreamId: dreamId)
-                }
                 await viewModel.fetchInterpretation()
             }
         }
@@ -196,7 +186,7 @@ private extension DreamInterpretationView {
             }
         }
     }
-
+    
     func retryButtonUI(_ buttonState: Binding<DButtonState>) -> AnyView {
         AnyView(
             DButton(title: "Try again", state: buttonState) {
@@ -231,7 +221,7 @@ struct MoodProgressUI: View {
     VStack {
         Text("Hello")
             .sheet(isPresented: .constant(true)) {
-                DreamInterpretationView()
+                DreamInterpretationView(viewModel: DreamInterpretationViewModel(interpretationModel: nil, dream: nil))
             }
     }
 }

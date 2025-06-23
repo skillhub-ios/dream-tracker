@@ -20,8 +20,14 @@ class DreamInterpretationViewModel: ObservableObject {
     //MARK: - Private Properties
     private var cancellables: Set<AnyCancellable> = []
     private let userManager: UserManager = .shared
+    private let openAIManager: OpenAIManager = .shared
     
-    init() {
+    private var interpretationModel: DreamInterpretationFullModel?
+    private var dream: Dream?
+    
+    init(interpretationModel: DreamInterpretationFullModel? = nil, dream: Dream? = nil) {
+        self.interpretationModel = interpretationModel
+        self.dream = dream
         subscribers()
     }
 
@@ -43,16 +49,36 @@ class DreamInterpretationViewModel: ObservableObject {
     }
     
     func fetchInterpretation() async {
-        model = nil
-        contentState = .loading
+        if let interpretationModel = interpretationModel {
+            self.model = interpretationModel
+            self.contentState = .success
+            return
+        }
         
+        guard let dream = dream else {
+            // Fallback to mock data if no dream or model is provided
+            contentState = .loading
+            do {
+                try await Task.sleep(nanoseconds: 1_000_000_000)
+                model = dreamInterpretationFullModel
+                contentState = .success
+            } catch {
+                contentState = .error(error)
+            }
+            return
+        }
+        
+        contentState = .loading
         do {
-            try await Task.sleep(nanoseconds: 3_000_000_000) // 3 second delay
-            
-            model = dreamInterpretationFullModel
+            let fetchedModel = try await openAIManager.getDreamInterpretation(
+                dreamText: dream.title, // Assuming title is the full text for now
+                mood: nil, // We don't have mood for old dreams here
+                tags: dream.tags.map { $0.rawValue }
+            )
+            self.model = fetchedModel
             contentState = .success
         } catch {
-            contentState = .error(NSError(domain: "Test", code: 1))
+            contentState = .error(error)
         }
     }
 }

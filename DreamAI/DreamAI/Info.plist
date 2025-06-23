@@ -29,6 +29,8 @@
 	</array>
 	<key>GIDClientID</key>
 	<string>308207137740-c4mohdt4m35hjgc3dusmet4r39e21s5g.apps.googleusercontent.com</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>DreamAI uses Face ID to securely authenticate you before accessing your personal dream data and insights.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>processing</string>

@@ -6,13 +6,17 @@
 //
 
 import SwiftUI
+import UserNotifications
 
 struct PermissionsSettingsUI: View {
     @StateObject private var viewModel = PermissionsSettingsViewModel()
+    @StateObject private var pushNotificationManager = PushNotificationManager.shared
     @State private var showBedtimePicker = false
     @State private var showWakeupPicker = false
     @State private var showLanguagePicker = false
     @State private var showMainView = false
+    @State private var showAlert = false
+    @State private var alertMessage = ""
     
     var body: some View {
         ZStack {
@@ -40,6 +44,14 @@ struct PermissionsSettingsUI: View {
         }
         .navigationTitle("Notifications")
         .navigationBarTitleDisplayMode(.large)
+        .alert("Notification Settings", isPresented: $showAlert) {
+            Button("OK") { }
+        } message: {
+            Text(alertMessage)
+        }
+        .task {
+            await checkNotificationStatus()
+        }
     }
 }
 
@@ -53,6 +65,9 @@ private extension PermissionsSettingsUI {
                 Toggle("", isOn: $viewModel.remindersEnabled)
                     .toggleStyle(SwitchToggleStyle(tint: .purple))
                     .labelsHidden()
+                    .onChange(of: viewModel.remindersEnabled) { newValue in
+                        handleNotificationToggle(newValue)
+                    }
             }
             .padding(.vertical, 8)
             Divider()
@@ -86,6 +101,22 @@ private extension PermissionsSettingsUI {
                 
             }
             .padding(.vertical, 8)
+            
+            // Device Token Display (for debugging)
+            if pushNotificationManager.isRegistered, let deviceToken = pushNotificationManager.deviceToken {
+                Divider()
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Device Token")
+                        .font(.caption)
+                        .foregroundColor(.white.opacity(0.7))
+                    Text(deviceToken)
+                        .font(.caption2)
+                        .foregroundColor(.white.opacity(0.5))
+                        .lineLimit(2)
+                        .textSelection(.enabled)
+                }
+                .padding(.vertical, 8)
+            }
         }
         .padding(12)
         .background(Color.appPurpleDark)
@@ -101,7 +132,10 @@ private extension PermissionsSettingsUI {
                 Text("Face ID")
                     .foregroundColor(.white)
                 Spacer()
-                Toggle("", isOn: $viewModel.faceIDEnabled)
+                Toggle("", isOn: Binding(
+                    get: { viewModel.faceIDEnabled },
+                    set: { viewModel.toggleFaceID($0) }
+                ))
                     .toggleStyle(SwitchToggleStyle(tint: .purple))
                     .labelsHidden()
             }
@@ -137,6 +171,30 @@ private extension PermissionsSettingsUI {
         .sheet(isPresented: $showLanguagePicker) {
             LanguagePicker(selectedLanguage: $viewModel.selectedLanguage, showLanguagePicker: $showLanguagePicker)
                 .presentationDetents([.large])
+        }
+    }
+    
+    private func checkNotificationStatus() async {
+        let isEnabled = await pushNotificationManager.areNotificationsEnabled()
+        await MainActor.run {
+            viewModel.remindersEnabled = isEnabled
+        }
+    }
+    
+    private func handleNotificationToggle(_ enabled: Bool) {
+        Task {
+            if enabled {
+                await pushNotificationManager.requestPermissions()
+                await checkNotificationStatus()
+            } else {
+                // Note: We can't programmatically disable notifications
+                // Users need to do this in Settings
+                alertMessage = "To disable notifications, please go to Settings > DreamAI > Notifications"
+                showAlert = true
+                await MainActor.run {
+                    viewModel.remindersEnabled = true // Reset the toggle
+                }
+            }
         }
     }
 }

@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 
+@MainActor
 final class ProfileViewModel: ObservableObject {
     // Subscription
     @Published var isSubscribed: Bool = true// UserManager.shared.isSubscribed
@@ -27,12 +28,20 @@ final class ProfileViewModel: ObservableObject {
     @Published var wakeup: String = "8:00 AM"
     
     private var authManager: AuthManaging
+    private var biometricManager: BiometricManager
     private var cancellables = Set<AnyCancellable>()
     
-    init(authManager: AuthManaging = AuthManager.shared) {
+    init(authManager: AuthManaging = AuthManager.shared, biometricManager: BiometricManager = BiometricManager.shared) {
         self.authManager = authManager
+        self.biometricManager = biometricManager
         self.isICloudEnabled = authManager.isSyncingWithiCloud
+        self.isFaceIDEnabled = biometricManager.isFaceIDEnabled
         
+        setupBindings()
+    }
+    
+    private func setupBindings() {
+        // iCloud bindings
         if let authManager = authManager as? AuthManager {
             authManager.objectWillChange
                 .receive(on: RunLoop.main)
@@ -45,6 +54,14 @@ final class ProfileViewModel: ObservableObject {
                 }
                 .store(in: &cancellables)
         }
+        
+        // Face ID bindings
+        biometricManager.objectWillChange
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                self?.isFaceIDEnabled = self?.biometricManager.isFaceIDEnabled ?? false
+            }
+            .store(in: &cancellables)
     }
     
     // Feedback
@@ -58,6 +75,10 @@ final class ProfileViewModel: ObservableObject {
         } else {
             authManager.isSyncingWithiCloud = false
         }
+    }
+    
+    func userToggledFaceID(to newValue: Bool) {
+        biometricManager.toggleFaceID(newValue)
     }
     
     func resetSyncStatusAlert() {

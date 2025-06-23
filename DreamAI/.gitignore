@@ -1,0 +1,16 @@
+# Xcode
+.DS_Store
+/build
+*.xcodeproj/xcuserdata/
+*.xcworkspace/shareddata/
+*.xcworkspace/xcuserdata/
+/Carthage
+/Pods
+/fastlane/report.xml
+/fastlane/Preview.html
+/fastlane/screenshots
+/fastlane/test_output
+DerivedData/
+
+# Secrets
+DreamAI/Core/Managers/OpenAISecrets.swift 

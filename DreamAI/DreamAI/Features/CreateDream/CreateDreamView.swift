@@ -14,7 +14,7 @@ struct CreateDreamView: View {
     @Environment(\.dismiss) private var dismiss
     @FocusState private var isInputActive: Bool
     @State private var isShowingInterpretation: Bool = false
-    @State private var currentDreamId: UUID?
+    @State private var interpretationModel: DreamInterpretationFullModel?
     
     // MARK: - Body
     var body: some View {
@@ -40,10 +40,10 @@ struct CreateDreamView: View {
                     
                     DButton(title: "Generate Dream", isDisabled: $viewModel.isButtonDisabled) {
                         Task {
-                            let dreamId = await viewModel.generateDream()
+                            let (_, interpretation) = await viewModel.generateDream()
                             await MainActor.run {
-                                currentDreamId = dreamId
-                                dismiss()
+                                self.interpretationModel = interpretation
+                                self.isShowingInterpretation = true
                             }
                         }
                     }
@@ -72,7 +72,12 @@ struct CreateDreamView: View {
             }
         }
         .sheet(isPresented: $isShowingInterpretation) {
-            DreamInterpretationView(dreamId: currentDreamId)
+            DreamInterpretationView(viewModel: DreamInterpretationViewModel())
+        }
+        .onChange(of: isShowingInterpretation) {
+            if !isShowingInterpretation {
+                dismiss()
+            }
         }
     }
 }

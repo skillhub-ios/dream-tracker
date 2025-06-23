@@ -9,8 +9,10 @@ import SwiftUI
 
 @main
 struct DreamAIApp: App {
-
+    
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var authManager = AuthManager.shared
+    @StateObject private var pushNotificationManager = PushNotificationManager.shared
     
     var body: some Scene {
         WindowGroup {

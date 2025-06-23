@@ -9,15 +9,17 @@ import Foundation
 import SwiftUI
 import Combine
 
+@MainActor
 final class PermissionsSettingsViewModel: ObservableObject {
     // MARK: - Dependencies
     private let languageManager: LanguageManaging = LanguageManager.shared
+    private let biometricManager: BiometricManager = BiometricManager.shared
     
     // MARK: - Published Properties
     @Published var remindersEnabled: Bool = true
     @Published var bedtime: Date = DateComponents(calendar: .current, hour: 8, minute: 0).date ?? Date()
     @Published var wakeup: Date = DateComponents(calendar: .current, hour: 8, minute: 0).date ?? Date()
-    @Published var faceIDEnabled: Bool = true
+    @Published var faceIDEnabled: Bool = false
     @Published var selectedLanguage: Language? = .english
     
     // MARK: - Properties
@@ -27,6 +29,7 @@ final class PermissionsSettingsViewModel: ObservableObject {
     // MARK: - Initialization
     init() {
         self.selectedLanguage = languageManager.currentLanguage
+        self.faceIDEnabled = biometricManager.isFaceIDEnabled
         
         setupBindings()
     }
@@ -41,10 +44,22 @@ final class PermissionsSettingsViewModel: ObservableObject {
                 self?.languageManager.setLanguage(newLanguage)
             }
             .store(in: &cancellables)
+        
+        // Observe Face ID changes from the biometric manager
+        biometricManager.objectWillChange
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                self?.faceIDEnabled = self?.biometricManager.isFaceIDEnabled ?? false
+            }
+            .store(in: &cancellables)
     }
     
     // MARK: - Public Methods
     func updateLanguage(_ language: Language) {
         selectedLanguage = language
+    }
+    
+    func toggleFaceID(_ enabled: Bool) {
+        biometricManager.toggleFaceID(enabled)
     }
 }

@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct ProfileFeedbackSection: View {
+    @EnvironmentObject var viewModel: ProfileViewModel
     @State private var language: String = "English"
-    @State private var isFaceIDEnabled: Bool = true
     @State private var areNotificationsEnabled: Bool = true
     @State private var bedtime: Date = Date()
     @State private var wakeupTime: Date = Date()
@@ -25,7 +25,10 @@ struct ProfileFeedbackSection: View {
                     .foregroundColor(.secondary)
             }
             
-            Toggle(isOn: $isFaceIDEnabled) {
+            Toggle(isOn: Binding(
+                get: { viewModel.isFaceIDEnabled },
+                set: { viewModel.userToggledFaceID(to: $0) }
+            )) {
                 HStack {
                     Image(systemName: "faceid")
                         .foregroundColor(.appPurple)
@@ -85,5 +88,6 @@ struct ProfileFeedbackSection: View {
 #Preview {
     List {
         ProfileFeedbackSection()
+            .environmentObject(ProfileViewModel())
     }
 }

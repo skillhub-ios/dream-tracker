@@ -6,10 +6,14 @@
 //
 
 import SwiftUI
+import UserNotifications
 
 struct ProfileSettingsSection: View {
     @EnvironmentObject var viewModel: ProfileViewModel
+    @StateObject private var pushNotificationManager = PushNotificationManager.shared
     let exportImportAction: () -> Void
+    @State private var showAlert = false
+    @State private var alertMessage = ""
     
     private var iCloudBinding: Binding<Bool> {
         Binding<Bool>(
@@ -18,9 +22,18 @@ struct ProfileSettingsSection: View {
         )
     }
     
+    private var notificationBinding: Binding<Bool> {
+        Binding<Bool>(
+            get: { pushNotificationManager.authorizationStatus == .authorized },
+            set: { handleNotificationToggle($0) }
+        )
+    }
+    
     var body: some View {
         Section {
             iCloudRow(toggle: iCloudBinding)
+                .frame(height: 40)
+            notificationRow()
                 .frame(height: 40)
             exportImportRow(action: exportImportAction)
                 .frame(height: 40)
@@ -43,6 +56,11 @@ struct ProfileSettingsSection: View {
             }
         } message: {
             Text(viewModel.iCloudStatusMessage)
+        }
+        .alert("Notification Settings", isPresented: $showAlert) {
+            Button("OK") { }
+        } message: {
+            Text(alertMessage)
         }
         .disabled(!viewModel.isSubscribed)
         .applyIf(!viewModel.isSubscribed) {
@@ -73,6 +91,41 @@ private extension ProfileSettingsSection {
         }
     }
     
+    func notificationRow() -> some View {
+        HStack {
+            Image(systemName: "bell.fill")
+                .font(.title3)
+                .foregroundStyle(Color.appPurple)
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Notifications")
+                if pushNotificationManager.isRegistered, let deviceToken = pushNotificationManager.deviceToken {
+                    Text("Token: \(String(deviceToken.prefix(20)))...")
+                        .font(.caption2)
+                        .foregroundColor(.secondary)
+                }
+            }
+            Spacer()
+            if viewModel.isSubscribed {
+                Toggle("", isOn: notificationBinding)
+                    .tint(.appPurple)
+            } else {
+                Image(systemName: "lock.fill")
+                    .font(.title3)
+                    .tint(.secondary)
+            }
+        }
+        .onTapGesture {
+            if viewModel.isSubscribed && pushNotificationManager.isRegistered {
+                // Copy device token to clipboard
+                if let deviceToken = pushNotificationManager.deviceToken {
+                    UIPasteboard.general.string = deviceToken
+                    alertMessage = "Device token copied to clipboard"
+                    showAlert = true
+                }
+            }
+        }
+    }
+    
     func exportImportRow(action: @escaping () -> Void) -> some View {
         Button(action: action) {
             HStack {
@@ -91,6 +144,19 @@ private extension ProfileSettingsSection {
                         .font(.title3)
                         .tint(.secondary)
                 }
+            }
+        }
+    }
+    
+    private func handleNotificationToggle(_ enabled: Bool) {
+        Task {
+            if enabled {
+                await pushNotificationManager.requestPermissions()
+            } else {
+                // Note: We can't programmatically disable notifications
+                // Users need to do this in Settings
+                alertMessage = "To disable notifications, please go to Settings > DreamAI > Notifications"
+                showAlert = true
             }
         }
     }

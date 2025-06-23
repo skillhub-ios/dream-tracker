@@ -16,7 +16,7 @@ struct MainFloatingPanelView: View {
     @State private var hapticTrigger = false
     @State private var showCreateDreamView = false
     @State private var showDreamInterpretation = false
-    @State private var selectedDreamForInterpretation: UUID?
+    @State private var selectedDream: Dream?
     
     var filteredDreams: [Dream] {
         viewModel.filterDreams()
@@ -39,31 +39,7 @@ struct MainFloatingPanelView: View {
                     ScrollView {
                         VStack(spacing: 16) {
                             ForEach(filteredDreams) { dream in
-                                DreamListItemView(
-                                    dream: dream,
-                                    isSelected: selectedDreamIds.contains(dream.id),
-                                    mode: dreamlistmode,
-                                    requestStatus: dream.requestStatus
-                                )
-                                .scaleEffect(selectedDreamIds.contains(dream.id) ? 0.95 : 1.0)
-                                .onTapGesture {
-                                    if dreamlistmode == .edit {
-                                        toggleDreamSelection(dream: dream)
-                                    } else {
-                                        // Show dream interpretation
-                                        selectedDreamForInterpretation = dream.id
-                                        showDreamInterpretation = true
-                                    }
-                                }
-                                .onLongPressGesture {
-                                    hapticTrigger.toggle()
-                                    dreamlistmode = dreamlistmode == .edit ? .view : .edit
-                                    toggleDreamSelection(dream: dream)
-                                    if dreamlistmode == .view {
-                                        selectedDreamIds.removeAll()
-                                    }
-                                }
-                                .sensoryFeedback(.impact(weight: .heavy, intensity: 0.9), trigger: hapticTrigger )
+                                dreamRow(for: dream)
                             }
                         }
                         .padding(.top, 8)
@@ -92,13 +68,45 @@ struct MainFloatingPanelView: View {
             .presentationDetents([.large])
         }
         .sheet(isPresented: $showDreamInterpretation) {
-            DreamInterpretationView(dreamId: selectedDreamForInterpretation)
+            DreamInterpretationView(
+                viewModel: DreamInterpretationViewModel(
+                    dream: selectedDream
+                )
+            )
         }
     }
 }
 
 // MARK: - Privat methods:
 private extension MainFloatingPanelView {
+    func dreamRow(for dream: Dream) -> some View {
+        DreamListItemView(
+            dream: dream,
+            isSelected: selectedDreamIds.contains(dream.id),
+            mode: dreamlistmode,
+            requestStatus: dream.requestStatus
+        )
+        .scaleEffect(selectedDreamIds.contains(dream.id) ? 0.95 : 1.0)
+        .onTapGesture {
+            if dreamlistmode == .edit {
+                toggleDreamSelection(dream: dream)
+            } else {
+                // Show dream interpretation
+                selectedDream = dream
+                showDreamInterpretation = true
+            }
+        }
+        .onLongPressGesture {
+            hapticTrigger.toggle()
+            dreamlistmode = dreamlistmode == .edit ? .view : .edit
+            toggleDreamSelection(dream: dream)
+            if dreamlistmode == .view {
+                selectedDreamIds.removeAll()
+            }
+        }
+        .sensoryFeedback(.impact(weight: .heavy, intensity: 0.9), trigger: hapticTrigger )
+    }
+    
     func toggleDreamSelection(dream: Dream) {
         withAnimation(.easeInOut(duration: 0.1)) {
             if selectedDreamIds.contains(dream.id) {

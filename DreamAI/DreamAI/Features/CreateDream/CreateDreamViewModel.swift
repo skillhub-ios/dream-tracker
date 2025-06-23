@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import AVFoundation
 
 @MainActor
 class CreateDreamViewModel: ObservableObject {
@@ -19,10 +20,12 @@ class CreateDreamViewModel: ObservableObject {
     @Published var isRecording: Bool = false
     @Published var showPermissionAlert: Bool = false
     @Published var permissionAlertMessage: String = ""
+    @Published var interpretationModel: DreamInterpretationFullModel?
     
     // MARK: - Dependencies
     private let speechRecognizer: SpeechRecognizing = SpeechRecognizerManager.shared
     private let dreamManager = DreamManager.shared
+    private let openAIManager = OpenAIManager.shared
     private var cancellables = Set<AnyCancellable>()
     
     init() {
@@ -38,22 +41,41 @@ class CreateDreamViewModel: ObservableObject {
                 isRecording = false
             }
         } else {
-            await startRecording()
+            let hasPermission = await checkAndRequestMicrophonePermission()
+            if hasPermission {
+                do {
+                    try await speechRecognizer.startRecording()
+                    await MainActor.run {
+                        isRecording = speechRecognizer.isRecording
+                        
+                        // If there was an error, show the alert
+                        if let errorMessage = speechRecognizer.errorMessage {
+                            permissionAlertMessage = errorMessage
+                            showPermissionAlert = true
+                        }
+                    }
+                } catch {
+                    // Handle start recording error
+                }
+            } else {
+                permissionAlertMessage = "Microphone permission is required to record your dream."
+                showPermissionAlert = true
+            }
         }
     }
     
-    private func startRecording() async {
-        await speechRecognizer.startRecording()
-        
-        // Update UI state based on speech recognizer state
-        await MainActor.run {
-            isRecording = speechRecognizer.isRecording
-            
-            // If there was an error, show the alert
-            if let errorMessage = speechRecognizer.errorMessage {
-                permissionAlertMessage = errorMessage
-                showPermissionAlert = true
+    private func checkAndRequestMicrophonePermission() async -> Bool {
+        let status = AVAudioSession.sharedInstance().recordPermission
+        if status == .granted {
+            return true
+        } else if status == .undetermined {
+            return await withCheckedContinuation { continuation in
+                AVAudioSession.sharedInstance().requestRecordPermission { granted in
+                    continuation.resume(returning: granted)
+                }
             }
+        } else {
+            return false
         }
     }
     
@@ -77,20 +99,29 @@ class CreateDreamViewModel: ObservableObject {
         }
     }
 
-    func generateDream() async -> UUID {
-        let dream = Dream(
+    func generateDream() async -> (UUID, DreamInterpretationFullModel?) {
+        let newDream = Dream(
             emoji: generateRandomEmoji(),
             emojiBackground: generateRandomColor(),
-            title: dreamText.trimmingCharacters(in: .whitespacesAndNewlines),
+            title: String(dreamText.prefix(30)),
             tags: generateRandomTags(),
-            date: selectedDate,
-            requestStatus: .idle
+            date: selectedDate
         )
+        dreamManager.addDream(newDream)
         
-        dreamManager.addDream(dream)
-        dreamManager.startDreamInterpretation(dreamId: dream.id)
-        
-        return dream.id
+        do {
+            let interpretation = try await openAIManager.getDreamInterpretation(
+                dreamText: dreamText,
+                mood: selectedMood?.rawValue,
+                tags: []
+            )
+            self.interpretationModel = interpretation
+            return (newDream.id, interpretation)
+        } catch {
+            print("Failed to get interpretation: \(error)")
+            // Handle error appropriately
+            return (newDream.id, nil)
+        }
     }
     
     private func generateRandomEmoji() -> String {
