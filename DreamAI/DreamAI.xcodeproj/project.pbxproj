@@ -1,0 +1,488 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3429D1572DF459B50066B0DF /* Auth in Frameworks */ = {isa = PBXBuildFile; productRef = 3429D1562DF459B50066B0DF /* Auth */; };
+		3429D1592DF459B50066B0DF /* Functions in Frameworks */ = {isa = PBXBuildFile; productRef = 3429D1582DF459B50066B0DF /* Functions */; };
+		3429D15B2DF459B50066B0DF /* PostgREST in Frameworks */ = {isa = PBXBuildFile; productRef = 3429D15A2DF459B50066B0DF /* PostgREST */; };
+		3429D15D2DF459B50066B0DF /* Realtime in Frameworks */ = {isa = PBXBuildFile; productRef = 3429D15C2DF459B50066B0DF /* Realtime */; };
+		3429D15F2DF459B50066B0DF /* Storage in Frameworks */ = {isa = PBXBuildFile; productRef = 3429D15E2DF459B50066B0DF /* Storage */; };
+		3429D1812DF45E240066B0DF /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 3429D1802DF45E240066B0DF /* Supabase */; };
+		3429D1982DF46C6C0066B0DF /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 3429D1972DF46C6C0066B0DF /* GoogleSignIn */; };
+		3429D19A2DF46C6C0066B0DF /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 3429D1992DF46C6C0066B0DF /* GoogleSignInSwift */; };
+		345DE1132E0953DB00D88F88 /* SuperwallKit in Frameworks */ = {isa = PBXBuildFile; productRef = 345DE1122E0953DB00D88F88 /* SuperwallKit */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		3429D13A2DF44ABB0066B0DF /* DreamAI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DreamAI.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		3429D1832DF461060066B0DF /* Exceptions for "DreamAI" folder in "DreamAI" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 3429D1392DF44ABB0066B0DF /* DreamAI */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		3429D13C2DF44ABB0066B0DF /* DreamAI */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				3429D1832DF461060066B0DF /* Exceptions for "DreamAI" folder in "DreamAI" target */,
+			);
+			path = DreamAI;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		3429D1372DF44ABB0066B0DF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3429D15B2DF459B50066B0DF /* PostgREST in Frameworks */,
+				3429D1592DF459B50066B0DF /* Functions in Frameworks */,
+				345DE1132E0953DB00D88F88 /* SuperwallKit in Frameworks */,
+				3429D1812DF45E240066B0DF /* Supabase in Frameworks */,
+				3429D19A2DF46C6C0066B0DF /* GoogleSignInSwift in Frameworks */,
+				3429D1572DF459B50066B0DF /* Auth in Frameworks */,
+				3429D15F2DF459B50066B0DF /* Storage in Frameworks */,
+				3429D15D2DF459B50066B0DF /* Realtime in Frameworks */,
+				3429D1982DF46C6C0066B0DF /* GoogleSignIn in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		3429D1312DF44ABB0066B0DF = {
+			isa = PBXGroup;
+			children = (
+				3429D13C2DF44ABB0066B0DF /* DreamAI */,
+				3429D17F2DF45E240066B0DF /* Frameworks */,
+				3429D13B2DF44ABB0066B0DF /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		3429D13B2DF44ABB0066B0DF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3429D13A2DF44ABB0066B0DF /* DreamAI.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3429D17F2DF45E240066B0DF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		3429D1392DF44ABB0066B0DF /* DreamAI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3429D1452DF44ABD0066B0DF /* Build configuration list for PBXNativeTarget "DreamAI" */;
+			buildPhases = (
+				3429D1362DF44ABB0066B0DF /* Sources */,
+				3429D1372DF44ABB0066B0DF /* Frameworks */,
+				3429D1382DF44ABB0066B0DF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				3429D13C2DF44ABB0066B0DF /* DreamAI */,
+			);
+			name = DreamAI;
+			packageProductDependencies = (
+				3429D1562DF459B50066B0DF /* Auth */,
+				3429D1582DF459B50066B0DF /* Functions */,
+				3429D15A2DF459B50066B0DF /* PostgREST */,
+				3429D15C2DF459B50066B0DF /* Realtime */,
+				3429D15E2DF459B50066B0DF /* Storage */,
+				3429D1802DF45E240066B0DF /* Supabase */,
+				3429D1972DF46C6C0066B0DF /* GoogleSignIn */,
+				3429D1992DF46C6C0066B0DF /* GoogleSignInSwift */,
+				345DE1122E0953DB00D88F88 /* SuperwallKit */,
+			);
+			productName = DreamAI;
+			productReference = 3429D13A2DF44ABB0066B0DF /* DreamAI.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		3429D1322DF44ABB0066B0DF /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1640;
+				LastUpgradeCheck = 1640;
+				TargetAttributes = {
+					3429D1392DF44ABB0066B0DF = {
+						CreatedOnToolsVersion = 16.4;
+					};
+				};
+			};
+			buildConfigurationList = 3429D1352DF44ABB0066B0DF /* Build configuration list for PBXProject "DreamAI" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				ru,
+				ar,
+				ro,
+				kk,
+				de,
+				it,
+				fr,
+				es,
+				"pt-PT",
+				ko,
+				ja,
+				hi,
+				bn,
+				tr,
+			);
+			mainGroup = 3429D1312DF44ABB0066B0DF;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				3429D1552DF459B50066B0DF /* XCRemoteSwiftPackageReference "supabase-swift" */,
+				3429D1962DF46C6C0066B0DF /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				345DE1112E0953DB00D88F88 /* XCRemoteSwiftPackageReference "Superwall-iOS" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 3429D13B2DF44ABB0066B0DF /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				3429D1392DF44ABB0066B0DF /* DreamAI */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3429D1382DF44ABB0066B0DF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3429D1362DF44ABB0066B0DF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		3429D1432DF44ABD0066B0DF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 4V6HY9M86Z;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		3429D1442DF44ABD0066B0DF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 4V6HY9M86Z;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		3429D1462DF44ABD0066B0DF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ALLOW_ENTITLEMENTS_MODIFICATION = YES;
+				CODE_SIGN_ENTITLEMENTS = DreamAI/DreamAI.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4V6HY9M86Z;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DreamAI/Info.plist;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We need access to your microphone to record your dream narration.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "We need speech recognition to convert your spoken dream into text.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.skillhub.DreamAI;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3429D1472DF44ABD0066B0DF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ALLOW_ENTITLEMENTS_MODIFICATION = YES;
+				CODE_SIGN_ENTITLEMENTS = DreamAI/DreamAI.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4V6HY9M86Z;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DreamAI/Info.plist;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We need access to your microphone to record your dream narration.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "We need speech recognition to convert your spoken dream into text.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.skillhub.DreamAI;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3429D1352DF44ABB0066B0DF /* Build configuration list for PBXProject "DreamAI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3429D1432DF44ABD0066B0DF /* Debug */,
+				3429D1442DF44ABD0066B0DF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3429D1452DF44ABD0066B0DF /* Build configuration list for PBXNativeTarget "DreamAI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3429D1462DF44ABD0066B0DF /* Debug */,
+				3429D1472DF44ABD0066B0DF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3429D1552DF459B50066B0DF /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/supabase/supabase-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.1;
+			};
+		};
+		3429D1962DF46C6C0066B0DF /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.0;
+			};
+		};
+		345DE1112E0953DB00D88F88 /* XCRemoteSwiftPackageReference "Superwall-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/superwall/Superwall-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3429D1562DF459B50066B0DF /* Auth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3429D1552DF459B50066B0DF /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Auth;
+		};
+		3429D1582DF459B50066B0DF /* Functions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3429D1552DF459B50066B0DF /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Functions;
+		};
+		3429D15A2DF459B50066B0DF /* PostgREST */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3429D1552DF459B50066B0DF /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = PostgREST;
+		};
+		3429D15C2DF459B50066B0DF /* Realtime */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3429D1552DF459B50066B0DF /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Realtime;
+		};
+		3429D15E2DF459B50066B0DF /* Storage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3429D1552DF459B50066B0DF /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Storage;
+		};
+		3429D1802DF45E240066B0DF /* Supabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3429D1552DF459B50066B0DF /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Supabase;
+		};
+		3429D1972DF46C6C0066B0DF /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3429D1962DF46C6C0066B0DF /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		3429D1992DF46C6C0066B0DF /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3429D1962DF46C6C0066B0DF /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
+		};
+		345DE1122E0953DB00D88F88 /* SuperwallKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 345DE1112E0953DB00D88F88 /* XCRemoteSwiftPackageReference "Superwall-iOS" */;
+			productName = SuperwallKit;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 3429D1322DF44ABB0066B0DF /* Project object */;
+}

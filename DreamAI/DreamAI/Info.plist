@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLIconFile</key>
+			<string></string>
+			<key>CFBundleURLName</key>
+			<string>com.skillhub.DreamAI</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.skillhub.DreamAI</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.googleusercontent.apps.308207137740-c4mohdt4m35hjgc3dusmet4r39e21s5g</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.308207137740-c4mohdt4m35hjgc3dusmet4r39e21s5g</string>
+			</array>
+		</dict>
+	</array>
+	<key>GIDClientID</key>
+	<string>308207137740-c4mohdt4m35hjgc3dusmet4r39e21s5g.apps.googleusercontent.com</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>DreamAI uses Face ID to securely authenticate you before accessing your personal dream data and insights.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>processing</string>
+		<string>remote-notification</string>
+	</array>
+</dict>
+</plist>

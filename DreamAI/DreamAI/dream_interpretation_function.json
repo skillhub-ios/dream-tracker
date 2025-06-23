@@ -1,0 +1,84 @@
+{
+  "name": "interpret_dream",
+  "description": "Interpret a user's dream and provide psychological analysis",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "dreamTitle": {
+        "type": "string",
+        "description": "A brief, evocative title for the dream that captures its essence"
+      },
+      "dreamSummary": {
+        "type": "string",
+        "description": "A concise summary of the dream in 2-3 sentences, focusing on the key events and emotions"
+      },
+      "fullInterpretation": {
+        "type": "string",
+        "description": "A detailed psychological interpretation of the dream, including potential meanings, symbolism, and insights about the dreamer's subconscious mind. This should be comprehensive and provide meaningful analysis."
+      },
+      "moodInsights": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "emoji": {
+              "type": "string",
+              "description": "An emoji representing the mood or emotion"
+            },
+            "label": {
+              "type": "string",
+              "description": "The name of the mood or emotion"
+            },
+            "score": {
+              "type": "number",
+              "description": "A score between 0.0 and 1.0 representing the intensity of this mood in the dream"
+            }
+          },
+          "required": ["emoji", "label", "score"]
+        },
+        "description": "Array of mood insights reflecting the emotional tone of the dream. Include 3-5 different emotions with their intensity scores."
+      },
+      "symbolism": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "icon": {
+              "type": "string",
+              "description": "An emoji or symbol representing the dream element or symbol"
+            },
+            "meaning": {
+              "type": "string",
+              "description": "The psychological meaning and significance of this symbol in the context of the dream"
+            }
+          },
+          "required": ["icon", "meaning"]
+        },
+        "description": "Array of symbolic elements and their psychological meanings. Identify 3-5 key symbols from the dream and explain their significance."
+      },
+      "reflectionPrompts": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Array of thoughtful questions to encourage self-reflection about the dream. Include 3-4 questions that help the dreamer explore the meaning and relevance of their dream."
+      },
+      "quote": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "An inspirational or insightful quote about dreams, psychology, or self-discovery that relates to the dream's themes"
+          },
+          "author": {
+            "type": "string",
+            "description": "The author of the quote"
+          }
+        },
+        "required": ["text", "author"],
+        "description": "An inspirational quote related to dreams, psychology, or the themes present in this dream"
+      }
+    },
+    "required": ["dreamTitle", "dreamSummary", "fullInterpretation", "moodInsights", "symbolism", "reflectionPrompts", "quote"]
+  }
+} 

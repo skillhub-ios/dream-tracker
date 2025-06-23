@@ -1,0 +1,327 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+
+    },
+    "%@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$@"
+          }
+        }
+      }
+    },
+    "✨ '%@'\n— %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "✨ '%1$@'\n— %2$@"
+          }
+        }
+      }
+    },
+    "🔍  Real reflections" : {
+
+    },
+    "🧚‍♀️" : {
+
+    },
+    "🧠  Interpretation" : {
+
+    },
+    "🪐" : {
+
+    },
+    "😞" : {
+
+    },
+    "1–3" : {
+
+    },
+    "1. Open the Files app on your iPhone" : {
+
+    },
+    "2. Tap 'On My iPhone' or 'On My iPad'" : {
+
+    },
+    "3. Look for a folder with your app name" : {
+
+    },
+    "4. Your backup files will be there" : {
+
+    },
+    "A few quick details to personalize insights" : {
+
+    },
+    "Authenticate" : {
+
+    },
+    "Authentication Error" : {
+
+    },
+    "Authentication Required" : {
+
+    },
+    "Backup & Restore" : {
+
+    },
+    "Backup Files" : {
+
+    },
+    "Backup Files (%lld)" : {
+
+    },
+    "Bedtime" : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ұйқы уақыты"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "취침 시간"
+          }
+        }
+      }
+    },
+    "Cancel" : {
+
+    },
+    "Clear All" : {
+
+    },
+    "Create Dream" : {
+
+    },
+    "Data Deletion" : {
+
+    },
+    "Debug Info" : {
+
+    },
+    "Describe the dream" : {
+
+    },
+    "Device Token" : {
+
+    },
+    "Do you already have an account?" : {
+
+    },
+    "Do you believe dreams have meaning?" : {
+
+    },
+    "Done" : {
+
+    },
+    "Dream Interpretation" : {
+
+    },
+    "Error" : {
+
+    },
+    "Exit" : {
+
+    },
+    "Explore your subconscious, one dream at a time." : {
+
+    },
+    "Export Dreams" : {
+
+    },
+    "Export or import a file from your phone to backup and restore your dreams" : {
+
+    },
+    "Export/Import" : {
+
+    },
+    "Face ID" : {
+
+    },
+    "File Debug Info" : {
+
+    },
+    "File Path Information" : {
+
+    },
+    "Filter" : {
+
+    },
+    "Good morning!" : {
+
+    },
+    "Hello, world!" : {
+
+    },
+    "Hi there 👋" : {
+
+    },
+    "How did you hear about us?" : {
+
+    },
+    "How do your dreams usually feel?" : {
+
+    },
+    "How to Find Your Files" : {
+
+    },
+    "I dreamed..." : {
+
+    },
+    "iCloud" : {
+
+    },
+    "iCloud Status" : {
+
+    },
+    "iCloud Sync" : {
+
+    },
+    "Import Dreams" : {
+
+    },
+    "Interpret Dream" : {
+
+    },
+    "Language" : {
+
+    },
+    "Let's help you get more accurate dream insights" : {
+
+    },
+    "Life Focus" : {
+
+    },
+    "Loading" : {
+
+    },
+    "Log in" : {
+
+    },
+    "Log your first dream 🌙" : {
+
+    },
+    "Mood before sleep" : {
+
+    },
+    "New Export" : {
+
+    },
+    "No backup files found" : {
+
+    },
+    "No dreams yet" : {
+
+    },
+    "Notification Settings" : {
+
+    },
+    "Notifications" : {
+
+    },
+    "OK" : {
+
+    },
+    "Path: %@" : {
+
+    },
+    "Permission Required" : {
+
+    },
+    "Please authenticate to access your dreams" : {
+
+    },
+    "Privacy" : {
+
+    },
+    "Privacy Policy" : {
+
+    },
+    "Processing..." : {
+
+    },
+    "Processing... %lld%%" : {
+
+    },
+    "Profile" : {
+
+    },
+    "Quick Personalization" : {
+
+    },
+    "Ready to log a dream?" : {
+
+    },
+    "Reminders" : {
+
+    },
+    "Search" : {
+
+    },
+    "Share Export" : {
+
+    },
+    "Sign In" : {
+
+    },
+    "Skip" : {
+
+    },
+    "Stop Recording" : {
+
+    },
+    "Subscription" : {
+
+    },
+    "Success" : {
+
+    },
+    "Terms" : {
+
+    },
+    "To enable sync, you need to sign in to your Apple account" : {
+
+    },
+    "To understand your dreams better" : {
+
+    },
+    "Token: %@..." : {
+
+    },
+    "Try again" : {
+
+    },
+    "Try Again" : {
+
+    },
+    "Uncover Your Dreams with AI" : {
+
+    },
+    "Upgrade" : {
+
+    },
+    "Use Microphone" : {
+
+    },
+    "Wake-up" : {
+
+    },
+    "What's currently top of mind for you?" : {
+
+    },
+    "Write feedback" : {
+
+    },
+    "Your Plan" : {
+
+    }
+  },
+  "version" : "1.0"
+}

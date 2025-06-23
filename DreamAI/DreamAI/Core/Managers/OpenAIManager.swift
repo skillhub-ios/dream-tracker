@@ -1,0 +1,219 @@
+//
+//  OpenAIManager.swift
+//  DreamAI
+//
+//  Created by Shaxzod on 19/04/25
+//
+
+import Foundation
+
+class OpenAIManager {
+    static let shared = OpenAIManager()
+    private let apiKey = OpenAISecrets.apiKey
+    private let session = URLSession.shared
+    private let decoder = JSONDecoder()
+
+    private init() {
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+    }
+
+    func getDreamInterpretation(dreamText: String, mood: String?, tags: [String]) async throws -> DreamInterpretationFullModel {
+        guard !apiKey.isEmpty else {
+            throw NSError(domain: "OpenAIManager", code: -1, userInfo: [NSLocalizedDescriptionKey: "OpenAI API key is missing."])
+        }
+        
+        print("🚀 Starting dream interpretation for text: \(dreamText.prefix(50))...")
+        
+        // Use Chat Completion API with function calling
+        return try await getDreamInterpretationWithFunctionCalling(dreamText: dreamText, mood: mood, tags: tags)
+    }
+    
+    // MARK: - Function Calling Method
+    private func getDreamInterpretationWithFunctionCalling(dreamText: String, mood: String?, tags: [String]) async throws -> DreamInterpretationFullModel {
+        let url = URL(string: "https://api.openai.com/v1/chat/completions")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        addHeaders(to: &request)
+        
+        let systemPrompt = """
+        You are a dream interpretation expert. Analyze the user's dream and provide a comprehensive psychological interpretation. 
+        Focus on the emotional content, symbolism, and potential meanings in the dreamer's life.
+        """
+        
+        let userMessage = "Please interpret this dream: \(dreamText). Mood: \(mood ?? "not specified"). Tags: \(tags.joined(separator: ", "))"
+        
+        let body: [String: Any] = [
+            "model": "gpt-4",
+            "messages": [
+                ["role": "system", "content": systemPrompt],
+                ["role": "user", "content": userMessage]
+            ],
+            "tools": [
+                [
+                    "type": "function",
+                    "function": [
+                        "name": "interpret_dream",
+                        "description": "Interpret a user's dream and provide psychological analysis",
+                        "parameters": [
+                            "type": "object",
+                            "properties": [
+                                "dreamTitle": [
+                                    "type": "string",
+                                    "description": "A brief, evocative title for the dream"
+                                ],
+                                "dreamSummary": [
+                                    "type": "string",
+                                    "description": "A concise summary of the dream in 2-3 sentences"
+                                ],
+                                "fullInterpretation": [
+                                    "type": "string",
+                                    "description": "A detailed psychological interpretation of the dream, including potential meanings, symbolism, and insights about the dreamer's subconscious mind"
+                                ],
+                                "moodInsights": [
+                                    "type": "array",
+                                    "items": [
+                                        "type": "object",
+                                        "properties": [
+                                            "emoji": [
+                                                "type": "string",
+                                                "description": "An emoji representing the mood"
+                                            ],
+                                            "label": [
+                                                "type": "string",
+                                                "description": "The mood label"
+                                            ],
+                                            "score": [
+                                                "type": "number",
+                                                "description": "A score between 0.0 and 1.0 representing the intensity of this mood"
+                                            ]
+                                        ],
+                                        "required": ["emoji", "label", "score"]
+                                    ],
+                                    "description": "Array of mood insights reflecting the emotional tone of the dream"
+                                ],
+                                "symbolism": [
+                                    "type": "array",
+                                    "items": [
+                                        "type": "object",
+                                        "properties": [
+                                            "icon": [
+                                                "type": "string",
+                                                "description": "An emoji or symbol representing the dream element"
+                                            ],
+                                            "meaning": [
+                                                "type": "string",
+                                                "description": "The psychological meaning of this symbol"
+                                            ]
+                                        ],
+                                        "required": ["icon", "meaning"]
+                                    ],
+                                    "description": "Array of symbolic elements and their psychological meanings"
+                                ],
+                                "reflectionPrompts": [
+                                    "type": "array",
+                                    "items": [
+                                        "type": "string"
+                                    ],
+                                    "description": "Array of questions to encourage self-reflection about the dream"
+                                ],
+                                "quote": [
+                                    "type": "object",
+                                    "properties": [
+                                        "text": [
+                                            "type": "string",
+                                            "description": "An inspirational quote about dreams or psychology"
+                                        ],
+                                        "author": [
+                                            "type": "string",
+                                            "description": "The author of the quote"
+                                        ]
+                                    ],
+                                    "required": ["text", "author"],
+                                    "description": "An inspirational quote related to dreams or psychology"
+                                ]
+                            ],
+                            "required": ["dreamTitle", "dreamSummary", "fullInterpretation", "moodInsights", "symbolism", "reflectionPrompts", "quote"]
+                        ]
+                    ]
+                ]
+            ],
+            "tool_choice": [
+                "type": "function",
+                "function": [
+                    "name": "interpret_dream"
+                ]
+            ],
+            "temperature": 0.7,
+            "max_tokens": 2000
+        ]
+        
+        request.httpBody = try JSONSerialization.data(withJSONObject: body)
+        
+        print("📡 Making API request to OpenAI...")
+        
+        let (data, response) = try await session.data(for: request)
+        
+        if let httpResponse = response as? HTTPURLResponse {
+            print("📡 API Response Status: \(httpResponse.statusCode)")
+        }
+        
+        try handleResponseError(response)
+        
+        print("📡 Parsing API response...")
+        
+        let chatResponse = try decoder.decode(ChatCompletionResponse.self, from: data)
+        
+        print("📡 Response has \(chatResponse.choices.count) choices")
+        
+        guard let choice = chatResponse.choices.first else {
+            throw NSError(domain: "OpenAIManagerError", code: 6, userInfo: [NSLocalizedDescriptionKey: "No choices in response"])
+        }
+        
+        print("📡 Choice finish reason: \(choice.finishReason ?? "unknown")")
+        
+        guard let toolCalls = choice.message.toolCalls, !toolCalls.isEmpty else {
+            throw NSError(domain: "OpenAIManagerError", code: 6, userInfo: [NSLocalizedDescriptionKey: "No tool calls in response"])
+        }
+        
+        guard let toolCall = toolCalls.first,
+              toolCall.function.name == "interpret_dream",
+              let arguments = toolCall.function.arguments.data(using: .utf8) else {
+            throw NSError(domain: "OpenAIManagerError", code: 6, userInfo: [NSLocalizedDescriptionKey: "Invalid tool call or missing function arguments"])
+        }
+        
+        print("📡 Function arguments received: \(arguments.prefix(100))...")
+        
+        // Log the full JSON for debugging
+        print("📡 Full JSON response: \(arguments)")
+        
+        do {
+            let interpretation = try JSONDecoder().decode(DreamInterpretationFullModel.self, from: arguments)
+            print("✅ Successfully decoded interpretation from function call")
+            return interpretation
+        } catch {
+            print("❌ Failed to decode function call arguments: \(error)")
+            print("❌ Arguments that failed to decode: \(arguments)")
+            
+            // Try to pretty print the JSON for better debugging
+            if let jsonObject = try? JSONSerialization.jsonObject(with: arguments),
+               let prettyData = try? JSONSerialization.data(withJSONObject: jsonObject, options: .prettyPrinted),
+               let prettyString = String(data: prettyData, encoding: .utf8) {
+                print("❌ Pretty printed JSON: \(prettyString)")
+            }
+            
+            throw NSError(domain: "OpenAIManagerError", code: 7, userInfo: [NSLocalizedDescriptionKey: "Failed to decode interpretation: \(error.localizedDescription)"])
+        }
+    }
+    
+    private func addHeaders(to request: inout URLRequest) {
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
+    }
+
+    private func handleResponseError(_ response: URLResponse) throws {
+        guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+            let statusCode = (response as? HTTPURLResponse)?.statusCode ?? -1
+            throw NSError(domain: "NetworkError", code: statusCode, userInfo: [NSLocalizedDescriptionKey: "Invalid server response (Status: \(statusCode))"])
+        }
+    }
+} 
