@@ -38,7 +38,8 @@ struct MainView: View {
     private var mainContentView: some View {
         NavigationStack {
             ZStack {
-                lineGradient
+                AppGradients.purpleToBlack
+                    .ignoresSafeArea()
                 
                 VStack {
                     VStack(spacing: 0) {
@@ -188,20 +189,6 @@ struct BiometricAuthView: View {
 // Mark: private UI
 
 private extension MainView {
-    var lineGradient: some View {
-        LinearGradient(
-            gradient: Gradient(
-                colors: [
-                    Color(.sRGB, red: 38/255, green: 18/255, blue: 44/255, opacity: 1),
-                    Color.black
-                ]
-            ),
-            startPoint: .top,
-            endPoint: .bottom
-        )
-        .ignoresSafeArea()
-    }
-    
     func lastDreamView(lastDream dream: Dream) -> some View {
         HStack(spacing: 12) {
             Text(dream.emoji)

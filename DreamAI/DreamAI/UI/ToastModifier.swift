@@ -111,27 +111,29 @@ private struct ToastView<ButtonUI: View>: View {
     }
 }
 
-#Preview {
-    @Previewable @State var buttonState: DButtonState = .tryAgain
-    VStack {
-        Text("Hello, world!")
-            .frame(maxHeight: .infinity)
-            .toast(
-                toast: .constant(
-                    ToastData(
-                        style: .error,
-                        message: "Hello, world!",
-                        duration: 3
-                    )
-                ),
-                retryButtonUI: DButton(
-                    title: "Try again",
-                    state: $buttonState,
-                    isDisabled: .constant(false),
-                    asyncAction: {
-                        try? await Task.sleep(nanoseconds: 10_000_000_000)
-                    }
-                )
-            )
-    }
-}
+#warning("Восстановить работу Preview")
+
+//#Preview {
+//    @Previewable @State var buttonState: DButtonState = .tryAgain
+//    VStack {
+//        Text("Hello, world!")
+//            .frame(maxHeight: .infinity)
+//            .toast(
+//                toast: .constant(
+//                    ToastData(
+//                        style: .error,
+//                        message: "Hello, world!",
+//                        duration: 3
+//                    )
+//                ),
+//                retryButtonUI: DButton(
+//                    title: "Try again",
+//                    state: $buttonState,
+//                    isDisabled: .constant(false),
+//                    asyncAction: {
+//                        try? await Task.sleep(nanoseconds: 10_000_000_000)
+//                    }
+//                )
+//            )
+//    }
+//}

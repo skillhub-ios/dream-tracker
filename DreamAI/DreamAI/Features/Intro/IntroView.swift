@@ -14,20 +14,19 @@ struct IntroView: View {
     @State private var authMode: AuthSheetMode = .login
     
     var body: some View {
-        NavigationStack {
-            VStack {
-                Spacer()
-                IntroBottomCard(showAuthSheet: $showAuthSheet, authMode: $authMode)
-            }
-            .animatedGradientBackground()
-            .sheet(isPresented: $showAuthSheet) {
-                AuthSheetView(mode: authMode)
-                    .presentationDetents([.fraction(0.28)])
-                    .presentationDragIndicator(.visible)
-            }
-            .navigationDestination(isPresented: $authManager.isAuthenticated) {
-                PermissionContainerView()
-            }
+        ZStack(alignment: .bottom) {
+            AppGradients.purpleToBlack
+                .edgesIgnoringSafeArea(.all)
+            IntroBottomCard(showAuthSheet: $showAuthSheet, authMode: $authMode)
+                .padding(.horizontal, 16)
+        }
+        .sheet(isPresented: $showAuthSheet) {
+            AuthSheetView(mode: authMode)
+                .presentationDetents([.fraction(0.28)])
+                .presentationDragIndicator(.visible)
+        }
+        .navigationDestination(isPresented: $authManager.isAuthenticated) {
+            PermissionContainerView()
         }
     }
 }
@@ -37,35 +36,42 @@ struct IntroBottomCard: View {
     @Binding var authMode: AuthSheetMode
     
     var body: some View {
-        VStack(spacing: 20) {
-            VStack(alignment: .leading) {
-                HStack(alignment: .center, spacing: 8) {
-                    Image(systemName: "moon.stars.fill")
-                        .foregroundColor(.yellow)
-                        .font(.title2)
-                    Text("Uncover Your Dreams with AI")
-                        .font(.title2.bold())
-                        .foregroundColor(.white)
-                        .multilineTextAlignment(.leading)
-                }
-                Text("Explore your subconscious, one dream at a time.")
-                    .font(.body)
-                    .foregroundColor(.gray)
-                    .multilineTextAlignment(.leading)
-            }
-            
-            DButton(title: "Get Started") {
+        VStack(spacing: 24) {
+            titleView
+            buttonWithFooterView
+        }
+    }
+}
+
+private extension IntroBottomCard {
+    var titleView: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text("🌙 Uncover Your Dreams with AI")
+                .font(.title2.bold())
+                .foregroundColor(.white)
+            Text("Explore your subconscious, one dream at a time.")
+                .font(.body)
+                .foregroundColor(.gray)
+        }
+        .multilineTextAlignment(.leading)
+    }
+    
+    var buttonWithFooterView: some View {
+        VStack(spacing: 12) {
+            Button {
                 authMode = .signup
                 showAuthSheet = true
+            } label: {
+                Text("Get Started")
             }
-            .padding(.horizontal, 8)
+            .buttonStyle(PrimaryButtonStyle())
             HStack(spacing: 4) {
                 Text("Do you already have an account?")
                     .foregroundColor(.white)
                     .font(.footnote)
-                Button(action: { 
+                Button(action: {
                     authMode = .login
-                    showAuthSheet = true 
+                    showAuthSheet = true
                 }) {
                     Text("Log in")
                         .underline()
@@ -73,7 +79,6 @@ struct IntroBottomCard: View {
                         .font(.footnote.bold())
                 }
             }
-            .padding(.bottom, 8)
         }
     }
 }

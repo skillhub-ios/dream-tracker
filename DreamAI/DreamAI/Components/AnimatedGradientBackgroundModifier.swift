@@ -17,7 +17,6 @@ struct AnimatedGradientBackgroundModifier: ViewModifier {
         ZStack {
             AnimatedGradientBackground()
                 .ignoresSafeArea()
-
             content
         }    
     }
