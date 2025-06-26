@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SwiftUI
 import Combine
 
 @MainActor
@@ -23,7 +22,6 @@ final class PermissionsSettingsViewModel: ObservableObject {
     @Published var selectedLanguage: Language? = .english
     
     // MARK: - Properties
-    let allLanguages = Language.allCases
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: - Initialization

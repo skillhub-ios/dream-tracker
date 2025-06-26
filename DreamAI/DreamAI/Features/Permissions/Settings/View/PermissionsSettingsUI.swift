@@ -20,26 +20,27 @@ struct PermissionsSettingsUI: View {
     
     var body: some View {
         ZStack {
-            LinearGradient(
-                gradient: Gradient(colors: [Color.appPurpleDark, Color.black]),
-                startPoint: .top, endPoint: .bottom
-            )
+            AppGradients.purpleToBlack
             .ignoresSafeArea()
-            VStack(alignment: .leading, spacing: 28) {
+            VStack(alignment: .leading, spacing: 24) {
                 notificationsSection
                 privacySection
                 languageSection
                 Spacer()
-                DButton(title: "Done") {
+                
+                Button {
                     showMainView = true
+                } label: {
+                    Text("Done")
                 }
+                .buttonStyle(PrimaryButtonStyle())
             }
             .padding(.horizontal, 16)
             .padding(.top, 24)
             .navigationDestination(isPresented: $showMainView) {
                 NavigationStack {
                     MainView()
-                }   
+                }
             }
         }
         .navigationTitle("Notifications")
@@ -57,7 +58,7 @@ struct PermissionsSettingsUI: View {
 
 private extension PermissionsSettingsUI {
     var notificationsSection: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: .zero) {
             HStack {
                 Text("Reminders")
                     .foregroundColor(.white)
@@ -65,11 +66,12 @@ private extension PermissionsSettingsUI {
                 Toggle("", isOn: $viewModel.remindersEnabled)
                     .toggleStyle(SwitchToggleStyle(tint: .purple))
                     .labelsHidden()
-                    .onChange(of: viewModel.remindersEnabled) { newValue in
-                        handleNotificationToggle(newValue)
+                    .onChange(of: viewModel.remindersEnabled) {
+                        handleNotificationToggle($0)
                     }
             }
-            .padding(.vertical, 8)
+            .frame(height: 44)
+            .padding(.horizontal, 16)
             Divider()
             HStack {
                 Text("Bedtime")
@@ -84,7 +86,8 @@ private extension PermissionsSettingsUI {
                     .accentColor(.white)
                     .colorScheme(.dark)
             }
-            .padding(.vertical, 8)
+            .frame(height: 44)
+            .padding(.horizontal, 16)
             Divider()
             HStack {
                 Text("Wake-up")
@@ -100,9 +103,9 @@ private extension PermissionsSettingsUI {
                     .colorScheme(.dark)
                 
             }
-            .padding(.vertical, 8)
-            
-            // Device Token Display (for debugging)
+            .frame(height: 44)
+            .padding(.horizontal, 16)
+#if DEBUG
             if pushNotificationManager.isRegistered, let deviceToken = pushNotificationManager.deviceToken {
                 Divider()
                 VStack(alignment: .leading, spacing: 4) {
@@ -115,10 +118,10 @@ private extension PermissionsSettingsUI {
                         .lineLimit(2)
                         .textSelection(.enabled)
                 }
-                .padding(.vertical, 8)
+                .padding(16)
             }
+#endif
         }
-        .padding(12)
         .background(Color.appPurpleDark)
         .cornerRadius(14)
     }
@@ -126,7 +129,8 @@ private extension PermissionsSettingsUI {
     var privacySection: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Privacy")
-                .font(.headline)
+                .font(.title2)
+                .bold()
                 .foregroundColor(.white)
             HStack {
                 Text("Face ID")
@@ -136,41 +140,49 @@ private extension PermissionsSettingsUI {
                     get: { viewModel.faceIDEnabled },
                     set: { viewModel.toggleFaceID($0) }
                 ))
-                    .toggleStyle(SwitchToggleStyle(tint: .purple))
-                    .labelsHidden()
+                .toggleStyle(SwitchToggleStyle(tint: .purple))
+                .labelsHidden()
             }
-            .padding(12)
+            .padding(16)
+            .frame(height: 44)
             .background(Color.appPurpleDark)
             .cornerRadius(14)
         }
     }
     
     var languageSection: some View {
-        Button(action: { showLanguagePicker = true }) {
-            HStack(spacing: 12) {
-                if let flag = viewModel.selectedLanguage?.flag {
-                    Image(flag)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 24, height: 24)
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Language")
+                .font(.title2)
+                .bold()
+                .foregroundColor(.white)
+            Button(action: { showLanguagePicker = true }) {
+                HStack(spacing: 12) {
+                    if let flag = viewModel.selectedLanguage?.flag {
+                        Image(flag)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 24, height: 24)
+                    }
+                    
+                    Text(viewModel.selectedLanguage?.title ?? "Language")
+                        .foregroundColor(.white)
+                    
+                    Spacer()
+                    
+                    Image(systemName: "chevron.right")
+                        .foregroundColor(.white.opacity(0.5))
+                    
                 }
-                
-                Text(viewModel.selectedLanguage?.title ?? "Language")
-                    .foregroundColor(.white)
-                
-                Spacer()
-                
-                Image(systemName: "chevron.right")
-                    .foregroundColor(.white.opacity(0.5))
-                
+                .padding(16)
+                .frame(height: 44)
+                .background(Color.appPurpleDark)
+                .cornerRadius(14)
             }
-            .padding(12)
-            .background(Color.appPurpleDark)
-            .cornerRadius(14)
-        }
-        .sheet(isPresented: $showLanguagePicker) {
-            LanguagePicker(selectedLanguage: $viewModel.selectedLanguage, showLanguagePicker: $showLanguagePicker)
-                .presentationDetents([.large])
+            .sheet(isPresented: $showLanguagePicker) {
+                LanguagePicker(selectedLanguage: $viewModel.selectedLanguage, showLanguagePicker: $showLanguagePicker)
+                    .presentationDetents([.large])
+            }
         }
     }
     

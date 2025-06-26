@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Combine
 
 final class PermissionsLifeFocusViewModel: ObservableObject {
     @Published var selectedAreas: Set<LifeFocusArea> = []
@@ -23,4 +22,4 @@ final class PermissionsLifeFocusViewModel: ObservableObject {
     var canProceed: Bool {
         (1...3).contains(selectedAreas.count)
     }
-} 
+}

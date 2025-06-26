@@ -23,7 +23,6 @@ struct PermissionsPersonalizationUI: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             ageGenderCard
             beliefCard
-            
             Spacer()
         }
         .padding(.horizontal, 16)
@@ -31,17 +30,17 @@ struct PermissionsPersonalizationUI: View {
     
     private var ageGenderCard: some View {
         VStack(spacing: 12) {
-            Menu {
-                ForEach(viewModel.allAges) { age in
-                    Button(age.displayTitle) {
-                        viewModel.selectedAge = age
+                Menu {
+                    ForEach(AgeRange.allCases) { age in
+                        Button(age.displayTitle) {
+                            viewModel.selectedAge = age
+                        }
                     }
+                } label: {
+                    menuRow(title: "Age range", value: viewModel.selectedAge.displayTitle)
                 }
-            } label: {
-                menuRow(title: "Age range", value: viewModel.selectedAge.displayTitle)
-            }
             Menu {
-                ForEach(viewModel.allGenders) { gender in
+                ForEach(Gender.allCases) { gender in
                     Button(gender.displayTitle) {
                         viewModel.selectedGender = gender
                     }
@@ -66,7 +65,7 @@ struct PermissionsPersonalizationUI: View {
                 .foregroundColor(.white.opacity(0.5))
         }
         .frame(height: 44)
-        .padding(.horizontal, 8)
+        .padding(.horizontal, 16)
         .background(Color.white.opacity(0.05))
         .cornerRadius(10)
     }
@@ -76,8 +75,8 @@ struct PermissionsPersonalizationUI: View {
             Text("Do you believe dreams have meaning?")
                 .font(.headline)
                 .foregroundColor(.white)
-            VStack(spacing: 0) {
-                ForEach(viewModel.allBeliefs) { belief in
+            VStack(spacing: .zero) {
+                ForEach(DreamBelief.allCases) { belief in
                     Button(action: {
                         viewModel.selectedBelief = belief
                     }) {
@@ -90,22 +89,22 @@ struct PermissionsPersonalizationUI: View {
                                 Image(systemName: "checkmark.circle.fill")
                                     .resizable()
                                     .foregroundColor(.purple)
-                                    .frame(width: 24, height: 24)
+                                    .frame(width: 22, height: 22)
                             } else {
                                 Image(systemName: "circle")
                                     .resizable()
                                     .foregroundColor(Color.white.opacity(0.3))
-                                    .frame(width: 24, height: 24)
+                                    .frame(width: 22, height: 22)
                             }
                         }
                         .frame(height: 44)
+                        .padding(.horizontal, 16)
                     }
                     if viewModel.allBeliefs.last != belief {
                         Divider()
                     }
                 }
             }
-            .padding(10)
             .background(Color.appPurpleDark.mix(with: .white, by: 0.05).opacity(0.75))
             .clipShape(RoundedRectangle(cornerRadius: 10))
         }

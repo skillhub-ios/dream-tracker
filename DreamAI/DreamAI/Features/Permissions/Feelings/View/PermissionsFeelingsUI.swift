@@ -11,34 +11,34 @@ struct PermissionsFeelingsUI: View {
     @StateObject private var viewModel = PermissionsFeelingsViewModel()
     
     var body: some View {
-        VStack(spacing: 24) {
-            VStack(alignment: .leading) {
-                Text("Hi there 👋")
-                    .font(.title2.bold())
-                    .foregroundColor(.white)
-                Text("Let's help you get more accurate dream insights")
-                    .font(.subheadline)
-                    .foregroundColor(.white.opacity(0.7))
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            card
+        VStack(spacing: 12) {
+            titleView
+                .frame(maxWidth: .infinity, alignment: .leading)
+            cardView
         }
         .padding(.horizontal, 16)
     }
+}
+
+private extension PermissionsFeelingsUI {
+    var titleView: some View {
+        VStack(alignment: .leading) {
+            Text("Hi there 👋")
+                .font(.title2.bold())
+                .foregroundColor(.white)
+            Text("Let's help you get more accurate dream insights")
+                .font(.subheadline)
+                .foregroundColor(.white.opacity(0.7))
+        }
+    }
     
-    private var card: some View {
+    var cardView: some View {
         VStack(alignment: .leading, spacing: 16) {
-            HStack(spacing: 8) {
-                Text("🧚‍♀️")
-                    .font(.title2)
-                Text("How do your dreams usually feel?")
-                    .font(.headline)
-                    .foregroundColor(.white)
-            }
-            
-            VStack(spacing:0) {
+            Text("🔮 How do your dreams usually feel?")
+                .font(.headline)
+                .foregroundColor(.white)
+            VStack(spacing: .zero) {
                 ForEach(viewModel.allFeelings) { feeling in
-                    
                     Button(action: {
                         viewModel.toggleFeeling(feeling)
                     }) {
@@ -51,23 +51,23 @@ struct PermissionsFeelingsUI: View {
                                 Image(systemName: "checkmark.circle.fill")
                                     .resizable()
                                     .foregroundColor(.purple)
-                                    .frame(width: 24, height: 24)
+                                    .frame(width: 22, height: 22)
                             } else {
                                 Image(systemName: "circle")
                                     .resizable()
                                     .foregroundColor(Color.white.opacity(0.3))
-                                    .frame(width: 24, height: 24)
+                                    .frame(width: 22, height: 22)
                             }
                         }
                         .frame(height: 44)
+                        .padding(.horizontal, 16)
                     }
-                    
                     if viewModel.allFeelings.last != feeling {
                         Divider()
+                            .frame(maxWidth: .infinity)
                     }
                 }
             }
-            .padding(10)
             .background(Color.appPurpleDark.mix(with: .white, by: 0.05).opacity(0.75))
             .clipShape(RoundedRectangle(cornerRadius: 10))
         }

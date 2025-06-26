@@ -6,15 +6,12 @@
 //
 
 import Foundation
-import Combine
 
 final class PermissionsPersonalizationViewModel: ObservableObject {
     @Published var selectedAge: AgeRange = .notToSay
     @Published var selectedGender: Gender = .preferNotToSay
     @Published var selectedBelief: DreamBelief?
     
-    let allAges = AgeRange.allCases
-    let allGenders = Gender.allCases
     let allBeliefs = DreamBelief.allCases
     
     var canProceed: Bool {

@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Combine
 
 final class PermissionsFeelingsViewModel: ObservableObject {
     @Published var selectedFeelings: Set<DreamFeeling> = []
@@ -18,6 +17,10 @@ final class PermissionsFeelingsViewModel: ObservableObject {
         } else {
             selectedFeelings.insert(feeling)
         }
+    }
+    
+    func feelingIsSelected(_ feeling: DreamFeeling) -> Bool {
+        selectedFeelings.contains(feeling)
     }
     
     var canProceed: Bool {

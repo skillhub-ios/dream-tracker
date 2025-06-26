@@ -14,36 +14,26 @@ struct ReferralSourceUI: View {
     
     var body: some View {
         ZStack{
-            LinearGradient(
-                gradient: Gradient(
-                    colors: [
-                        Color.appPurpleDark,
-                        Color.black
-                    ]
-                ),
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .ignoresSafeArea()
-            
+            AppGradients.purpleToBlack
+                .ignoresSafeArea()
             VStack(spacing: 10) {
                 Text("How did you hear about us?")
                     .font(.title.bold())
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                
                 card
                 Spacer()
-                nextButton
-                skipButton
+                buttonsContainerView
             }
             .padding([.horizontal, .top], 16)
         }
     }
-    
-    private var card: some View {
-        VStack(spacing: 0) {
-            VStack(spacing: 0) {
+}
+
+private extension ReferralSourceUI {
+    var card: some View {
+        VStack(spacing: .zero) {
+            VStack(spacing: .zero) {
                 ForEach(viewModel.allSources) { source in
                     Button(action: {
                         viewModel.toggleSource(source)
@@ -57,22 +47,22 @@ struct ReferralSourceUI: View {
                                 Image(systemName: "checkmark.circle.fill")
                                     .resizable()
                                     .foregroundColor(.purple)
-                                    .frame(width: 24, height: 24)
+                                    .frame(width: 22, height: 22)
                             } else {
                                 Image(systemName: "circle")
                                     .resizable()
                                     .foregroundColor(Color.white.opacity(0.3))
-                                    .frame(width: 24, height: 24)
+                                    .frame(width: 22, height: 22)
                             }
                         }
                         .frame(height: 44)
+                        .padding(.horizontal, 16)
                     }
                     if viewModel.allSources.last != source {
                         Divider()
                     }
                 }
             }
-            .padding(10)
             .background(Color.appPurpleDark.mix(with: .white, by: 0.05).opacity(0.75))
             .clipShape(RoundedRectangle(cornerRadius: 10))
         }
@@ -81,27 +71,29 @@ struct ReferralSourceUI: View {
         .cornerRadius(16)
     }
     
-    private var nextButton: some View {
-        DButton(title: "Next") {
-            onNext?()
-        }
+    var buttonsContainerView: some View {
+        VStack(spacing: 12) {
+            Button {
+                onNext?()
+            } label: {
+                Text("Next")
+            }
+            .buttonStyle(PrimaryButtonStyle())
             .disabled(!viewModel.canProceed)
-            .padding(.bottom, 4)
-    }
-    
-    private var skipButton: some View {
-        Button(action: { onSkip?() }) {
-            Text("Skip")
-                .font(.subheadline)
-                .foregroundColor(.white.opacity(0.7))
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 8)
+            
+            Button(action: { onSkip?() }) {
+                Text("Skip")
+                    .font(.subheadline)
+                    .foregroundColor(.white.opacity(0.7))
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 8)
+            }
+            .accessibilityLabel("Skip")
         }
-        .accessibilityLabel("Skip")
     }
 }
 
 #Preview {
     ReferralSourceUI()
         .background(Color.black)
-} 
+}

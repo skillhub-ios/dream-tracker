@@ -29,5 +29,3 @@ enum AppGradients {
         endRadius: 160
     )
 }
-
-

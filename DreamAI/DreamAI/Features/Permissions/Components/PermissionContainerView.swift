@@ -14,39 +14,15 @@ struct PermissionContainerView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                LinearGradient(
-                    gradient: Gradient(
-                        colors: [
-                            Color(.sRGB, red: 38/255, green: 18/255, blue: 44/255, opacity: 1),
-                            Color.black
-                        ]
-                    ),
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-                .ignoresSafeArea()
-                
+                AppGradients.purpleToBlack
+                    .ignoresSafeArea()
                 VStack(spacing: 24) {
                     paginationIndicator
-                    TabView(selection: $currentStep) {
-                        PermissionsFeelingsUI()
-                            .tag(0)
-                        PermissionsLifeFocusUI()
-                            .tag(1)
-                        PermissionsPersonalizationUI()
-                            .tag(2)
-                    }
-                    .tabViewStyle(.page(indexDisplayMode: .never))
-                    .indexViewStyle(.page(backgroundDisplayMode: .never))
-                    .frame(maxHeight: .infinity, alignment: .top)
-                    .onChange(of: currentStep) { oldValue, newValue in
-                        print("Current step: \(newValue)")
-                    }
-                    
+                    contentView
+                        .frame(maxHeight: .infinity, alignment: .top)
                     Spacer()
-                    nextButton
+                    buttonsContainerView
                         .padding(.horizontal, 16)
-                    skipButton
                 }
             }
             .toolbarVisibility(.hidden, for: .navigationBar)
@@ -72,28 +48,43 @@ private extension PermissionContainerView {
         .padding(.top, 20)
     }
     
-    var nextButton: some View {
-        DButton(title: "Next") {
-            if currentStep < 2 {
-                withAnimation {
-                    currentStep += 1
-                }
-            } else {
-                showSettings = true
-            }
+    var contentView: some View {
+        TabView(selection: $currentStep) {
+            PermissionsFeelingsUI()
+                .tag(0)
+            PermissionsLifeFocusUI()
+                .tag(1)
+            PermissionsPersonalizationUI()
+                .tag(2)
         }
-        .padding(.bottom, 4)
+        .tabViewStyle(.page(indexDisplayMode: .never))
+        .indexViewStyle(.page(backgroundDisplayMode: .never))
     }
     
-    var skipButton: some View {
-        Button(action: {
-            showSettings = true
-        }) {
-            Text("Skip")
-                .font(.subheadline)
-                .foregroundColor(.white.opacity(0.7))
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 8)
+    var buttonsContainerView: some View {
+        VStack(spacing: 12) {
+            Button(action: {
+                if currentStep < 2 {
+                    withAnimation {
+                        currentStep += 1
+                    }
+                } else {
+                    showSettings = true
+                }
+            }, label: {
+                Text("Next")
+            })
+            .buttonStyle(PrimaryButtonStyle())
+            
+            Button(action: {
+                showSettings = true
+            }) {
+                Text("Skip")
+                    .font(.subheadline)
+                    .foregroundColor(.white.opacity(0.7))
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 8)
+            }
         }
     }
 }
