@@ -25,9 +25,6 @@ struct IntroView: View {
                     .presentationDetents([.fraction(0.28)])
                     .presentationDragIndicator(.visible)
             }
-            .navigationDestination(isPresented: $authManager.isAuthenticated) {
-                PermissionContainerView()
-            }
         }
     }
 }

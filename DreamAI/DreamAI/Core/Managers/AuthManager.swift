@@ -14,6 +14,7 @@ import CloudKit
 
 protocol AuthManaging {
     var isAuthenticated: Bool { get }
+    var hasCompletedPermissions: Bool { get }
     var user: User? { get }
     var showiCloudSignInAlert: Bool { get set }
     var isSyncingWithiCloud: Bool { get set }
@@ -24,6 +25,7 @@ protocol AuthManaging {
     func signInWithGoogle(presentingViewController: UIViewController) async throws
     func signInWithApple(credential: ASAuthorizationAppleIDCredential) async throws
     func signOut() async throws
+    func markPermissionsCompleted()
 }
 
 final class AuthManager: ObservableObject, AuthManaging {
@@ -40,13 +42,19 @@ final class AuthManager: ObservableObject, AuthManaging {
     
     @Published private(set) var user: User?
     @Published var isAuthenticated: Bool = false
+    @Published var hasCompletedPermissions: Bool = false
     @Published var showiCloudSignInAlert = false
     @Published var isSyncingWithiCloud: Bool = false
     @Published var isSyncingWithiCloudInProgress = false
     @Published var showiCloudStatusAlert = false
     @Published var iCloudStatusMessage = ""
 
+    private let userDefaults = UserDefaults.standard
+    private let permissionsCompletedKey = "user_has_completed_permissions"
+
     private init() {
+        // Load permissions completion status
+        hasCompletedPermissions = userDefaults.bool(forKey: permissionsCompletedKey)
         Task { await refreshSession() }
     }
     
@@ -129,6 +137,15 @@ final class AuthManager: ObservableObject, AuthManaging {
     func signOut() async throws {
         try await client.auth.signOut()
         await refreshSession()
+        clearUserDefaults()
+        isAuthenticated = false
+        hasCompletedPermissions = false
+        user = nil
+    }
+    
+    func markPermissionsCompleted() {
+        hasCompletedPermissions = true
+        userDefaults.set(true, forKey: permissionsCompletedKey)
     }
     
     func attemptToEnableiCloudSync() {
@@ -171,5 +188,9 @@ final class AuthManager: ObservableObject, AuthManaging {
                 }
             }
         }
+    }
+
+    func clearUserDefaults() {
+        userDefaults.removeObject(forKey: permissionsCompletedKey)
     }
 }

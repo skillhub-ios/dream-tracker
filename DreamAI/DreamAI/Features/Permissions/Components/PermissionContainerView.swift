@@ -50,8 +50,10 @@ struct PermissionContainerView: View {
                 }
             }
             .toolbarVisibility(.hidden, for: .navigationBar)
-            .navigationDestination(isPresented: $showSettings) {
-                PermissionsSettingsUI()
+            .sheet(isPresented: $showSettings) {
+                NavigationStack {
+                    PermissionsSettingsUI()
+                }
             }
         }
     }

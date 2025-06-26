@@ -16,10 +16,18 @@ struct DreamAIApp: App {
     
     var body: some Scene {
         WindowGroup {
-            if authManager.isAuthenticated || authManager.isDebugMode {
-                MainView()
+            if authManager.isAuthenticated {
+                if authManager.hasCompletedPermissions {
+                    MainView()
+                } else {
+                    NavigationStack {
+                        PermissionContainerView()
+                    }
+                }
             } else {
-                IntroView()
+                NavigationStack {
+                    IntroView()
+                }
             }
         }
     }
