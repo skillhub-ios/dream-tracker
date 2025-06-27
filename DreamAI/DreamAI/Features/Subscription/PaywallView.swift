@@ -8,7 +8,7 @@ import SwiftUI
 
 struct PaywallView: View {
     
-    @StateObject var viewModel = SubscriptionViewModel()
+    @EnvironmentObject var viewModel: SubscriptionViewModel
     
     var body: some View {
         ZStack(alignment: .top) {
@@ -173,4 +173,5 @@ private extension PaywallView {
 
 #Preview {
     PaywallView()
+        .environmentObject(SubscriptionViewModel())
 }
