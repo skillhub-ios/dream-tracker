@@ -331,6 +331,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DreamAI/Info.plist;
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "DreamAI uses Face ID to securely authenticate you before accessing your personal dream data and insights.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We need access to your microphone to record your dream narration.";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "We need speech recognition to convert your spoken dream into text.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -365,6 +366,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DreamAI/Info.plist;
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "DreamAI uses Face ID to securely authenticate you before accessing your personal dream data and insights.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We need access to your microphone to record your dream narration.";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "We need speech recognition to convert your spoken dream into text.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
