@@ -17,14 +17,23 @@ struct DreamAIApp: App {
     
     var body: some Scene {
         WindowGroup {
+            if authManager.isAuthenticated {
+                if authManager.hasCompletedPermissions {
+                    MainView()
+                } else {
+                    NavigationStack {
+                        PermissionContainerView()
             if authManager.isAuthenticated || authManager.isDebugMode {
                 MainView()
                     .environmentObject(subscriptionViewModel)
                     .fullScreenCover(isPresented: $subscriptionViewModel.paywallIsPresent) {
                         PaywallView()
                     }
+                }
             } else {
-                IntroView()
+                NavigationStack {
+                    IntroView()
+                }
             }
         }
     }

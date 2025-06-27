@@ -8,10 +8,11 @@
 import SwiftUI
 
 struct ProfileExitButton: View {
+    let action: () -> Void
     var body: some View {
         Section {
             Button("Exit") {
-                
+                action()
             }
             .tint(.red)
             .frame(maxWidth: .infinity, alignment: .center)
@@ -21,6 +22,6 @@ struct ProfileExitButton: View {
 
 #Preview {
     List {
-        ProfileExitButton()
+        ProfileExitButton(action: {})
     }
 }

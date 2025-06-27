@@ -11,6 +11,7 @@ import UserNotifications
 struct PermissionsSettingsUI: View {
     @StateObject private var viewModel = PermissionsSettingsViewModel()
     @StateObject private var pushNotificationManager = PushNotificationManager.shared
+    @StateObject private var authManager = AuthManager.shared
     @State private var showBedtimePicker = false
     @State private var showWakeupPicker = false
     @State private var showLanguagePicker = false
@@ -31,6 +32,7 @@ struct PermissionsSettingsUI: View {
                 languageSection
                 Spacer()
                 DButton(title: "Done") {
+                    authManager.markPermissionsCompleted()
                     showMainView = true
                 }
             }
@@ -65,7 +67,7 @@ private extension PermissionsSettingsUI {
                 Toggle("", isOn: $viewModel.remindersEnabled)
                     .toggleStyle(SwitchToggleStyle(tint: .purple))
                     .labelsHidden()
-                    .onChange(of: viewModel.remindersEnabled) { newValue in
+                    .onChange(of: viewModel.remindersEnabled) { oldValue, newValue in
                         handleNotificationToggle(newValue)
                     }
             }
