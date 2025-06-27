@@ -14,19 +14,17 @@ struct IntroView: View {
     @State private var authMode: AuthSheetMode = .login
     
     var body: some View {
-        ZStack(alignment: .bottom) {
-            AppGradients.purpleToBlack
-                .edgesIgnoringSafeArea(.all)
-            IntroBottomCard(showAuthSheet: $showAuthSheet, authMode: $authMode)
-                .padding(.horizontal, 16)
-        }
-        .sheet(isPresented: $showAuthSheet) {
-            AuthSheetView(mode: authMode)
-                .presentationDetents([.fraction(0.28)])
-                .presentationDragIndicator(.visible)
-        }
-        .navigationDestination(isPresented: $authManager.isAuthenticated) {
-            PermissionContainerView()
+        NavigationStack {
+            VStack {
+                Spacer()
+                IntroBottomCard(showAuthSheet: $showAuthSheet, authMode: $authMode)
+            }
+            .animatedGradientBackground()
+            .sheet(isPresented: $showAuthSheet) {
+                AuthSheetView(mode: authMode)
+                    .presentationDetents([.fraction(0.28)])
+                    .presentationDragIndicator(.visible)
+            }
         }
     }
 }

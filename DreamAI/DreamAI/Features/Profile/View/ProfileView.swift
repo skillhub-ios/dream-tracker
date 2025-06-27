@@ -11,6 +11,10 @@ struct ProfileView: View {
     @StateObject private var viewModel = ProfileViewModel()
     @Environment(\.dismiss) private var dismiss
     @State private var showExportImport = false
+    @State private var isSigningOut = false
+    
+    // Access AuthManager
+    private let authManager = AuthManager.shared
 
     var body: some View {
         NavigationStack {
@@ -32,7 +36,11 @@ struct ProfileView: View {
                         ProfileFeedbackSection()
 
                         // Exit Button
-                        ProfileExitButton()
+                        ProfileExitButton {
+                            Task {
+                                await signOut()
+                            }
+                        }
                         
                         // Footer
                         ProfileFooterLinks()
@@ -40,6 +48,7 @@ struct ProfileView: View {
                     }
                     .listSectionSpacing(12)
                     .environmentObject(viewModel)
+                    .disabled(isSigningOut)
                 
             }
             .navigationTitle("Profile")
@@ -50,12 +59,40 @@ struct ProfileView: View {
                         dismiss()
                     }
                     .tint(.appPurple)
+                    .disabled(isSigningOut)
                 }
             }
             .sheet(isPresented: $showExportImport) {
                 NavigationStack {
                     ExportImportView()
                 }
+            }
+            .overlay {
+                if isSigningOut {
+                    MagicLoadingUI(progress: 0.8)
+                        .frame(width: 40, height: 40)
+                }
+            }
+        }
+    }
+    
+    // MARK: - Sign Out Logic
+    private func signOut() async {
+        await MainActor.run {
+            isSigningOut = true
+        }
+        
+        do {
+            try await authManager.signOut()
+            await MainActor.run {
+                isSigningOut = false
+                dismiss()
+            }
+        } catch {
+            await MainActor.run {
+                isSigningOut = false
+                // You might want to show an error alert here
+                print("Sign out failed: \(error.localizedDescription)")
             }
         }
     }

@@ -11,6 +11,7 @@ import UserNotifications
 struct PermissionsSettingsUI: View {
     @StateObject private var viewModel = PermissionsSettingsViewModel()
     @StateObject private var pushNotificationManager = PushNotificationManager.shared
+    @StateObject private var authManager = AuthManager.shared
     @State private var showBedtimePicker = false
     @State private var showWakeupPicker = false
     @State private var showLanguagePicker = false
@@ -27,8 +28,9 @@ struct PermissionsSettingsUI: View {
                 privacySection
                 languageSection
                 Spacer()
-                
-                Button {
+              
+                DButton(title: "Done") {
+                    authManager.markPermissionsCompleted()
                     showMainView = true
                 } label: {
                     Text("Done")
