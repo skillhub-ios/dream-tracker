@@ -327,10 +327,11 @@
 				CODE_SIGN_ENTITLEMENTS = DreamAI/DreamAI.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4V6HY9M86Z;
+				DEVELOPMENT_TEAM = U6WX293A7Z;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DreamAI/Info.plist;
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "DreamAI uses Face ID to securely authenticate you before accessing your personal dream data and insights.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We need access to your microphone to record your dream narration.";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "We need speech recognition to convert your spoken dream into text.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -345,7 +346,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.skillhub.DreamAI;
+				PRODUCT_BUNDLE_IDENTIFIER = com.get.DreamAI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -362,10 +363,11 @@
 				CODE_SIGN_ENTITLEMENTS = DreamAI/DreamAI.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4V6HY9M86Z;
+				DEVELOPMENT_TEAM = U6WX293A7Z;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DreamAI/Info.plist;
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "DreamAI uses Face ID to securely authenticate you before accessing your personal dream data and insights.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We need access to your microphone to record your dream narration.";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "We need speech recognition to convert your spoken dream into text.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -380,7 +382,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.skillhub.DreamAI;
+				PRODUCT_BUNDLE_IDENTIFIER = com.get.DreamAI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
