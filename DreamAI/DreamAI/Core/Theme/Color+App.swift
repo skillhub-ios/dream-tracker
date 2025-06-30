@@ -39,6 +39,8 @@ extension Color {
     static let appGray7 = Color(hex: "787880")
     /// #767680 - appGray8
     static let appGray8 = Color(hex: "767680")
+    /// #EBEBF5 - appGray9
+    static let appGray9 = Color(hex: "EBEBF5")
     
     // MARK: - Accent Colors
     /// #34A853 - appGreen
@@ -57,6 +59,10 @@ extension Color {
     static let appGreenLight = Color(hex: "32D74B")
     /// #64D2FF - appBlueLight
     static let appBlueLight = Color(hex: "64D2FF")
+    /// #2E2632 - appPurpleGray
+    static let appPurpleGray = Color(hex: "2E2632")
+    /// #36273C - appPurpleGrayBackground
+    static let appPurpleGrayBackground = Color(hex: "36273C")
     
     // MARK: - Hex Initializer
     init(hex: String) {
