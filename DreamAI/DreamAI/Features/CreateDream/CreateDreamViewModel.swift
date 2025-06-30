@@ -27,7 +27,6 @@ class CreateDreamViewModel: ObservableObject {
     
     // MARK: - Dependencies
     private let speechRecognizer: SpeechRecognizing = SpeechRecognizerManager.shared
-    private let dreamManager = DreamsDataManager()
     private let dreamInterpreter = DreamInterpreter.shared
     private var cancellables = Set<AnyCancellable>()
     
@@ -112,7 +111,19 @@ class CreateDreamViewModel: ObservableObject {
             }
         }
     }
+    
+    func createDream() {
+        let newDream = Dream(
+            emoji: generateRandomEmoji(),
+            emojiBackground: generateRandomColor(),
+            title: String(dreamText.prefix(30)),
+            tags: generateRandomTags(),
+            date: selectedDate
+        )
+        addDream(newDream)
+    }
 
+    /// OLD
     func generateDream() async -> (UUID, DreamInterpretationFullModel?) {
         let newDream = Dream(
             emoji: generateRandomEmoji(),
@@ -121,7 +132,7 @@ class CreateDreamViewModel: ObservableObject {
             tags: generateRandomTags(),
             date: selectedDate
         )
-        dreamManager.addDream(newDream)
+        addDream(newDream)
         
         do {
             let interpretation = try await dreamInterpreter.interpretDream(
@@ -171,5 +182,13 @@ class CreateDreamViewModel: ObservableObject {
                 self?.updateTextInRealTime()
             }
             .store(in: &cancellables)
+    }
+    
+    private func addDream(_ dream: Dream) {
+        NotificationCenter.default.post(
+            name: Notification.Name(PublisherKey.addDream.rawValue),
+            object: nil,
+            userInfo: ["value": dream]
+        )
     }
 }

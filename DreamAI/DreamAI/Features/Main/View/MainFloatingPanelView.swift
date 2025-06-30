@@ -52,7 +52,7 @@ struct MainFloatingPanelView: View {
             
             FloatingActionButton(mode: dreamlistmode) {
                 if dreamlistmode == .edit {
-                    viewModel.deleteDreams(ids: selectedDreamIds)
+//                    viewModel.deleteDreams(ids: selectedDreamIds)
                     selectedDreamIds.removeAll()
                     dreamlistmode = .view
                 } else {

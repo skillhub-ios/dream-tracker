@@ -199,6 +199,7 @@ private extension CreateDreamView {
     
     func doneNavigationButton() -> some View {
         Button(action: {
+            viewModel.createDream()
             dismiss()
         }) {
             Text("Done")

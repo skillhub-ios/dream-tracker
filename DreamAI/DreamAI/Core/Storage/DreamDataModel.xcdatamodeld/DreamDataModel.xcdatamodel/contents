@@ -5,7 +5,7 @@
         <attribute name="emoji" optional="YES" attributeType="String"/>
         <attribute name="emojiBackground" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="tags" optional="YES" attributeType="Transformable"/>
+        <attribute name="tags" optional="YES" attributeType="String"/>
         <attribute name="title" optional="YES" attributeType="String"/>
     </entity>
 </model>
