@@ -331,7 +331,6 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DreamAI/Info.plist;
-				INFOPLIST_KEY_NSFaceIDUsageDescription = "DreamAI uses Face ID to securely authenticate you before accessing your personal dream data and insights.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We need access to your microphone to record your dream narration.";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "We need speech recognition to convert your spoken dream into text.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -340,7 +339,7 @@
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -367,7 +366,6 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DreamAI/Info.plist;
-				INFOPLIST_KEY_NSFaceIDUsageDescription = "DreamAI uses Face ID to securely authenticate you before accessing your personal dream data and insights.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We need access to your microphone to record your dream narration.";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "We need speech recognition to convert your spoken dream into text.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -376,7 +374,7 @@
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

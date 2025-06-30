@@ -10,20 +10,27 @@ import Combine
 
 @MainActor
 class MainViewModel: ObservableObject {
+    
+    // MARK: - Public Properties
+    
     @Published var searchBarFilter: SearchBarFilter = .newestFirst
     @Published var searchText: String = ""
     @Published var lastDream: Dream?
+    @Published var dreams: [Dream] = []
+    
+    // MARK: - Private Properties
     
     private var cancellables = Set<AnyCancellable>()
-    private let dreamManager = DreamManager.shared
     
-    var dreams: [Dream] {
-        dreamManager.dreams
-    }
+    // MARK: - External Dependencies
+    
+    private let dreamManager = DreamsDataManager()
+    
+    // MARK: - Lifecycle
     
     init() {
         // Subscribe to dreamManager's changes
-        dreamManager.$dreams
+        dreamManager.$dreams // No
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.objectWillChange.send()
@@ -33,12 +40,22 @@ class MainViewModel: ObservableObject {
         
         self.lastDream = dreamManager.dreams.first
         
-        $searchBarFilter
+        $searchBarFilter // No
             .sink { _ in
                 self.objectWillChange.send()
             }
             .store(in: &cancellables)
     }
+    
+    // MARK: - Public Functions
+    
+    // MARK: - Private Functions
+    
+    private func addSubscriptions() {
+        
+    }
+    
+    // MARK: - OLD ---------------------------------
 
     func filterDreams() -> [Dream] {
         let sortedDreams = filterBySearchBarFilter()

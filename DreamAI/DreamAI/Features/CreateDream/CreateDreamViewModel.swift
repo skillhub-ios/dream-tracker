@@ -27,7 +27,7 @@ class CreateDreamViewModel: ObservableObject {
     
     // MARK: - Dependencies
     private let speechRecognizer: SpeechRecognizing = SpeechRecognizerManager.shared
-    private let dreamManager = DreamManager.shared
+    private let dreamManager = DreamsDataManager()
     private let dreamInterpreter = DreamInterpreter.shared
     private var cancellables = Set<AnyCancellable>()
     

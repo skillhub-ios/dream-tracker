@@ -43,7 +43,7 @@ extension RequestStatus {
 }
 
 struct Dream: Identifiable, Equatable, Codable {
-    var id: UUID = UUID()
+    var id: UUID = UUID()  // var?
     let emoji: String
     let emojiBackground: Color
     let title: String

@@ -1,5 +1,5 @@
 //
-//  DreamManager.swift
+//  DreamsDataManager.swift
 //  DreamAI
 //
 //  Created by Shaxzod on 19/04/25
@@ -8,31 +8,63 @@
 import SwiftUI
 import Combine
 import CloudKit
+import CoreData
 
-@MainActor
-class DreamManager: ObservableObject {
+final class DreamsDataManager: ObservableObject {
     
-    // MARK: - Properties
+    // MARK: - Public Properties
+    
     @Published var dreams: [Dream] = []
     @Published var isLoading = false
     @Published var errorMessage: String?
     
-    // MARK: - Dependencies
-    private let storageManager = StorageManager.shared
-    private let cloudKitManager = CloudKitManager.shared
-    private let authManager = AuthManager.shared
-    
-    // MARK: - Singleton
-    static let shared = DreamManager()
+    // MARK: - Private Properties
     
     private var cancellables = Set<AnyCancellable>()
+    private let container: NSPersistentContainer
     
-    private init() {
-        setupBindings()
-        Task {
-            await loadDreamsFromStorage()
+    // MARK: - External Dependencies
+    
+    private let storageManager = StorageManager.shared // Будет сразу тут
+    private let cloudKitManager = CloudKitManager.shared // Будет сразу тут
+    private let authManager = AuthManager.shared
+    
+    // MARK: - Lifecycle
+    
+    init() {
+        container = NSPersistentContainer(name: "DreamDataModel")
+        container.loadPersistentStores { _, error in
+            if let error {
+                print("Error loadind CoreData \(error)")
+            } else {
+                print("CoreData is initialized")
+            }
         }
     }
+    
+    // MARK: - Public Functions
+    
+    // MARK: - Private Functions
+    
+    private func addSubscriptions() {
+        
+    }
+    
+    private func fetchDreamsData() {
+        
+    }
+    
+    
+
+    
+    // MARK: - OLD ---------------------------
+    
+//    init() {
+//        setupBindings()
+//        Task {
+//            await loadDreamsFromStorage()
+//        }
+//    }
     
     // MARK: - Setup
     

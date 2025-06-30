@@ -24,7 +24,7 @@ final class ExportImportViewModel: ObservableObject {
     @Published var successMessage: String?
     
     let exportImportManager = ExportImportManager.shared
-    private let dreamManager = DreamManager.shared
+//    private let dreamManager = DreamManager()
     private var cancellables = Set<AnyCancellable>()
     
     init() {
@@ -142,7 +142,7 @@ final class ExportImportViewModel: ObservableObject {
             try await exportImportManager.importDreamsFromFile(fileURL)
             
             // Refresh dreams from storage
-            await dreamManager.refreshFromStorage()
+//            await dreamManager.refreshFromStorage()
             
             successMessage = "Successfully imported \(validationResult.dreamCount) dreams"
             currentState = .done
