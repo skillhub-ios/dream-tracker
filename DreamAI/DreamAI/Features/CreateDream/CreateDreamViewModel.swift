@@ -17,6 +17,7 @@ class CreateDreamViewModel: ObservableObject {
     @Published var dreamText = ""
     @Published var selectedMood: Mood? = .calm
     @Published var isButtonDisabled: Bool = true
+    @Published var buttonState: DButtonState = .normal
     @Published var isRecording: Bool = false
     @Published var showPermissionAlert: Bool = false
     @Published var permissionAlertMessage: String = ""
@@ -132,7 +133,12 @@ class CreateDreamViewModel: ObservableObject {
     private func subscribers() {
         Publishers.CombineLatest3($selectedDate, $dreamText, $selectedMood)
             .map { date, text, mood in
-                text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || mood == nil
+                guard UserManager.shared.isSubscribed else {
+                    self.buttonState = .locked
+                    return true
+                }
+                self.buttonState = .normal
+                return text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || mood == nil
             }
             .receive(on: DispatchQueue.main)
             .assign(to: \.isButtonDisabled, on: self)

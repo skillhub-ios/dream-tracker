@@ -45,7 +45,7 @@ struct CreateDreamView: View {
 
                     Spacer()
                     
-                    DButton(title: "Generate Dream", isDisabled: $viewModel.isButtonDisabled) {
+                    DButton(title: "Generate Dream", state: $viewModel.buttonState, isDisabled: $viewModel.isButtonDisabled) {
                         Task {
                             await MainActor.run {
                                 interpretationViewModel.updateDreamData(userCredential)
