@@ -22,19 +22,18 @@ class DreamInterpretationViewModel: ObservableObject {
     private let userManager: UserManager = .shared
     private let dreamInterpreter: DreamInterpreter = .shared
     
-    private var interpretationModel: DreamInterpretationFullModel?
     private var dream: Dream?
+    private var dreamData: UserDreamData?
     
-    init(interpretationModel: DreamInterpretationFullModel? = nil, dream: Dream? = nil) {
-        self.interpretationModel = interpretationModel
+    init(dream: Dream) {
         self.dream = dream
+//        self.contentState = dream.requestStatus
         subscribers()
-        
-        // If we have an interpretation model passed in, set it immediately
-        if let interpretationModel = interpretationModel {
-            self.model = interpretationModel
-            self.contentState = .success
-        }
+    }
+
+    init(dreamData: UserDreamData) {
+        self.dreamData = dreamData
+        subscribers()
     }
 
 
@@ -55,25 +54,19 @@ class DreamInterpretationViewModel: ObservableObject {
     }
     
     func fetchInterpretation() async {
-        // If we already have an interpretation model, don't fetch again
-        if let interpretationModel = interpretationModel {
-            self.model = interpretationModel
-            self.contentState = .success
-            return
-        }
         
-        guard let dream = dream else {
+        guard let dreamData = dreamData else {
             // If no dream is provided, show error
             contentState = .error(DreamInterpreterError.invalidResponse)
             return
         }
         
         contentState = .loading
+        
         do {
             let fetchedModel = try await dreamInterpreter.interpretDream(
-                dreamText: dream.title, // Assuming title is the full text for now
-                mood: nil, // We don't have mood for old dreams here
-                tags: dream.tags.map { $0.rawValue }
+                dreamText: dreamData.dreamText,
+                mood: dreamData.mood
             )
             self.model = fetchedModel
             contentState = .success
@@ -81,4 +74,9 @@ class DreamInterpretationViewModel: ObservableObject {
             contentState = .error(error)
         }
     }
+}
+
+struct UserDreamData {
+    let dreamText: String
+    let mood: String?
 }

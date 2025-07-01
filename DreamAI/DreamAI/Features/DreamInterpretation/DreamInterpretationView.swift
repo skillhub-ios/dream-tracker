@@ -21,7 +21,7 @@ struct DreamInterpretationView: View {
                 VStack(alignment: .leading, spacing: 20) {
                     
                     // Title
-                    Text(model.dreamTitle)
+                    Text("\(model.dreamEmoji) \(model.dreamTitle)")
                         .font(.title)
                         .foregroundStyle(
                             .linearGradient(
@@ -48,7 +48,7 @@ struct DreamInterpretationView: View {
                     
                     // Real reflections (collapsible)
                     DisclosureGroup {
-                        Text(model.reflectionPrompts.joined())
+                        Text(model.reflectionPrompts.joined(separator: "\n"))
                             .font(.body)
                             .foregroundColor(.appWhite)
                     } label: {
@@ -86,7 +86,9 @@ struct DreamInterpretationView: View {
                 }
             }
             .task {
-                await viewModel.fetchInterpretation()
+                if viewModel.model == nil {
+                    await viewModel.fetchInterpretation()
+                }
             }
         }
     }
@@ -221,7 +223,18 @@ struct MoodProgressUI: View {
     VStack {
         Text("Hello")
             .sheet(isPresented: .constant(true)) {
-                DreamInterpretationView(viewModel: DreamInterpretationViewModel(interpretationModel: nil, dream: nil))
+                DreamInterpretationView(
+                    viewModel: DreamInterpretationViewModel(
+                        dream: Dream(
+                            emoji: "🐶",
+                            emojiBackground: .appPurple,
+                            title: "Dream about a dog",
+                            tags: [.daydream],
+                            date: Date(),
+                            requestStatus: .success
+                        )
+                    )
+                )
             }
     }
 }

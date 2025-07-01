@@ -13,7 +13,7 @@ class DreamInterpreter {
     
     private init() {}
     
-    func interpretDream(dreamText: String, mood: String?, tags: [String]) async throws -> DreamInterpretationFullModel {
+    func interpretDream(dreamText: String, mood: String?) async throws -> DreamInterpretationFullModel {
         // Validate input
         guard !dreamText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
             throw DreamInterpreterError.emptyDreamText
@@ -26,8 +26,7 @@ class DreamInterpreter {
         do {
             let interpretation = try await openAIManager.getDreamInterpretation(
                 dreamText: cleanedDreamText,
-                mood: mood,
-                tags: tags
+                mood: mood
             )
             
             // Validate the interpretation
@@ -59,6 +58,7 @@ class DreamInterpreter {
         if enhancedInterpretation.dreamTitle.isEmpty || enhancedInterpretation.dreamTitle.count < 3 {
             enhancedInterpretation = DreamInterpretationFullModel(
                 hasSubscription: enhancedInterpretation.hasSubscription,
+                dreamEmoji: enhancedInterpretation.dreamEmoji,
                 dreamTitle: generateDreamTitle(from: originalText),
                 dreamSummary: enhancedInterpretation.dreamSummary,
                 fullInterpretation: enhancedInterpretation.fullInterpretation,
@@ -73,6 +73,7 @@ class DreamInterpreter {
         if enhancedInterpretation.moodInsights.isEmpty {
             enhancedInterpretation = DreamInterpretationFullModel(
                 hasSubscription: enhancedInterpretation.hasSubscription,
+                dreamEmoji: enhancedInterpretation.dreamEmoji,
                 dreamTitle: enhancedInterpretation.dreamTitle,
                 dreamSummary: enhancedInterpretation.dreamSummary,
                 fullInterpretation: enhancedInterpretation.fullInterpretation,
@@ -87,6 +88,7 @@ class DreamInterpreter {
         if enhancedInterpretation.symbolism.isEmpty {
             enhancedInterpretation = DreamInterpretationFullModel(
                 hasSubscription: enhancedInterpretation.hasSubscription,
+                dreamEmoji: enhancedInterpretation.dreamEmoji,
                 dreamTitle: enhancedInterpretation.dreamTitle,
                 dreamSummary: enhancedInterpretation.dreamSummary,
                 fullInterpretation: enhancedInterpretation.fullInterpretation,
@@ -101,6 +103,7 @@ class DreamInterpreter {
         if enhancedInterpretation.reflectionPrompts.isEmpty {
             enhancedInterpretation = DreamInterpretationFullModel(
                 hasSubscription: enhancedInterpretation.hasSubscription,
+                dreamEmoji: enhancedInterpretation.dreamEmoji,
                 dreamTitle: enhancedInterpretation.dreamTitle,
                 dreamSummary: enhancedInterpretation.dreamSummary,
                 fullInterpretation: enhancedInterpretation.fullInterpretation,

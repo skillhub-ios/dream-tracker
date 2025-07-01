@@ -68,11 +68,13 @@ struct MainFloatingPanelView: View {
             .presentationDetents([.large])
         }
         .sheet(isPresented: $showDreamInterpretation) {
-            DreamInterpretationView(
-                viewModel: DreamInterpretationViewModel(
-                    dream: selectedDream
+            if let selectedDream {
+                DreamInterpretationView(
+                    viewModel: DreamInterpretationViewModel(
+                        dream: selectedDream
+                    )
                 )
-            )
+            }
         }
     }
 }

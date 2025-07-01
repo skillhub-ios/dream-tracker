@@ -17,7 +17,7 @@ class OpenAIManager {
         decoder.keyDecodingStrategy = .convertFromSnakeCase
     }
 
-    func getDreamInterpretation(dreamText: String, mood: String?, tags: [String]) async throws -> DreamInterpretationFullModel {
+    func getDreamInterpretation(dreamText: String, mood: String?) async throws -> DreamInterpretationFullModel {
         guard !apiKey.isEmpty else {
             throw NSError(domain: "OpenAIManager", code: -1, userInfo: [NSLocalizedDescriptionKey: "OpenAI API key is missing."])
         }
@@ -25,11 +25,11 @@ class OpenAIManager {
         print("🚀 Starting dream interpretation for text: \(dreamText.prefix(50))...")
         
         // Use Chat Completion API with function calling
-        return try await getDreamInterpretationWithFunctionCalling(dreamText: dreamText, mood: mood, tags: tags)
+        return try await getDreamInterpretationWithFunctionCalling(dreamText: dreamText, mood: mood)
     }
     
     // MARK: - Function Calling Method
-    private func getDreamInterpretationWithFunctionCalling(dreamText: String, mood: String?, tags: [String]) async throws -> DreamInterpretationFullModel {
+    private func getDreamInterpretationWithFunctionCalling(dreamText: String, mood: String?) async throws -> DreamInterpretationFullModel {
         let url = URL(string: "https://api.openai.com/v1/chat/completions")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -38,9 +38,17 @@ class OpenAIManager {
         let systemPrompt = """
         You are a dream interpretation expert. Analyze the user's dream and provide a comprehensive psychological interpretation. 
         Focus on the emotional content, symbolism, and potential meanings in the dreamer's life.
+        
+        IMPORTANT RULES:
+        1. moodInsights must contain exactly 3 items with different emotions
+        2. symbolism must contain exactly 3 items with short, concise meanings (1-3 words max)
+        3. reflectionPrompts must be an ARRAY of strings, each containing one question with "\\n" at the end
+        4. All scores in moodInsights must be between 0.0 and 1.0 (decimal values, not integers)
+        5. dreamEmoji should be a single emoji that best represents the overall theme of the dream
+        6. ALL emoji fields (dreamEmoji, moodInsights.emoji, symbolism.icon) must be actual emoji characters (🐶, 😊, 🌲) NOT text names ("Dog", "Happy", "Tree")
         """
         
-        let userMessage = "Please interpret this dream: \(dreamText). Mood: \(mood ?? "not specified"). Tags: \(tags.joined(separator: ", "))"
+        let userMessage = "Please interpret this dream: \(dreamText). Mood: \(mood ?? "not specified")."
         
         let body: [String: Any] = [
             "model": "gpt-4",
@@ -57,6 +65,10 @@ class OpenAIManager {
                         "parameters": [
                             "type": "object",
                             "properties": [
+                                "dreamEmoji": [
+                                    "type": "string",
+                                    "description": "A single emoji character that best represents the overall theme or mood of the dream (e.g., 🐶, 😊, 🌲, NOT 'Dog', 'Happy', 'Tree')"
+                                ],
                                 "dreamTitle": [
                                     "type": "string",
                                     "description": "A brief, evocative title for the dream"
@@ -76,7 +88,7 @@ class OpenAIManager {
                                         "properties": [
                                             "emoji": [
                                                 "type": "string",
-                                                "description": "An emoji representing the mood"
+                                                "description": "An emoji character representing the mood (e.g., 😊, 😢, 😠, NOT 'Happy', 'Sad', 'Angry')"
                                             ],
                                             "label": [
                                                 "type": "string",
@@ -84,12 +96,14 @@ class OpenAIManager {
                                             ],
                                             "score": [
                                                 "type": "number",
-                                                "description": "A score between 0.0 and 1.0 representing the intensity of this mood"
+                                                "description": "A decimal score between 0.0 and 1.0 representing the intensity of this mood (e.g., 0.7, 0.4, 0.2)"
                                             ]
                                         ],
                                         "required": ["emoji", "label", "score"]
                                     ],
-                                    "description": "Array of mood insights reflecting the emotional tone of the dream"
+                                    "description": "Array of exactly 3 mood insights reflecting the emotional tone of the dream. Must include 3 different emotions.",
+                                    "minItems": 3,
+                                    "maxItems": 3
                                 ],
                                 "symbolism": [
                                     "type": "array",
@@ -98,23 +112,27 @@ class OpenAIManager {
                                         "properties": [
                                             "icon": [
                                                 "type": "string",
-                                                "description": "An emoji or symbol representing the dream element"
+                                                "description": "An emoji character representing the dream element (e.g., 🐶, 🌲, 🏠, NOT 'Dog', 'Tree', 'House')"
                                             ],
                                             "meaning": [
                                                 "type": "string",
-                                                "description": "The psychological meaning of this symbol"
+                                                "description": "The psychological meaning of this symbol (keep it short, 1-3 words max)"
                                             ]
                                         ],
                                         "required": ["icon", "meaning"]
                                     ],
-                                    "description": "Array of symbolic elements and their psychological meanings"
+                                    "description": "Array of exactly 3 symbolic elements and their psychological meanings. Keep meanings concise.",
+                                    "minItems": 3,
+                                    "maxItems": 3
                                 ],
                                 "reflectionPrompts": [
                                     "type": "array",
                                     "items": [
                                         "type": "string"
                                     ],
-                                    "description": "Array of questions to encourage self-reflection about the dream"
+                                    "description": "Array of 3 questions to encourage self-reflection about the dream. Each question should be a separate string in the array with '\\n' at the end. Example: ['What did you feel in the dream?\\n', 'What does this dream mean to you?\\n', 'How does this relate to your life?\\n']",
+                                    "minItems": 3,
+                                    "maxItems": 3
                                 ],
                                 "quote": [
                                     "type": "object",
@@ -132,7 +150,7 @@ class OpenAIManager {
                                     "description": "An inspirational quote related to dreams or psychology"
                                 ]
                             ],
-                            "required": ["dreamTitle", "dreamSummary", "fullInterpretation", "moodInsights", "symbolism", "reflectionPrompts", "quote"]
+                            "required": ["dreamEmoji", "dreamTitle", "dreamSummary", "fullInterpretation", "moodInsights", "symbolism", "reflectionPrompts", "quote"]
                         ]
                     ]
                 ]
@@ -217,3 +235,43 @@ class OpenAIManager {
         }
     }
 } 
+
+
+
+//▿ DreamInterpretationFullModel
+//  - hasSubscription : nil
+//  - dreamEmoji : "😡"
+//  - dreamTitle : "The Angry Girlfriend"
+//  - dreamSummary : "You dreamed about your girlfriend, who was angry in the dream. This dream may reflect unresolved issues or repressed emotions in your relationship."
+//  - fullInterpretation : "Dreaming about an angry girlfriend could reflect inner conflicts or repressed feelings in your relationship. It may indicate your fear of conflict, sense of guilt, or discomfort with certain aspects of the relationship. The dream could also be a manifestation of your own anger or frustration, projected onto your girlfriend. It\'s important to reflect on your feelings towards your girlfriend and your relationship in your waking life."
+//  ▿ moodInsights : 3 elements
+//    ▿ 0 : MoodInsight
+//      - emoji : "😡"
+//      - label : "Angry"
+//      - score : 0.9
+//    ▿ 1 : MoodInsight
+//      - emoji : "😨"
+//      - label : "Fearful"
+//      - score : 0.6
+//    ▿ 2 : MoodInsight
+//      - emoji : "😔"
+//      - label : "Sad"
+//      - score : 0.5
+//  ▿ symbolism : 3 elements
+//    ▿ 0 : SymbolMeaning
+//      - icon : "👩‍❤️‍👨"
+//      - meaning : "Relationship"
+//    ▿ 1 : SymbolMeaning
+//      - icon : "⛈"
+//      - meaning : "Conflict"
+//    ▿ 2 : SymbolMeaning
+//      - icon : "🔥"
+//      - meaning : "Anger"
+//  ▿ reflectionPrompts : 3 elements
+//    - 0 : "What might be causing conflict in your relationship?\n"
+//    - 1 : "How do you typically handle anger or conflict?\n"
+//    - 2 : "Are there any unresolved issues or repressed emotions that need addressing?\n"
+//  ▿ quote : Quote
+//    - text : "Dreams are the royal road to the unconscious."
+//    - author : "Sigmund Freud"
+
