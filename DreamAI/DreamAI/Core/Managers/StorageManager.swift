@@ -28,7 +28,20 @@ class StorageManager: ObservableObject {
     /// Save dreams to persistent storage
     func saveDreams(_ dreams: [Dream]) async throws {
         do {
+            print("🔧 Encoding \(dreams.count) dreams to JSON...")
+            
+            // Debug: Check interpretation data before encoding
+            for (index, dream) in dreams.enumerated() {
+                if let interpretation = dream.interpretation {
+                    print("✅ Encoding dream \(index): '\(dream.title)' with interpretation: \(interpretation.dreamTitle)")
+                } else {
+                    print("❌ Encoding dream \(index): '\(dream.title)' with NO interpretation data")
+                }
+            }
+            
             let data = try JSONEncoder().encode(dreams)
+            print("📦 Encoded dreams to \(data.count) bytes")
+            
             userDefaults.set(data, forKey: dreamsKey)
             userDefaults.set(Date(), forKey: lastSyncKey)
             print("✅ Successfully saved \(dreams.count) dreams to storage")
@@ -45,9 +58,21 @@ class StorageManager: ObservableObject {
             return []
         }
         
+        print("📦 Loading dreams from \(data.count) bytes of data...")
+        
         do {
             let dreams = try JSONDecoder().decode([Dream].self, from: data)
             print("✅ Successfully loaded \(dreams.count) dreams from storage")
+            
+            // Debug: Check interpretation data after decoding
+            for (index, dream) in dreams.enumerated() {
+                if let interpretation = dream.interpretation {
+                    print("✅ Decoded dream \(index): '\(dream.title)' with interpretation: \(interpretation.dreamTitle)")
+                } else {
+                    print("❌ Decoded dream \(index): '\(dream.title)' with NO interpretation data")
+                }
+            }
+            
             return dreams
         } catch {
             print("❌ Failed to load dreams: \(error.localizedDescription)")
@@ -121,6 +146,51 @@ class StorageManager: ObservableObject {
     func importDreams(from data: Data) async throws {
         let dreams = try JSONDecoder().decode([Dream].self, from: data)
         try await saveDreams(dreams)
+    }
+    
+    // MARK: - Debug Methods
+    
+    /// Test JSON encoding/decoding of a single dream
+    func testDreamEncoding(_ dream: Dream) -> Bool {
+        print("🧪 Testing JSON encoding/decoding for dream: '\(dream.title)'")
+        
+        do {
+            // Test encoding
+            let data = try JSONEncoder().encode(dream)
+            print("✅ Successfully encoded dream to \(data.count) bytes")
+            
+            // Test decoding
+            let decodedDream = try JSONDecoder().decode(Dream.self, from: data)
+            print("✅ Successfully decoded dream: '\(decodedDream.title)'")
+            
+            // Check interpretation data
+            if let originalInterpretation = dream.interpretation {
+                print("📝 Original dream has interpretation: \(originalInterpretation.dreamTitle)")
+                
+                if let decodedInterpretation = decodedDream.interpretation {
+                    print("✅ Decoded dream has interpretation: \(decodedInterpretation.dreamTitle)")
+                    
+                    let isSame = originalInterpretation.dreamTitle == decodedInterpretation.dreamTitle
+                    print("🔍 Interpretation data preserved: \(isSame)")
+                    return isSame
+                } else {
+                    print("❌ Decoded dream has NO interpretation data")
+                    return false
+                }
+            } else {
+                print("📝 Original dream has NO interpretation data")
+                if decodedDream.interpretation == nil {
+                    print("✅ Decoded dream also has NO interpretation data (consistent)")
+                    return true
+                } else {
+                    print("❌ Decoded dream has interpretation data (inconsistent)")
+                    return false
+                }
+            }
+        } catch {
+            print("❌ JSON encoding/decoding failed: \(error)")
+            return false
+        }
     }
 }
 

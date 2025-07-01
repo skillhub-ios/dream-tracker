@@ -68,7 +68,17 @@ struct Dream: Identifiable, Equatable, Codable {
         tags = try container.decode([Tags].self, forKey: .tags)
         date = try container.decode(Date.self, forKey: .date)
         requestStatus = try container.decode(RequestStatus.self, forKey: .requestStatus)
-        interpretation = try container.decodeIfPresent(DreamInterpretationFullModel.self, forKey: .interpretation)
+        
+        // Decode interpretation with error handling
+        do {
+            interpretation = try container.decodeIfPresent(DreamInterpretationFullModel.self, forKey: .interpretation)
+            if interpretation != nil {
+                print("✅ Successfully decoded interpretation for dream: \(title)")
+            }
+        } catch {
+            print("❌ Failed to decode interpretation for dream '\(title)': \(error)")
+            interpretation = nil
+        }
     }
     
     func encode(to encoder: Encoder) throws {
@@ -84,7 +94,16 @@ struct Dream: Identifiable, Equatable, Codable {
         try container.encode(tags, forKey: .tags)
         try container.encode(date, forKey: .date)
         try container.encode(requestStatus, forKey: .requestStatus)
-        try container.encodeIfPresent(interpretation, forKey: .interpretation)
+        
+        // Encode interpretation with error handling
+        if let interpretation = interpretation {
+            do {
+                try container.encode(interpretation, forKey: .interpretation)
+                print("✅ Successfully encoded interpretation for dream: \(title)")
+            } catch {
+                print("❌ Failed to encode interpretation for dream '\(title)': \(error)")
+            }
+        }
     }
     
     // MARK: - Initializer
@@ -126,6 +145,17 @@ extension Dream {
         
         let tags = tagsRaw.compactMap { Tags(rawValue: $0) }
         let requestStatus = RequestStatus.fromString(requestStatusString)
+        
+        // Decode interpretation data if available
+        var interpretation: DreamInterpretationFullModel? = nil
+        if let interpretationData = record["interpretation"] as? Data {
+            do {
+                interpretation = try JSONDecoder().decode(DreamInterpretationFullModel.self, from: interpretationData)
+                print("✅ Successfully decoded interpretation from CloudKit for dream: \(title)")
+            } catch {
+                print("❌ Failed to decode interpretation data from CloudKit: \(error)")
+            }
+        }
 
         self.init(
             emoji: emoji,
@@ -133,7 +163,8 @@ extension Dream {
             title: title,
             tags: tags,
             date: date,
-            requestStatus: requestStatus
+            requestStatus: requestStatus,
+            interpretation: interpretation
         )
     }
 }

@@ -65,8 +65,20 @@ class DreamManager: ObservableObject {
         
         do {
             let storedDreams = try await storageManager.loadDreams()
+            print("📥 Loaded \(storedDreams.count) dreams from storage")
+            
+            // Debug: Check interpretation data for each dream
+            for (index, dream) in storedDreams.enumerated() {
+                if let interpretation = dream.interpretation {
+                    print("✅ Dream \(index): '\(dream.title)' has interpretation: \(interpretation.dreamTitle)")
+                } else {
+                    print("❌ Dream \(index): '\(dream.title)' has NO interpretation data")
+                }
+            }
+            
             if !storedDreams.isEmpty {
                 dreams = storedDreams
+                print("📋 Updated dreams array with \(dreams.count) dreams")
             }
         } catch {
             errorMessage = "Failed to load dreams: \(error.localizedDescription)"
@@ -77,6 +89,17 @@ class DreamManager: ObservableObject {
     }
     
     private func saveDreamsToStorage(_ dreams: [Dream]) async {
+        print("💾 Saving \(dreams.count) dreams to storage")
+        
+        // Debug: Check interpretation data before saving
+        for (index, dream) in dreams.enumerated() {
+            if let interpretation = dream.interpretation {
+                print("✅ Saving dream \(index): '\(dream.title)' with interpretation: \(interpretation.dreamTitle)")
+            } else {
+                print("❌ Saving dream \(index): '\(dream.title)' with NO interpretation data")
+            }
+        }
+        
         if authManager.isSyncingWithiCloud {
             // Save to CloudKit
             for dream in dreams {
@@ -93,6 +116,7 @@ class DreamManager: ObservableObject {
             // Save to local storage
             do {
                 try await storageManager.saveDreams(dreams)
+                print("💾 Successfully saved dreams to local storage")
             } catch {
                 errorMessage = "Failed to save dreams: \(error.localizedDescription)"
                 print("❌ Error saving dreams: \(error)")
@@ -112,6 +136,112 @@ class DreamManager: ObservableObject {
             dreams[index].requestStatus = status
             objectWillChange.send()
         }
+    }
+    
+    /// Update dream interpretation data
+    func updateDreamInterpretation(dreamId: UUID, interpretation: DreamInterpretationFullModel) {
+        if let index = dreams.firstIndex(where: { $0.id == dreamId }) {
+            dreams[index].interpretation = interpretation
+            objectWillChange.send()
+            print("📝 Updated interpretation for dream \(dreamId): \(interpretation.dreamTitle)")
+        }
+    }
+    
+    /// Update dream interpretation and status
+    func updateDreamInterpretationAndStatus(dreamId: UUID, interpretation: DreamInterpretationFullModel, status: RequestStatus = .success) {
+        if let index = dreams.firstIndex(where: { $0.id == dreamId }) {
+            dreams[index].interpretation = interpretation
+            dreams[index].requestStatus = status
+            objectWillChange.send()
+            print("📝 Updated interpretation and status for dream \(dreamId): \(interpretation.dreamTitle)")
+        }
+    }
+    
+    /// Get dream interpretation
+    func getDreamInterpretation(dreamId: UUID) -> DreamInterpretationFullModel? {
+        return getDream(by: dreamId)?.interpretation
+    }
+    
+    // MARK: - Verification Methods
+    
+    /// Verify that interpretation data is being saved properly
+    func verifyInterpretationStorage(dreamId: UUID) async -> Bool {
+        guard let dream = getDream(by: dreamId) else {
+            print("❌ Dream not found for verification: \(dreamId)")
+            return false
+        }
+        
+        guard let interpretation = dream.interpretation else {
+            print("❌ No interpretation data found for dream: \(dreamId)")
+            return false
+        }
+        
+        print("✅ Dream has interpretation data:")
+        print("   - Title: \(interpretation.dreamTitle)")
+        print("   - Summary: \(interpretation.dreamSummary)")
+        print("   - Mood insights count: \(interpretation.moodInsights.count)")
+        print("   - Symbolism count: \(interpretation.symbolism.count)")
+        
+        // Test storage persistence by reloading from storage
+        await refreshFromStorage()
+        
+        guard let reloadedDream = getDream(by: dreamId) else {
+            print("❌ Dream not found after reload: \(dreamId)")
+            return false
+        }
+        
+        guard let reloadedInterpretation = reloadedDream.interpretation else {
+            print("❌ Interpretation data lost after reload: \(dreamId)")
+            return false
+        }
+        
+        let isPersisted = reloadedInterpretation.dreamTitle == interpretation.dreamTitle &&
+                         reloadedInterpretation.dreamSummary == interpretation.dreamSummary
+        
+        if isPersisted {
+            print("✅ Interpretation data successfully persisted to storage")
+        } else {
+            print("❌ Interpretation data not properly persisted")
+        }
+        
+        return isPersisted
+    }
+    
+    /// Add test interpretation data to a dream
+    func addTestInterpretation(dreamId: UUID) {
+        guard let dream = getDream(by: dreamId) else {
+            print("❌ Dream not found for test interpretation: \(dreamId)")
+            return
+        }
+        
+        let testInterpretation = DreamInterpretationFullModel(
+            hasSubscription: false,
+            dreamEmoji: "🧪",
+            dreamEmojiBackgroundColor: "#FF6B6B",
+            dreamTitle: "Test Dream Interpretation",
+            dreamSummary: "This is a test interpretation to verify storage functionality.",
+            fullInterpretation: "This dream represents a test of the interpretation storage system. It symbolizes the need to verify that data persistence is working correctly.",
+            moodInsights: [
+                MoodInsight(emoji: "🤔", label: "Curiosity", score: 0.8),
+                MoodInsight(emoji: "😌", label: "Calm", score: 0.6),
+                MoodInsight(emoji: "✨", label: "Wonder", score: 0.7)
+            ],
+            symbolism: [
+                SymbolMeaning(icon: "🧪", meaning: "Testing"),
+                SymbolMeaning(icon: "💾", meaning: "Storage"),
+                SymbolMeaning(icon: "✅", meaning: "Verification")
+            ],
+            reflectionPrompts: [
+                "Is the storage system working properly?\n",
+                "Can you see the interpretation data?\n",
+                "Does the data persist after app restart?\n"
+            ],
+            tags: ["Daydream", "Creative Dream"],
+            quote: Quote(text: "The best way to test something is to actually test it.", author: "Test Author")
+        )
+        
+        updateDreamInterpretationAndStatus(dreamId: dreamId, interpretation: testInterpretation, status: .success)
+        print("🧪 Added test interpretation to dream: \(dreamId)")
     }
     
     func startDreamInterpretation(dreamId: UUID) {
@@ -256,11 +386,8 @@ class DreamManager: ObservableObject {
             // Small delay to show completion
             try? await Task.sleep(for: .milliseconds(200))
             
-            // Mark as successful
-            updateDreamStatus(dreamId: dreamId, status: .success)
-            
-            // Store interpretation data (you might want to add this to the Dream model)
-            await storeInterpretationResult(dreamId: dreamId, interpretation: interpretation)
+            // Update dream with interpretation data and mark as successful
+            updateDreamInterpretationAndStatus(dreamId: dreamId, interpretation: interpretation, status: .success)
             
             print("✅ Dream interpretation completed for dream: \(dreamId)")
             
@@ -279,15 +406,7 @@ class DreamManager: ObservableObject {
         activeRequests.removeValue(forKey: dreamId)
     }
     
-    private func storeInterpretationResult(dreamId: UUID, interpretation: DreamInterpretationFullModel) async {
-        // Here you can store the interpretation result
-        // You might want to extend the Dream model to include interpretation data
-        // For now, we'll just log it
-        print("📝 Storing interpretation for dream \(dreamId): \(interpretation.dreamTitle)")
-        
-        // TODO: Add interpretation data to Dream model or separate storage
-        // This could be stored in UserDefaults, Core Data, or as part of the Dream model
-    }
+
     
     private func handleiCloudSyncChange() {
         if authManager.isSyncingWithiCloud {
@@ -309,11 +428,12 @@ class DreamManager: ObservableObject {
                 
                 switch result {
                 case .success(let cloudDreams):
-                    // Simple merge: replace local with cloud dreams
-                    self.dreams = cloudDreams
+                    // Merge cloud dreams with local interpretation data
+                    let mergedDreams = self.mergeCloudDreamsWithLocalInterpretations(cloudDreams)
+                    self.dreams = mergedDreams
                     // Also update local storage to be in sync
                     Task {
-                        await self.saveDreamsToStorage(cloudDreams)
+                        await self.saveDreamsToStorage(mergedDreams)
                     }
                 case .failure(let error):
                     self.errorMessage = "Failed to sync with iCloud: \(error.localizedDescription)"
@@ -322,5 +442,22 @@ class DreamManager: ObservableObject {
                 self.isLoading = false
             }
         }
+    }
+    
+    /// Merge cloud dreams with local interpretation data to preserve local interpretations
+    private func mergeCloudDreamsWithLocalInterpretations(_ cloudDreams: [Dream]) -> [Dream] {
+        var mergedDreams = cloudDreams
+        
+        for (index, cloudDream) in cloudDreams.enumerated() {
+            // Check if we have a local version with interpretation data
+            if let localDream = self.dreams.first(where: { $0.id == cloudDream.id }),
+               let localInterpretation = localDream.interpretation {
+                // Preserve local interpretation data
+                mergedDreams[index].interpretation = localInterpretation
+                print("🔄 Preserved local interpretation for dream: \(cloudDream.title)")
+            }
+        }
+        
+        return mergedDreams
     }
 }

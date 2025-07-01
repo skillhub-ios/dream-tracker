@@ -28,7 +28,30 @@ class DreamInterpretationViewModel: ObservableObject {
     
     init(dream: Dream) {
         self.dream = dream
-//        self.contentState = dream.requestStatus
+        
+        if let interpretation = dream.interpretation {
+            // Dream already has interpretation data
+            self.model = interpretation
+            self.contentState = .success
+            print("✅ Dream has existing interpretation: \(interpretation.dreamTitle)")
+        } else {
+            // Dream doesn't have interpretation data - need to fetch it
+            self.model = nil
+            self.contentState = .loading
+            print("🔄 Dream has no interpretation data, will need to fetch")
+            
+            // Set up dream data for interpretation
+            self.dreamData = UserDreamData(
+                dreamText: dream.title,
+                mood: extractMoodFromTags(dream.tags)
+            )
+            
+            // Start fetching interpretation
+            Task {
+                await fetchInterpretationForExistingDream()
+            }
+        }
+        
         subscribers()
     }
 
@@ -71,9 +94,18 @@ class DreamInterpretationViewModel: ObservableObject {
            )
            self.model = fetchedModel
 
-           let dreamModel = fullModelToDream(fetchedModel)
+           // Create dream with interpretation data
+           let dreamModel = Dream(
+               emoji: fetchedModel.dreamEmoji,
+               emojiBackground: Color(hex: fetchedModel.dreamEmojiBackgroundColor),
+               title: fetchedModel.dreamTitle,
+               tags: fetchedModel.tags.compactMap({ Tags(rawValue: $0) }),
+               date: Date(),
+               requestStatus: .success,
+               interpretation: fetchedModel
+           )
+           
            self.dreamManager.addDream(dreamModel)
-
            contentState = .success
        } catch {
            contentState = .error(error)
@@ -84,14 +116,68 @@ class DreamInterpretationViewModel: ObservableObject {
         self.dreamData = dreamData
     }
     
-    private func fullModelToDream(_ model: DreamInterpretationFullModel) -> Dream {
-        Dream(
-            emoji: model.dreamEmoji,
-            emojiBackground: Color(hex: model.dreamEmojiBackgroundColor),
-            title: model.dreamTitle,
-            tags: model.tags.compactMap({ Tags(rawValue: $0) }),
-            date: Date()
-        )
+    /// Fetch interpretation for an existing dream and update it in storage
+    func fetchInterpretationForExistingDream() async {
+        guard let dream = dream,
+              let dreamData = dreamData else {
+            contentState = .error(DreamInterpreterError.invalidResponse)
+            return
+        }
+        
+        contentState = .loading
+        
+        do {
+            let fetchedModel = try await dreamInterpreter.interpretDream(
+                dreamText: dreamData.dreamText,
+                mood: dreamData.mood
+            )
+            
+            // Update the model for UI
+            self.model = fetchedModel
+            
+            // Update the dream in DreamManager with the interpretation
+            dreamManager.updateDreamInterpretationAndStatus(
+                dreamId: dream.id,
+                interpretation: fetchedModel,
+                status: .success
+            )
+            
+            contentState = .success
+            print("✅ Successfully fetched and stored interpretation for existing dream: \(dream.id)")
+            
+        } catch {
+            contentState = .error(error)
+            print("❌ Failed to fetch interpretation for existing dream: \(error)")
+        }
+    }
+    
+    /// Extract mood from dream tags
+    private func extractMoodFromTags(_ tags: [Tags]) -> String? {
+        // Map dream tags to potential moods
+        let tagToMood: [Tags: String] = [
+            .nightmare: "Fearful",
+            .nightTerror: "Terrified",
+            .lucidDream: "Aware",
+            .propheticDream: "Curious",
+            .creativeDream: "Inspired",
+            .healingDream: "Peaceful",
+            .epicDream: "Amazed",
+            .daydream: "Relaxed",
+            .continuousDream: "Focused",
+            .falseAwakening: "Confused",
+            .supernaturalDream: "Awe",
+            .telepathicDream: "Connected",
+            .sleepParalysis: "Anxious"
+        ]
+        
+        // Return the first matching mood from tags
+        for tag in tags {
+            if let mood = tagToMood[tag] {
+                return mood
+            }
+        }
+        
+        return nil
     }
 }
 

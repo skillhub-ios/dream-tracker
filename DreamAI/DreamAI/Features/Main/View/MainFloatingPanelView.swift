@@ -16,7 +16,6 @@ struct MainFloatingPanelView: View {
     @State private var selectedDreamIds: [UUID] = []
     @State private var hapticTrigger = false
     @State private var showCreateDreamView = false
-    @State private var showDreamInterpretation = false
     @State private var selectedDream: Dream?
     
     var filteredDreams: [Dream] {
@@ -69,11 +68,9 @@ struct MainFloatingPanelView: View {
             }
             .presentationDetents([.large])
         }
-        .sheet(isPresented: $showDreamInterpretation) {
-            if let selectedDream {
-                DreamInterpretationView()
-                    .environmentObject(DreamInterpretationViewModel(dream: selectedDream))
-            }
+        .sheet(item: $selectedDream) { dream in
+            DreamInterpretationView()
+                .environmentObject(DreamInterpretationViewModel(dream: dream))
         }
     }
 }
@@ -92,9 +89,7 @@ private extension MainFloatingPanelView {
             if dreamlistmode == .edit {
                 toggleDreamSelection(dream: dream)
             } else {
-                // Show dream interpretation
                 selectedDream = dream
-                showDreamInterpretation = true
             }
         }
         .onLongPressGesture {
