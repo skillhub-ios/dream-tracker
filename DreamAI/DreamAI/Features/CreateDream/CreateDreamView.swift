@@ -14,7 +14,7 @@ struct CreateDreamView: View {
     @Environment(\.dismiss) private var dismiss
     @FocusState private var isInputActive: Bool
     @State private var isShowingInterpretation: Bool = false
-    @State private var interpretationModel: DreamInterpretationFullModel?
+    @State private var interpretationModel: Interpretation?
     
     // MARK: - Body
     var body: some View {
@@ -66,13 +66,13 @@ struct CreateDreamView: View {
         } message: {
             Text(viewModel.permissionAlertMessage)
         }
-        .sheet(isPresented: $isShowingInterpretation) {
-            if let interpretation = interpretationModel {
-                DreamInterpretationView(viewModel: DreamInterpretationViewModel(interpretationModel: interpretation))
-            } else {
-                DreamInterpretationView(viewModel: DreamInterpretationViewModel())
-            }
-        }
+//        .sheet(isPresented: $isShowingInterpretation) {
+//            if let interpretation = interpretationModel {
+//                DreamInterpretationView(viewModel: DreamInterpretationViewModel(interpretationModel: interpretation))
+//            } else {
+//                DreamInterpretationView(viewModel: DreamInterpretationViewModel())
+//            }
+//        }
         .onChange(of: isShowingInterpretation) {
             if !isShowingInterpretation {
                 dismiss()

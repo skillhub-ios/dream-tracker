@@ -67,12 +67,15 @@ struct MainFloatingPanelView: View {
             }
             .presentationDetents([.large])
         }
-        .sheet(isPresented: $showDreamInterpretation) {
-            DreamInterpretationView(
-                viewModel: DreamInterpretationViewModel(
-                    dream: selectedDream
-                )
-            )
+//        .sheet(isPresented: $showDreamInterpretation) {
+//            DreamInterpretationView(
+//                viewModel: DreamInterpretationViewModel(
+//                    dream: selectedDream
+//                )
+//            )
+//        }
+        .sheet(item: $selectedDream) {
+            DreamInterpretationView(dream: $0)
         }
     }
 }

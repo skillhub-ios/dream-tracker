@@ -8,12 +8,17 @@
 import SwiftUI
 
 struct DreamInterpretationView: View {
-    @ObservedObject var viewModel: DreamInterpretationViewModel
+    
+    @StateObject private var viewModel: DreamInterpretationViewModel
     @Environment(\.dismiss) private var dismiss
     
-    private var model: DreamInterpretationFullModel {
-        viewModel.model ?? dreamInterpretationFullModel
+    init(dream: Dream) {
+        self._viewModel = StateObject(wrappedValue: DreamInterpretationViewModel(dream: dream))
     }
+    
+    private var model: Interpretation {
+        viewModel.interpretation ?? dreamInterpretationFullModel }
+    
     
     var body: some View {
         NavigationStack {
@@ -72,7 +77,7 @@ struct DreamInterpretationView: View {
                 }
                 .padding()
             }
-            .makeshimmer(state: viewModel.contentState, retryButtonUI: retryButtonUI($viewModel.buttonState))
+            .makeShimmer(state: viewModel.contentState, retryButtonUI: retryButtonUI($viewModel.buttonState))
             .background(Color.appPurpleDark.ignoresSafeArea())
             .navigationTitle("Dream Interpretation")
             .navigationBarTitleDisplayMode(.inline)
@@ -84,9 +89,6 @@ struct DreamInterpretationView: View {
                     .fontWeight(.medium)
                     .foregroundColor(.appPurple)
                 }
-            }
-            .task {
-                await viewModel.fetchInterpretation()
             }
         }
     }
@@ -190,7 +192,7 @@ private extension DreamInterpretationView {
     func retryButtonUI(_ buttonState: Binding<DButtonState>) -> AnyView {
         AnyView(
             DButton(title: "Try again", state: buttonState) {
-                await viewModel.fetchInterpretation()
+                
             }
         )
     }
@@ -221,7 +223,7 @@ struct MoodProgressUI: View {
     VStack {
         Text("Hello")
             .sheet(isPresented: .constant(true)) {
-                DreamInterpretationView(viewModel: DreamInterpretationViewModel(interpretationModel: nil, dream: nil))
+                DreamInterpretationView(dream: loadMockDreams().first!)
             }
     }
 }

@@ -8,4 +8,15 @@
         <attribute name="tags" optional="YES" attributeType="String"/>
         <attribute name="title" optional="YES" attributeType="String"/>
     </entity>
+    <entity name="InterpretationEntity" representedClassName="InterpretationEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="dreamParentId" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="dreamSummary" optional="YES" attributeType="String"/>
+        <attribute name="dreamTitle" optional="YES" attributeType="String"/>
+        <attribute name="fullInterpretation" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="moodInsights" optional="YES" attributeType="Binary"/>
+        <attribute name="quote" optional="YES" attributeType="Binary"/>
+        <attribute name="reflectionPrompts" optional="YES" attributeType="String"/>
+        <attribute name="symbolism" optional="YES" attributeType="Binary"/>
+    </entity>
 </model>

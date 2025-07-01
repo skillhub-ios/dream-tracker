@@ -20,14 +20,14 @@ class CreateDreamViewModel: ObservableObject {
     @Published var isRecording: Bool = false
     @Published var showPermissionAlert: Bool = false
     @Published var permissionAlertMessage: String = ""
-    @Published var interpretationModel: DreamInterpretationFullModel?
+    @Published var interpretationModel: Interpretation?
     
     // Track text that existed before recording started
     private var textBeforeRecording: String = ""
     
     // MARK: - Dependencies
     private let speechRecognizer: SpeechRecognizing = SpeechRecognizerManager.shared
-    private let dreamInterpreter = DreamInterpreter.shared
+    private let dreamInterpreter = DIContainer.dreamInterpreter
     private var cancellables = Set<AnyCancellable>()
     
     init() {
@@ -124,7 +124,7 @@ class CreateDreamViewModel: ObservableObject {
     }
 
     /// OLD
-    func generateDream() async -> (UUID, DreamInterpretationFullModel?) {
+    func generateDream() async -> (UUID, Interpretation?) {
         let newDream = Dream(
             emoji: generateRandomEmoji(),
             emojiBackground: generateRandomColor(),

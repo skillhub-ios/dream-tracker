@@ -9,74 +9,66 @@ import SwiftUI
 import Combine
 
 @MainActor
-class DreamInterpretationViewModel: ObservableObject {   
+class DreamInterpretationViewModel: ObservableObject {
     
     //MARK: - Published Properties
-    @Published var model: DreamInterpretationFullModel? = nil
+    @Published var interpretation: Interpretation? = nil
     @Published var selectedResonance: ResonanceOption = .yes
     @Published var contentState: ContentStateType = .loading
     @Published var buttonState: DButtonState = .normal
     
     //MARK: - Private Properties
-    private var cancellables: Set<AnyCancellable> = []
     private let userManager: UserManager = .shared
-    private let dreamInterpreter: DreamInterpreter = .shared
+    private let dreamInterpreter = DIContainer.dreamInterpreter
+    private let coreDataStore = DIContainer.coreDataStore
     
-    private var interpretationModel: DreamInterpretationFullModel?
     private var dream: Dream?
     
-    init(interpretationModel: DreamInterpretationFullModel? = nil, dream: Dream? = nil) {
-        self.interpretationModel = interpretationModel
+    init(dream: Dream) {
         self.dream = dream
+        Task {
+            await loadInterpretation(for: dream)
+        }
         subscribers()
-        
-        // If we have an interpretation model passed in, set it immediately
-        if let interpretationModel = interpretationModel {
-            self.model = interpretationModel
-            self.contentState = .success
-        }
-    }
-
-
-    //MARK: - Methods
-
-    private func subscribers() {
-        $contentState
-        .receive(on: DispatchQueue.main)
-        .map { 
-            return switch $0 {
-            case .loading: .loading
-            case .success: self.userManager.isSubscribed ? .normal : .locked
-            case .error: .tryAgain
-            }
-        }
-        .assign(to: \.buttonState, on: self)
-        .store(in: &cancellables)
     }
     
-    func fetchInterpretation() async {
-        // If we already have an interpretation model, don't fetch again
-        if let interpretationModel = interpretationModel {
-            self.model = interpretationModel
-            self.contentState = .success
-            return
-        }
-        
-        guard let dream = dream else {
-            // If no dream is provided, show error
-            contentState = .error(DreamInterpreterError.invalidResponse)
-            return
-        }
-        
+    
+    //MARK: - Private Methods
+    
+    private func subscribers() {
+        $contentState // работает криво
+            .receive(on: DispatchQueue.main)
+            .map {
+                return switch $0 {
+                case .loading: .loading
+                case .success: self.userManager.isSubscribed ? .normal : .locked
+                case .error: .tryAgain
+                }
+            }
+            .assign(to: &$buttonState)
+    }
+    
+    private func loadInterpretation(for dream: Dream) async {
         contentState = .loading
+        
+        // Trying load data from CoreData
+        if let interpretation = coreDataStore.loadInterpretation(with: dream.id) {
+            self.interpretation = interpretation
+            contentState = .success
+            return
+        }
+        
+        // Fethcing data from OpenAPI
         do {
-            let fetchedModel = try await dreamInterpreter.interpretDream(
+            var fetchedModel = try await dreamInterpreter.interpretDream(
                 dreamText: dream.title, // Assuming title is the full text for now
-                mood: nil, // We don't have mood for old dreams here
+                mood: dream.emoji,
                 tags: dream.tags.map { $0.rawValue }
             )
-            self.model = fetchedModel
+            fetchedModel.setDreamParentId(dream.id)
+            self.interpretation = fetchedModel
             contentState = .success
+            coreDataStore.saveInterpretation(fetchedModel)
         } catch {
             contentState = .error(error)
         }

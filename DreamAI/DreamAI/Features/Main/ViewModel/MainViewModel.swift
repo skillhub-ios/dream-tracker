@@ -16,6 +16,7 @@ final class MainViewModel: ObservableObject {
     @Published var searchText: String = ""
     @Published var lastDream: Dream?
     @Published var dreams: [Dream] = []
+    @Published var dreamInterpretations: [Interpretation] = []
     
     // MARK: - Private Properties
     
@@ -23,7 +24,7 @@ final class MainViewModel: ObservableObject {
     
     // MARK: - External Dependencies
     
-    private let dreamManager = DreamsDataManager()
+    private let coreDataStore = DIContainer.coreDataStore
     
     // MARK: - Lifecycle
     
@@ -43,11 +44,11 @@ final class MainViewModel: ObservableObject {
             .sink { [weak self] dream in
                 guard let self = self else { return }
                 self.dreams.insert(dream, at: 0)
-                self.dreamManager.saveDream(dream)
+                self.coreDataStore.saveDream(dream)
             }
             .store(in: &cancellables)
         
-        dreamManager.$dreams
+        coreDataStore.$dreams
             .dropIfEmpty()
             .map(fromEntitiesToSortedDreams)
             .receive(on: DispatchQueue.main)

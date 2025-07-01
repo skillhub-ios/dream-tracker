@@ -47,7 +47,7 @@ struct ShimmerView: ViewModifier {
 }
 
 extension View {
-    func makeshimmer(state: ContentStateType, retryButtonUI: AnyView? = nil) -> some View {
+    func makeShimmer(state: ContentStateType, retryButtonUI: AnyView? = nil) -> some View {
         self.modifier(ShimmerView(state: state, retryButtonUI: retryButtonUI))
     }
 }   
@@ -63,5 +63,5 @@ extension View {
             }
         }
     }
-    .makeshimmer(state: .error(NSError(domain: "asd", code: 200)), retryButtonUI: AnyView(DButton(title: "Try again", state: .constant(.tryAgain), isDisabled: .constant(false), action: {})))
+    .makeShimmer(state: .error(NSError(domain: "asd", code: 200)), retryButtonUI: AnyView(DButton(title: "Try again", state: .constant(.tryAgain), isDisabled: .constant(false), action: {})))
 }

@@ -1,13 +1,12 @@
 //
-//  DreamInterpretationFullModel.swift
+//  Interpretation.swift
 //  DreamAI
 //
 //  Created by Shaxzod on 14/06/25.
 //
 import Foundation
 
-struct DreamInterpretationFullModel: Codable {
-    let hasSubscription: Bool?
+struct Interpretation: Codable {
     let dreamTitle: String
     let dreamSummary: String
     let fullInterpretation: String
@@ -15,10 +14,10 @@ struct DreamInterpretationFullModel: Codable {
     let symbolism: [SymbolMeaning]
     let reflectionPrompts: [String]
     let quote: Quote
+    var dreamParentId: UUID?
     
-    // Computed property to provide default value
-    var hasSubscriptionValue: Bool {
-        return hasSubscription ?? false
+    mutating func setDreamParentId(_ id: UUID) {
+        self.dreamParentId = id
     }
 }
 
@@ -39,8 +38,7 @@ struct Quote: Codable {
 }
 
 //MARK: - Mock Data
-let dreamInterpretationFullModel = DreamInterpretationFullModel(
-    hasSubscription: false,
+let dreamInterpretationFullModel = Interpretation(
     dreamTitle: "The Mountain of Fear",
     dreamSummary: "You dreamed of wandering alone through a misty forest, feeling lost and uncertain. A voice was calling you from the distance, but you couldn't respond",
     fullInterpretation: "This dream suggests you're navigating uncertainty in waking life. The forest may symbolize confusion or feeling lost in current decisions, while the distant voice reflects an inner guidance you're not yet ready to hear. Your subconscious might be urging you to slow down and reconnect with your intuition.",
@@ -61,3 +59,34 @@ let dreamInterpretationFullModel = DreamInterpretationFullModel(
     ],
     quote: Quote(text: "The interpretation of dreams is the royal road to the unconscious.", author: "Sigmund Freud")
 )
+
+// MARK: Core Data Support
+
+extension Interpretation {
+    init?(from entity: InterpretationEntity) {
+        guard let moodInsightsData = entity.moodInsights,
+              let symbolismData = entity.symbolism,
+              let quoteData = entity.quote else {
+            return nil
+        }
+
+        let decoder = JSONDecoder()
+
+        guard let moodInsights = try? decoder.decode([MoodInsight].self, from: moodInsightsData),
+              let symbolism = try? decoder.decode([SymbolMeaning].self, from: symbolismData),
+              let quote = try? decoder.decode(Quote.self, from: quoteData) else {
+            return nil
+        }
+
+        self.init(
+            dreamTitle: entity.dreamTitle ?? "",
+            dreamSummary: entity.dreamSummary ?? "",
+            fullInterpretation: entity.fullInterpretation ?? "",
+            moodInsights: moodInsights,
+            symbolism: symbolism,
+            reflectionPrompts: entity.reflectionPrompts?.split(separator: ",").compactMap { String($0) } ?? [],
+            quote: quote,
+            dreamParentId: entity.dreamParentId
+        )
+    }
+}

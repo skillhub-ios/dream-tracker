@@ -9,4 +9,5 @@ import Foundation
 
 enum DIContainer {
     static let coreDataStore = DreamsDataManager()
+    static let dreamInterpreter = DreamInterpreter()
 }
