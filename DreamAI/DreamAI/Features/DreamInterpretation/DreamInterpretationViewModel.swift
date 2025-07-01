@@ -24,7 +24,7 @@ class DreamInterpretationViewModel: ObservableObject {
     private let dreamManager: DreamManager = .shared
     
     private var dream: Dream?
-    private var dreamData: UserDreamData?
+//    private var dreamData: UserCredential?
     
     init(dream: Dream) {
         self.dream = dream
@@ -40,12 +40,6 @@ class DreamInterpretationViewModel: ObservableObject {
             self.contentState = .loading
             print("🔄 Dream has no interpretation data, will need to fetch")
             
-            // Set up dream data for interpretation
-            self.dreamData = UserDreamData(
-                dreamText: dream.title,
-                mood: extractMoodFromTags(dream.tags)
-            )
-            
             // Start fetching interpretation
             Task {
                 await fetchInterpretationForExistingDream()
@@ -55,11 +49,10 @@ class DreamInterpretationViewModel: ObservableObject {
         subscribers()
     }
 
-    init(dreamData: UserDreamData) {
-        self.dreamData = dreamData
+    init() {
         subscribers()
     }
-
+    
 
     //MARK: - Methods
 
@@ -79,7 +72,7 @@ class DreamInterpretationViewModel: ObservableObject {
     
     func fetchInterpretation() async {
         
-       guard let dreamData = dreamData else {
+        guard let dreamData = dream?.userCredential else {
            // If no dream is provided, show error
            contentState = .error(DreamInterpreterError.invalidResponse)
            return
@@ -90,7 +83,7 @@ class DreamInterpretationViewModel: ObservableObject {
        do {
            let fetchedModel = try await dreamInterpreter.interpretDream(
                dreamText: dreamData.dreamText,
-               mood: dreamData.mood
+               mood: dreamData.selectedMood?.rawValue
            )
            self.model = fetchedModel
 
@@ -112,14 +105,20 @@ class DreamInterpretationViewModel: ObservableObject {
        }
     }
 
-    func updateDreamData(_ dreamData: UserDreamData) {
-        self.dreamData = dreamData
+    func updateDreamData(_ dreamData: UserCredential) {
+        self.dream = Dream(userCredential: dreamData)
+    }
+
+    func saveDreamData(_ dreamData: UserCredential) {
+        guard !dreamData.dreamText.isEmpty else { return }
+        self.dream = Dream(userCredential: dreamData)
+        self.dreamManager.addDream(dream!)
     }
     
     /// Fetch interpretation for an existing dream and update it in storage
     func fetchInterpretationForExistingDream() async {
         guard let dream = dream,
-              let dreamData = dreamData else {
+              let dreamData = dream.userCredential else {
             contentState = .error(DreamInterpreterError.invalidResponse)
             return
         }
@@ -129,7 +128,7 @@ class DreamInterpretationViewModel: ObservableObject {
         do {
             let fetchedModel = try await dreamInterpreter.interpretDream(
                 dreamText: dreamData.dreamText,
-                mood: dreamData.mood
+                mood: dreamData.selectedMood?.rawValue
             )
             
             // Update the model for UI
@@ -150,38 +149,4 @@ class DreamInterpretationViewModel: ObservableObject {
             print("❌ Failed to fetch interpretation for existing dream: \(error)")
         }
     }
-    
-    /// Extract mood from dream tags
-    private func extractMoodFromTags(_ tags: [Tags]) -> String? {
-        // Map dream tags to potential moods
-        let tagToMood: [Tags: String] = [
-            .nightmare: "Fearful",
-            .nightTerror: "Terrified",
-            .lucidDream: "Aware",
-            .propheticDream: "Curious",
-            .creativeDream: "Inspired",
-            .healingDream: "Peaceful",
-            .epicDream: "Amazed",
-            .daydream: "Relaxed",
-            .continuousDream: "Focused",
-            .falseAwakening: "Confused",
-            .supernaturalDream: "Awe",
-            .telepathicDream: "Connected",
-            .sleepParalysis: "Anxious"
-        ]
-        
-        // Return the first matching mood from tags
-        for tag in tags {
-            if let mood = tagToMood[tag] {
-                return mood
-            }
-        }
-        
-        return nil
-    }
-}
-
-struct UserDreamData {
-    let dreamText: String
-    let mood: String?
 }

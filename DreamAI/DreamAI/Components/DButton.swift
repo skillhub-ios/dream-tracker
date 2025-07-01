@@ -105,7 +105,7 @@ struct DButton: View {
                     .stroke(Color.purple.opacity(0.4), lineWidth: 1)
             )
         }
-        .disabled(isDisabled || state == .locked || effectiveIsLoading)
+        .disabled(isDisabled || effectiveIsLoading)
         .overlay(
             RoundedRectangle(cornerRadius: 13)
                 .fill(isDisabled || effectiveIsLoading ? Color.black.opacity(0.5) : Color.clear)

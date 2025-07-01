@@ -147,51 +147,6 @@ class StorageManager: ObservableObject {
         let dreams = try JSONDecoder().decode([Dream].self, from: data)
         try await saveDreams(dreams)
     }
-    
-    // MARK: - Debug Methods
-    
-    /// Test JSON encoding/decoding of a single dream
-    func testDreamEncoding(_ dream: Dream) -> Bool {
-        print("🧪 Testing JSON encoding/decoding for dream: '\(dream.title)'")
-        
-        do {
-            // Test encoding
-            let data = try JSONEncoder().encode(dream)
-            print("✅ Successfully encoded dream to \(data.count) bytes")
-            
-            // Test decoding
-            let decodedDream = try JSONDecoder().decode(Dream.self, from: data)
-            print("✅ Successfully decoded dream: '\(decodedDream.title)'")
-            
-            // Check interpretation data
-            if let originalInterpretation = dream.interpretation {
-                print("📝 Original dream has interpretation: \(originalInterpretation.dreamTitle)")
-                
-                if let decodedInterpretation = decodedDream.interpretation {
-                    print("✅ Decoded dream has interpretation: \(decodedInterpretation.dreamTitle)")
-                    
-                    let isSame = originalInterpretation.dreamTitle == decodedInterpretation.dreamTitle
-                    print("🔍 Interpretation data preserved: \(isSame)")
-                    return isSame
-                } else {
-                    print("❌ Decoded dream has NO interpretation data")
-                    return false
-                }
-            } else {
-                print("📝 Original dream has NO interpretation data")
-                if decodedDream.interpretation == nil {
-                    print("✅ Decoded dream also has NO interpretation data (consistent)")
-                    return true
-                } else {
-                    print("❌ Decoded dream has interpretation data (inconsistent)")
-                    return false
-                }
-            }
-        } catch {
-            print("❌ JSON encoding/decoding failed: \(error)")
-            return false
-        }
-    }
 }
 
 // MARK: - Storage Errors

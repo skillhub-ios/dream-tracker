@@ -69,8 +69,15 @@ struct MainFloatingPanelView: View {
             .presentationDetents([.large])
         }
         .sheet(item: $selectedDream) { dream in
-            DreamInterpretationView()
-                .environmentObject(DreamInterpretationViewModel(dream: dream))
+            if UserManager.shared.isSubscribed || dream.interpretation != nil {
+                DreamInterpretationView()
+                    .environmentObject(DreamInterpretationViewModel(dream: dream))
+            } else {
+                DreamView()
+                    .environmentObject(DreamViewModel(dream: dream))
+                    .environmentObject(DreamInterpretationViewModel(dream: dream))
+            }
+            
         }
     }
 }

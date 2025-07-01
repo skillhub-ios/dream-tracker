@@ -10,7 +10,7 @@ import SwiftUI
 struct MainView: View {
     @StateObject private var viewModel = MainViewModel()
     @StateObject private var biometricManager = BiometricManager.shared
-    @StateObject private var interpretationViewModel = DreamInterpretationViewModel(dreamData: UserDreamData(dreamText: "", mood: nil))
+    @StateObject private var interpretationViewModel = DreamInterpretationViewModel()
     @State private var showProfileView = false
     @State private var showBiometricAlert = false
     

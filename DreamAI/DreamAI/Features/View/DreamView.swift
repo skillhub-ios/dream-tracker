@@ -1,80 +1,73 @@
 //
-//  CreateDreamView.swift
+//  DreamView.swift
 //  DreamAI
 //
-//  Created by Shaxzod on 11/06/25.
+//  Created by Shaxzod on 01/07/25.
 //
 
 import SwiftUI
 
-struct CreateDreamView: View {
+struct DreamView: View {
     
     // MARK: - Properties
-    @StateObject private var viewModel = CreateDreamViewModel()
+    @EnvironmentObject var viewModel: DreamViewModel
     @EnvironmentObject var interpretationViewModel: DreamInterpretationViewModel
     @Environment(\.dismiss) private var dismiss
     @FocusState private var isInputActive: Bool
     @State private var isShowingInterpretation: Bool = false
-
-    var userCredential: UserCredential {
-        UserCredential(
-            dreamText: viewModel.dreamText,
-            selectedMood: viewModel.selectedMood
-        )
-    }
     
     // MARK: - Body
     var body: some View {
-        ZStack {
-            Color.appGray4
-                .ignoresSafeArea()  
-            
-            ScrollView {
-                VStack(spacing: 12) {
-                    headerUI(dreamDate: $viewModel.selectedDate)
-                    
-                    dreamTextEditor($viewModel.dreamText)
-                    
-                    microphoneButton {
-                        Task {
-                            await viewModel.toggleRecording()
-                        }
-                    }
-                    
-                    moodPicker($viewModel.selectedMood)
-
-                    Spacer()
-                    
-                    DButton(title: "Generate Dream", isDisabled: $viewModel.isButtonDisabled) {
-                        Task {
-                            await MainActor.run {
-                                interpretationViewModel.updateDreamData(userCredential)
-                                self.isShowingInterpretation = true
+        NavigationStack {
+            ZStack {
+                Color.appGray4
+                    .ignoresSafeArea()
+                
+                ScrollView {
+                    VStack(spacing: 12) {
+                        headerUI(dreamDate: viewModel.dream.date)
+                        
+                        dreamTextEditor($viewModel.dreamText)
+                        //
+                        moodPicker($viewModel.mood)
+                        
+                        Spacer()
+                        
+                        DButton(title: "Generate Dream", state: $viewModel.buttonState) {
+                            if UserManager.shared.isSubscribed {
+                                Task {
+                                    await MainActor.run {
+                                        interpretationViewModel.updateDreamData(
+                                            UserCredential(
+                                                dreamText: viewModel.dreamText,
+                                                selectedMood: viewModel.mood
+                                            )
+                                        )
+                                        self.isShowingInterpretation = true
+                                    }
+                                }
+                            } else {
+                                // TODO: - Show SubscribeView
                             }
                         }
                     }
+                    .padding(.horizontal, 16)
                 }
-                .padding(.horizontal, 16)
             }
-        }
-        .navigationTitle("Create Dream")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                cancelNavigationButton()
+            .navigationTitle("View Dream")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    cancelNavigationButton()
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    doneNavigationButton()
+                }
             }
-            ToolbarItem(placement: .navigationBarTrailing) {
-                doneNavigationButton()
+            .sheet(isPresented: $isShowingInterpretation) {
+                DreamInterpretationView()
+                    .environmentObject(interpretationViewModel)
             }
-        }
-        .alert("Permission Required", isPresented: $viewModel.showPermissionAlert) {
-            Button("OK", role: .cancel) { }
-        } message: {
-            Text(viewModel.permissionAlertMessage)
-        }
-        .sheet(isPresented: $isShowingInterpretation) {
-            DreamInterpretationView()
-                .environmentObject(interpretationViewModel)
         }
         .onChange(of: isShowingInterpretation) {
             if !isShowingInterpretation {
@@ -86,7 +79,7 @@ struct CreateDreamView: View {
 
 // MARK: - Private
 
-private extension CreateDreamView {
+private extension DreamView {
     
     func dreamTextEditor(_ dreamText: Binding<String>) -> some View {
         ZStack(alignment: .topLeading) {
@@ -104,7 +97,7 @@ private extension CreateDreamView {
                 .toolbar {
                     ToolbarItemGroup(placement: .keyboard) {
                         Spacer()
-
+                        
                         Button("Done") {
                             isInputActive = false
                         }
@@ -120,36 +113,28 @@ private extension CreateDreamView {
         .clipShape(RoundedRectangle(cornerRadius: 16))
     }
     
-    func microphoneButton(_ action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            Label(viewModel.isRecording ? "Stop Recording" : "Use Microphone", systemImage: viewModel.isRecording ? "stop.circle.fill" : "microphone.fill")
-                .labelStyle(LeftImageLabel())
-                .font(.system(size: 17))
-                .foregroundStyle(Color.appWhite)
-                .frame(height: 25)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 10)
-                .padding(.horizontal, 16)
-                .background(viewModel.isRecording ? Color.appRed : Color.appGray3)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-        }
-    }
-    
-    func headerUI(dreamDate date: Binding<Date>) -> some View {
-        HStack(spacing: 8) {
-            DatePicker(selection: date) {
-                Text("Describe the dream")
-                    .font(.headline)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.1)
-                    .foregroundColor(.white)
+    func headerUI(dreamDate date: Date) -> some View {
+        HStack(alignment: .bottom, spacing: 8) {
+            Text("Describe the dream")
+                .font(.headline)
+                .lineLimit(1)
+                .minimumScaleFactor(0.1)
+                .foregroundColor(.white)
+            
+            Spacer()
+            
+            HStack(spacing: 4) {
+                Image(systemName: "calendar")
+                    .font(.system(size: 18))
+                    .foregroundColor(.gray)
+                
+                Text(date.formatted(date: .abbreviated, time: .omitted) + " • " + date.formatted(date: .omitted, time: .shortened))
+                    .font(.body)
+                    .foregroundColor(Color.appGray5)
             }
-            .tint(Color.appPurple)
-            .font(.headline)
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
-            .background(Color.appGray3)
-            .cornerRadius(12)
+            .underline()
+            .fixedSize(horizontal: true, vertical: false)
+            .padding(.top, 12)
         }
     }
     
@@ -202,7 +187,6 @@ private extension CreateDreamView {
     
     func doneNavigationButton() -> some View {
         Button(action: {
-            interpretationViewModel.saveDreamData(userCredential)
             dismiss()
         }) {
             Text("Done")
@@ -222,8 +206,23 @@ private struct LeftImageLabel: LabelStyle {
 
 
 #Preview {
+    
+    @Previewable @State var dream: Dream = Dream(
+        emoji: "🌙",
+        emojiBackground: .appPurple,
+        title: "Dream",
+        tags: [.nightmare],
+        date: Date(),
+        userCredential: UserCredential(
+            dreamText: "I dreamed about a big red dragon, flying in the sky and breathing fire. I was scared and ran away. ",
+            selectedMood: .happy
+        )
+    )
+    
     NavigationStack {
-        CreateDreamView()
+        DreamView()
+            .environmentObject(DreamViewModel(dream: dream))
+            .environmentObject(DreamInterpretationViewModel(dream: dream))
     }
     .colorScheme(.dark)
 }
