@@ -46,6 +46,8 @@ class OpenAIManager {
         4. All scores in moodInsights must be between 0.0 and 1.0 (decimal values, not integers)
         5. dreamEmoji should be a single emoji that best represents the overall theme of the dream
         6. ALL emoji fields (dreamEmoji, moodInsights.emoji, symbolism.icon) must be actual emoji characters (🐶, 😊, 🌲) NOT text names ("Dog", "Happy", "Tree")
+        7. dreamEmojiBackgroundColor must be a hex color code (e.g., "#FF6B6B", "#4ECDC4", "#45B7D1") that complements the emoji and creates a visually appealing background
+        8. tags must be an array of strings with maximum 2 items, selected from these exact values: "Daydream", "Epic Dream", "Continuous Dream", "Prophetic Dream", "Nightmare", "Night Terror", "Lucid Dream", "False Awakening", "Supernatural Dream", "Telepathic Dream", "Creative Dream", "Healing Dream", "Sleep Paralysis". Choose the most logically fitting tags based on the dream content.
         """
         
         let userMessage = "Please interpret this dream: \(dreamText). Mood: \(mood ?? "not specified")."
@@ -68,6 +70,10 @@ class OpenAIManager {
                                 "dreamEmoji": [
                                     "type": "string",
                                     "description": "A single emoji character that best represents the overall theme or mood of the dream (e.g., 🐶, 😊, 🌲, NOT 'Dog', 'Happy', 'Tree')"
+                                ],
+                                "dreamEmojiBackgroundColor": [
+                                    "type": "string",
+                                    "description": "A hex color code that complements the dream emoji and creates a visually appealing background (e.g., '#FF6B6B', '#4ECDC4', '#45B7D1')"
                                 ],
                                 "dreamTitle": [
                                     "type": "string",
@@ -134,6 +140,15 @@ class OpenAIManager {
                                     "minItems": 3,
                                     "maxItems": 3
                                 ],
+                                "tags": [
+                                    "type": "array",
+                                    "items": [
+                                        "type": "string"
+                                    ],
+                                    "description": "Array of dream tags (maximum 2 items) selected from: 'Daydream', 'Epic Dream', 'Continuous Dream', 'Prophetic Dream', 'Nightmare', 'Night Terror', 'Lucid Dream', 'False Awakening', 'Supernatural Dream', 'Telepathic Dream', 'Creative Dream', 'Healing Dream', 'Sleep Paralysis'. Choose the most logically fitting tags based on the dream content.",
+                                    "minItems": 0,
+                                    "maxItems": 2
+                                ],
                                 "quote": [
                                     "type": "object",
                                     "properties": [
@@ -150,7 +165,7 @@ class OpenAIManager {
                                     "description": "An inspirational quote related to dreams or psychology"
                                 ]
                             ],
-                            "required": ["dreamEmoji", "dreamTitle", "dreamSummary", "fullInterpretation", "moodInsights", "symbolism", "reflectionPrompts", "quote"]
+                            "required": ["dreamEmoji", "dreamEmojiBackgroundColor", "dreamTitle", "dreamSummary", "fullInterpretation", "moodInsights", "symbolism", "reflectionPrompts", "tags", "quote"]
                         ]
                     ]
                 ]

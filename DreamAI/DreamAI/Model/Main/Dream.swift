@@ -50,10 +50,11 @@ struct Dream: Identifiable, Equatable, Codable {
     let tags: [Tags]
     let date: Date
     var requestStatus: RequestStatus = .idle
+    var interpretation: DreamInterpretationFullModel? = nil
     
     // MARK: - Coding Keys
     private enum CodingKeys: String, CodingKey {
-        case id, emoji, emojiBackgroundHex, title, tags, date, requestStatus
+        case id, emoji, emojiBackgroundHex, title, tags, date, requestStatus, interpretation
     }
     
     // MARK: - Custom Coding Implementation
@@ -67,6 +68,7 @@ struct Dream: Identifiable, Equatable, Codable {
         tags = try container.decode([Tags].self, forKey: .tags)
         date = try container.decode(Date.self, forKey: .date)
         requestStatus = try container.decode(RequestStatus.self, forKey: .requestStatus)
+        interpretation = try container.decodeIfPresent(DreamInterpretationFullModel.self, forKey: .interpretation)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -82,16 +84,18 @@ struct Dream: Identifiable, Equatable, Codable {
         try container.encode(tags, forKey: .tags)
         try container.encode(date, forKey: .date)
         try container.encode(requestStatus, forKey: .requestStatus)
+        try container.encodeIfPresent(interpretation, forKey: .interpretation)
     }
     
     // MARK: - Initializer
-    init(emoji: String, emojiBackground: Color, title: String, tags: [Tags], date: Date, requestStatus: RequestStatus = .idle) {
+    init(emoji: String, emojiBackground: Color, title: String, tags: [Tags], date: Date, requestStatus: RequestStatus = .idle, interpretation: DreamInterpretationFullModel? = nil) {
         self.emoji = emoji
         self.emojiBackground = emojiBackground
         self.title = title
         self.tags = tags
         self.date = date
         self.requestStatus = requestStatus
+        self.interpretation = interpretation
     }
 }
 

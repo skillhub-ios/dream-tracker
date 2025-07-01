@@ -59,12 +59,14 @@ class DreamInterpreter {
             enhancedInterpretation = DreamInterpretationFullModel(
                 hasSubscription: enhancedInterpretation.hasSubscription,
                 dreamEmoji: enhancedInterpretation.dreamEmoji,
+                dreamEmojiBackgroundColor: enhancedInterpretation.dreamEmojiBackgroundColor,
                 dreamTitle: generateDreamTitle(from: originalText),
                 dreamSummary: enhancedInterpretation.dreamSummary,
                 fullInterpretation: enhancedInterpretation.fullInterpretation,
                 moodInsights: enhancedInterpretation.moodInsights,
                 symbolism: enhancedInterpretation.symbolism,
                 reflectionPrompts: enhancedInterpretation.reflectionPrompts,
+                tags: enhancedInterpretation.tags,
                 quote: enhancedInterpretation.quote
             )
         }
@@ -74,12 +76,14 @@ class DreamInterpreter {
             enhancedInterpretation = DreamInterpretationFullModel(
                 hasSubscription: enhancedInterpretation.hasSubscription,
                 dreamEmoji: enhancedInterpretation.dreamEmoji,
+                dreamEmojiBackgroundColor: enhancedInterpretation.dreamEmojiBackgroundColor,
                 dreamTitle: enhancedInterpretation.dreamTitle,
                 dreamSummary: enhancedInterpretation.dreamSummary,
                 fullInterpretation: enhancedInterpretation.fullInterpretation,
                 moodInsights: generateDefaultMoodInsights(),
                 symbolism: enhancedInterpretation.symbolism,
                 reflectionPrompts: enhancedInterpretation.reflectionPrompts,
+                tags: enhancedInterpretation.tags,
                 quote: enhancedInterpretation.quote
             )
         }
@@ -89,12 +93,14 @@ class DreamInterpreter {
             enhancedInterpretation = DreamInterpretationFullModel(
                 hasSubscription: enhancedInterpretation.hasSubscription,
                 dreamEmoji: enhancedInterpretation.dreamEmoji,
+                dreamEmojiBackgroundColor: enhancedInterpretation.dreamEmojiBackgroundColor,
                 dreamTitle: enhancedInterpretation.dreamTitle,
                 dreamSummary: enhancedInterpretation.dreamSummary,
                 fullInterpretation: enhancedInterpretation.fullInterpretation,
                 moodInsights: enhancedInterpretation.moodInsights,
                 symbolism: generateDefaultSymbolism(),
                 reflectionPrompts: enhancedInterpretation.reflectionPrompts,
+                tags: enhancedInterpretation.tags,
                 quote: enhancedInterpretation.quote
             )
         }
@@ -104,12 +110,14 @@ class DreamInterpreter {
             enhancedInterpretation = DreamInterpretationFullModel(
                 hasSubscription: enhancedInterpretation.hasSubscription,
                 dreamEmoji: enhancedInterpretation.dreamEmoji,
+                dreamEmojiBackgroundColor: enhancedInterpretation.dreamEmojiBackgroundColor,
                 dreamTitle: enhancedInterpretation.dreamTitle,
                 dreamSummary: enhancedInterpretation.dreamSummary,
                 fullInterpretation: enhancedInterpretation.fullInterpretation,
                 moodInsights: enhancedInterpretation.moodInsights,
                 symbolism: enhancedInterpretation.symbolism,
                 reflectionPrompts: generateDefaultReflectionPrompts(),
+                tags: enhancedInterpretation.tags,
                 quote: enhancedInterpretation.quote
             )
         }

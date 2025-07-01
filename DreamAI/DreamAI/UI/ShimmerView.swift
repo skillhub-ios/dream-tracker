@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ShimmerView: ViewModifier {
     let state: ContentStateType
-    var retryButtonUI: AnyView? = nil
+    let retryButtonUI: AnyView
 
     @State private var toast: ToastData? = nil
 
@@ -47,7 +47,7 @@ struct ShimmerView: ViewModifier {
 }
 
 extension View {
-    func makeshimmer(state: ContentStateType, retryButtonUI: AnyView? = nil) -> some View {
+    func makeshimmer(state: ContentStateType, retryButtonUI: AnyView) -> some View {
         self.modifier(ShimmerView(state: state, retryButtonUI: retryButtonUI))
     }
 }   

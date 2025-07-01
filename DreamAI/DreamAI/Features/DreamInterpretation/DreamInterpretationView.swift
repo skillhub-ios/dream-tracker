@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct DreamInterpretationView: View {
-    @ObservedObject var viewModel: DreamInterpretationViewModel
+    @EnvironmentObject var viewModel: DreamInterpretationViewModel
     @Environment(\.dismiss) private var dismiss
     
     private var model: DreamInterpretationFullModel {
@@ -223,18 +223,19 @@ struct MoodProgressUI: View {
     VStack {
         Text("Hello")
             .sheet(isPresented: .constant(true)) {
-                DreamInterpretationView(
-                    viewModel: DreamInterpretationViewModel(
-                        dream: Dream(
-                            emoji: "🐶",
-                            emojiBackground: .appPurple,
-                            title: "Dream about a dog",
-                            tags: [.daydream],
-                            date: Date(),
-                            requestStatus: .success
+                DreamInterpretationView()
+                    .environmentObject(
+                        DreamInterpretationViewModel(
+                            dream: Dream(
+                                emoji: "🐶",
+                                emojiBackground: .appPurple,
+                                title: "Dream about a dog",
+                                tags: [.daydream],
+                                date: Date(),
+                                requestStatus: .success
+                            )
                         )
                     )
-                )
             }
     }
 }

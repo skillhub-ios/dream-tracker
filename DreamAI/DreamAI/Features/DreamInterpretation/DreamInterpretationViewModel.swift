@@ -21,6 +21,7 @@ class DreamInterpretationViewModel: ObservableObject {
     private var cancellables: Set<AnyCancellable> = []
     private let userManager: UserManager = .shared
     private let dreamInterpreter: DreamInterpreter = .shared
+    private let dreamManager: DreamManager = .shared
     
     private var dream: Dream?
     private var dreamData: UserDreamData?
@@ -55,24 +56,42 @@ class DreamInterpretationViewModel: ObservableObject {
     
     func fetchInterpretation() async {
         
-        guard let dreamData = dreamData else {
-            // If no dream is provided, show error
-            contentState = .error(DreamInterpreterError.invalidResponse)
-            return
-        }
-        
-        contentState = .loading
-        
-        do {
-            let fetchedModel = try await dreamInterpreter.interpretDream(
-                dreamText: dreamData.dreamText,
-                mood: dreamData.mood
-            )
-            self.model = fetchedModel
-            contentState = .success
-        } catch {
-            contentState = .error(error)
-        }
+       guard let dreamData = dreamData else {
+           // If no dream is provided, show error
+           contentState = .error(DreamInterpreterError.invalidResponse)
+           return
+       }
+       
+       contentState = .loading
+       
+       do {
+           let fetchedModel = try await dreamInterpreter.interpretDream(
+               dreamText: dreamData.dreamText,
+               mood: dreamData.mood
+           )
+           self.model = fetchedModel
+
+           let dreamModel = fullModelToDream(fetchedModel)
+           self.dreamManager.addDream(dreamModel)
+
+           contentState = .success
+       } catch {
+           contentState = .error(error)
+       }
+    }
+
+    func updateDreamData(_ dreamData: UserDreamData) {
+        self.dreamData = dreamData
+    }
+    
+    private func fullModelToDream(_ model: DreamInterpretationFullModel) -> Dream {
+        Dream(
+            emoji: model.dreamEmoji,
+            emojiBackground: Color(hex: model.dreamEmojiBackgroundColor),
+            title: model.dreamTitle,
+            tags: model.tags.compactMap({ Tags(rawValue: $0) }),
+            date: Date()
+        )
     }
 }
 

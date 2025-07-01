@@ -10,6 +10,7 @@ import CoreHaptics
 
 struct MainFloatingPanelView: View {
     @EnvironmentObject private var viewModel: MainViewModel
+    @EnvironmentObject var interpretationViewModel: DreamInterpretationViewModel
         
     @State private var dreamlistmode: DreamListItemMode = .view
     @State private var selectedDreamIds: [UUID] = []
@@ -64,16 +65,14 @@ struct MainFloatingPanelView: View {
         .sheet(isPresented: $showCreateDreamView) {
             NavigationStack {
                 CreateDreamView()
+                    .environmentObject(interpretationViewModel)
             }
             .presentationDetents([.large])
         }
         .sheet(isPresented: $showDreamInterpretation) {
             if let selectedDream {
-                DreamInterpretationView(
-                    viewModel: DreamInterpretationViewModel(
-                        dream: selectedDream
-                    )
-                )
+                DreamInterpretationView()
+                    .environmentObject(DreamInterpretationViewModel(dream: selectedDream))
             }
         }
     }

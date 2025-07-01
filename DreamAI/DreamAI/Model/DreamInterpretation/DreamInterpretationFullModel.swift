@@ -9,12 +9,14 @@ import Foundation
 struct DreamInterpretationFullModel: Codable {
     let hasSubscription: Bool?
     let dreamEmoji: String
+    let dreamEmojiBackgroundColor: String
     let dreamTitle: String
     let dreamSummary: String
     let fullInterpretation: String
     let moodInsights: [MoodInsight]
     let symbolism: [SymbolMeaning]
     let reflectionPrompts: [String]
+    let tags: [String]
     let quote: Quote
     
     // Computed property to provide default value
@@ -39,10 +41,17 @@ struct Quote: Codable {
     let author: String
 }
 
+extension DreamInterpretationFullModel: Equatable {
+    static func == (lhs: DreamInterpretationFullModel, rhs: DreamInterpretationFullModel) -> Bool {
+        lhs.dreamTitle == rhs.dreamTitle
+    }
+}
+
 //MARK: - Mock Data
 let dreamInterpretationFullModel = DreamInterpretationFullModel(
     hasSubscription: false,
     dreamEmoji: "😶‍🌫️",
+    dreamEmojiBackgroundColor: "#FFD700",
     dreamTitle: "The Mountain of Fear",
     dreamSummary: "You dreamed of wandering alone through a misty forest, feeling lost and uncertain. A voice was calling you from the distance, but you couldn't respond",
     fullInterpretation: "This dream suggests you're navigating uncertainty in waking life. The forest may symbolize confusion or feeling lost in current decisions, while the distant voice reflects an inner guidance you're not yet ready to hear. Your subconscious might be urging you to slow down and reconnect with your intuition.",
@@ -61,5 +70,6 @@ let dreamInterpretationFullModel = DreamInterpretationFullModel(
         "What did you see in the dream?\n",
         "What did you hear in the dream?\n"
     ],
+    tags: ["Nightmare", "Lucid Dream"],
     quote: Quote(text: "The interpretation of dreams is the royal road to the unconscious.", author: "Sigmund Freud")
 )
