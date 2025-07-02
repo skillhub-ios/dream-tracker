@@ -73,7 +73,10 @@ struct DreamInterpretationView: View {
                     resonanceUI($viewModel.selectedResonance)
                     
                     // Done button
-                    DButton(title: "Done", state: $viewModel.buttonState, action: { dismiss() })
+                    DButton(
+                        title: "Done",
+                        state: $viewModel.buttonState,
+                        action: { dismiss() })
                 }
                 .padding()
             }
@@ -202,6 +205,10 @@ private extension DreamInterpretationView {
 struct MoodProgressUI: View {
     var progress: Double
     
+    private var clampedProgress: Double {
+           min(progress, 1.0)
+       }
+    
     var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .leading) {
@@ -211,7 +218,7 @@ struct MoodProgressUI: View {
                 
                 RoundedRectangle(cornerRadius: 8)
                     .fill(Color.appPurple)
-                    .frame(width: geometry.size.width * CGFloat(progress), height: 10)
+                    .frame(width: geometry.size.width * CGFloat(clampedProgress), height: 10)
             }
         }
         .frame(height: 10)

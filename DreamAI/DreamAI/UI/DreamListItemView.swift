@@ -32,17 +32,17 @@ struct DreamListItemView: View {
                     .font(.headline)
                     .foregroundColor(.white)
                     .lineLimit(2)
-                HStack(spacing: 6) {
-                    ForEach(dream.tags.prefix(2), id: \ .self) { tag in
-                        Text(tag.rawValue)
-                            .font(.caption)
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 4)
-                            .background(Color.appGray7.opacity(0.36))
-                            .cornerRadius(8)
-                            .foregroundColor(.white)
-                    }
-                }
+//                HStack(spacing: 6) {
+//                    ForEach(dream.tags.prefix(2), id: \ .self) { tag in
+//                        Text(tag.rawValue)
+//                            .font(.caption)
+//                            .padding(.horizontal, 8)
+//                            .padding(.vertical, 4)
+//                            .background(Color.appGray7.opacity(0.36))
+//                            .cornerRadius(8)
+//                            .foregroundColor(.white)
+//                    }
+//                }
                 if ![.idle, .success].contains(requestStatus) || mode == .edit {
                     dateUI
                 }

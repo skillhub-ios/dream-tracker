@@ -36,12 +36,12 @@ class DreamInterpretationViewModel: ObservableObject {
     //MARK: - Private Methods
     
     private func subscribers() {
-        $contentState // работает криво
+        $contentState
             .receive(on: DispatchQueue.main)
             .map {
                 return switch $0 {
                 case .loading: .loading
-                case .success: self.userManager.isSubscribed ? .normal : .locked
+                case .success: .normal
                 case .error: .tryAgain
                 }
             }
