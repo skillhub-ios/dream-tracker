@@ -8,44 +8,76 @@
 import SwiftUI
 import Combine
 
-@MainActor
-class MainViewModel: ObservableObject {
+final class MainViewModel: ObservableObject {
+    
+    // MARK: - Public Properties
+    
     @Published var searchBarFilter: SearchBarFilter = .newestFirst
     @Published var searchText: String = ""
     @Published var lastDream: Dream?
+    @Published var dreams: [Dream] = []
+    @Published var dreamInterpretations: [Interpretation] = []
+    
+    // MARK: - Private Properties
     
     private var cancellables = Set<AnyCancellable>()
-    private let dreamManager = DreamManager.shared
     
-    var dreams: [Dream] {
-        dreamManager.dreams
-    }
+    // MARK: - External Dependencies
+    
+    private let coreDataStore = DIContainer.coreDataStore
+    
+    // MARK: - Lifecycle
     
     init() {
-        // Subscribe to dreamManager's changes
-        dreamManager.$dreams
+        addSubscriptions()
+        
+    }
+    
+    // MARK: - Public Functions
+    
+    // MARK: - Private Functions
+    
+    private func addSubscriptions() {
+        NotificationCenter.default.publisher(for: Notification.Name(PublisherKey.addDream.rawValue))
+            .compactMap { extractValue(from: $0, as: Dream.self) }
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                self?.objectWillChange.send()
-                self?.lastDream = self?.dreamManager.dreams.first
+            .sink { [weak self] dream in
+                guard let self = self else { return }
+                self.dreams.insert(dream, at: 0)
+                self.coreDataStore.saveDream(dream)
             }
             .store(in: &cancellables)
         
-        self.lastDream = dreamManager.dreams.first
+        coreDataStore.$dreams
+            .dropIfEmpty()
+            .map(fromEntitiesToSortedDreams)
+            .receive(on: DispatchQueue.main)
+            .assign(to: &$dreams)
         
-        $searchBarFilter
-            .sink { _ in
-                self.objectWillChange.send()
+        $dreams
+            .compactMap { $0 }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] dreams in
+                self?.lastDream = dreams.first
             }
             .store(in: &cancellables)
     }
-
+    
+    private func fromEntitiesToSortedDreams(_ entities: [DreamEntity]) -> [Dream] {
+        entities
+            .map { Dream(from: $0) }
+            .sorted(by: { $0.date > $1.date })
+    }
+    
+    
+    // MARK: - OLD ---------------------------------
+    
     func filterDreams() -> [Dream] {
         let sortedDreams = filterBySearchBarFilter()
         if searchText.isEmpty { return sortedDreams }
         return sortedDreams.filter { $0.title.localizedCaseInsensitiveContains(searchText) || $0.tags.contains(where: { $0.rawValue.localizedCaseInsensitiveContains(searchText) }) }
     }
-
+    
     func filterBySearchBarFilter() -> [Dream] {
         switch searchBarFilter {
         case .newestFirst:
@@ -58,16 +90,16 @@ class MainViewModel: ObservableObject {
             return dreams.sorted(by: { $0.tags.count > $1.tags.count })
         }
     }
-
-    func deleteDreams(ids: [UUID]) {
-        dreamManager.deleteDreams(ids: ids)
-    }
     
-    func addDream(_ dream: Dream) {
-        dreamManager.addDream(dream)
-    }
-    
-    func startDreamInterpretation(dreamId: UUID) {
-        dreamManager.startDreamInterpretation(dreamId: dreamId)
-    }
+    //    func deleteDreams(ids: [UUID]) {
+    //        dreamManager.deleteDreams(ids: ids)
+    //    }
+    //
+    //    func addDream(_ dream: Dream) {
+    //        dreamManager.addDream(dream)
+    //    }
+    //
+    //    func startDreamInterpretation(dreamId: UUID) {
+    //        dreamManager.startDreamInterpretation(dreamId: dreamId)
+    //    }
 }

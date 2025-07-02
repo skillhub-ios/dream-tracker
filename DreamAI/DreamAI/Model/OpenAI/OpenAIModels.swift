@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct OpenAIThread: Codable {
+struct OpenAIThread: Codable, Hashable {
     let id: String
     let object: String
     let createdAt: Int

@@ -43,7 +43,7 @@ extension RequestStatus {
 }
 
 struct Dream: Identifiable, Equatable, Codable {
-    var id: UUID = UUID()
+    var id: UUID = UUID()  // var?
     let emoji: String
     let emojiBackground: Color
     let title: String
@@ -54,6 +54,16 @@ struct Dream: Identifiable, Equatable, Codable {
     // MARK: - Coding Keys
     private enum CodingKeys: String, CodingKey {
         case id, emoji, emojiBackgroundHex, title, tags, date, requestStatus
+    }
+    
+    // MARK: - CoreData
+    init(from entity: DreamEntity) {
+        self.id = entity.id ?? UUID()
+        self.emoji = entity.emoji ?? "?"
+        self.emojiBackground = Color(hex: entity.emojiBackground ?? "#FFFFFF")
+        self.title = entity.title ?? ""
+        self.tags = entity.tags?.split(separator: ",").compactMap { Tags(rawValue: String($0)) } ?? []
+        self.date = entity.date ?? Date()
     }
     
     // MARK: - Custom Coding Implementation

@@ -17,7 +17,7 @@ class OpenAIManager {
         decoder.keyDecodingStrategy = .convertFromSnakeCase
     }
 
-    func getDreamInterpretation(dreamText: String, mood: String?, tags: [String]) async throws -> DreamInterpretationFullModel {
+    func getDreamInterpretation(dreamText: String, mood: String?, tags: [String]) async throws -> Interpretation {
         guard !apiKey.isEmpty else {
             throw NSError(domain: "OpenAIManager", code: -1, userInfo: [NSLocalizedDescriptionKey: "OpenAI API key is missing."])
         }
@@ -29,7 +29,7 @@ class OpenAIManager {
     }
     
     // MARK: - Function Calling Method
-    private func getDreamInterpretationWithFunctionCalling(dreamText: String, mood: String?, tags: [String]) async throws -> DreamInterpretationFullModel {
+    private func getDreamInterpretationWithFunctionCalling(dreamText: String, mood: String?, tags: [String]) async throws -> Interpretation {
         let url = URL(string: "https://api.openai.com/v1/chat/completions")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -187,7 +187,7 @@ class OpenAIManager {
         print("📡 Full JSON response: \(arguments)")
         
         do {
-            let interpretation = try JSONDecoder().decode(DreamInterpretationFullModel.self, from: arguments)
+            let interpretation = try JSONDecoder().decode(Interpretation.self, from: arguments)
             print("✅ Successfully decoded interpretation from function call")
             return interpretation
         } catch {

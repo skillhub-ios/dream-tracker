@@ -52,7 +52,7 @@ struct MainFloatingPanelView: View {
             
             FloatingActionButton(mode: dreamlistmode) {
                 if dreamlistmode == .edit {
-                    viewModel.deleteDreams(ids: selectedDreamIds)
+//                    viewModel.deleteDreams(ids: selectedDreamIds)
                     selectedDreamIds.removeAll()
                     dreamlistmode = .view
                 } else {
@@ -67,12 +67,15 @@ struct MainFloatingPanelView: View {
             }
             .presentationDetents([.large])
         }
-        .sheet(isPresented: $showDreamInterpretation) {
-            DreamInterpretationView(
-                viewModel: DreamInterpretationViewModel(
-                    dream: selectedDream
-                )
-            )
+//        .sheet(isPresented: $showDreamInterpretation) {
+//            DreamInterpretationView(
+//                viewModel: DreamInterpretationViewModel(
+//                    dream: selectedDream
+//                )
+//            )
+//        }
+        .sheet(item: $selectedDream) {
+            DreamInterpretationView(dream: $0)
         }
     }
 }

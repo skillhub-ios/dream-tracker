@@ -8,12 +8,17 @@
 import SwiftUI
 
 struct DreamInterpretationView: View {
-    @ObservedObject var viewModel: DreamInterpretationViewModel
+    
+    @StateObject private var viewModel: DreamInterpretationViewModel
     @Environment(\.dismiss) private var dismiss
     
-    private var model: DreamInterpretationFullModel {
-        viewModel.model ?? dreamInterpretationFullModel
+    init(dream: Dream) {
+        self._viewModel = StateObject(wrappedValue: DreamInterpretationViewModel(dream: dream))
     }
+    
+    private var model: Interpretation {
+        viewModel.interpretation ?? dreamInterpretationFullModel }
+    
     
     var body: some View {
         NavigationStack {
@@ -68,11 +73,14 @@ struct DreamInterpretationView: View {
                     resonanceUI($viewModel.selectedResonance)
                     
                     // Done button
-                    DButton(title: "Done", state: $viewModel.buttonState, action: { dismiss() })
+                    DButton(
+                        title: "Done",
+                        state: $viewModel.buttonState,
+                        action: { dismiss() })
                 }
                 .padding()
             }
-            .makeshimmer(state: viewModel.contentState, retryButtonUI: retryButtonUI($viewModel.buttonState))
+            .makeShimmer(state: viewModel.contentState, retryButtonUI: retryButtonUI($viewModel.buttonState))
             .background(Color.appPurpleDark.ignoresSafeArea())
             .navigationTitle("Dream Interpretation")
             .navigationBarTitleDisplayMode(.inline)
@@ -84,9 +92,6 @@ struct DreamInterpretationView: View {
                     .fontWeight(.medium)
                     .foregroundColor(.appPurple)
                 }
-            }
-            .task {
-                await viewModel.fetchInterpretation()
             }
         }
     }
@@ -190,7 +195,7 @@ private extension DreamInterpretationView {
     func retryButtonUI(_ buttonState: Binding<DButtonState>) -> AnyView {
         AnyView(
             DButton(title: "Try again", state: buttonState) {
-                await viewModel.fetchInterpretation()
+                
             }
         )
     }
@@ -199,6 +204,10 @@ private extension DreamInterpretationView {
 //MARK: - MoodProgressUI
 struct MoodProgressUI: View {
     var progress: Double
+    
+    private var clampedProgress: Double {
+           min(progress, 1.0)
+       }
     
     var body: some View {
         GeometryReader { geometry in
@@ -209,7 +218,7 @@ struct MoodProgressUI: View {
                 
                 RoundedRectangle(cornerRadius: 8)
                     .fill(Color.appPurple)
-                    .frame(width: geometry.size.width * CGFloat(progress), height: 10)
+                    .frame(width: geometry.size.width * CGFloat(clampedProgress), height: 10)
             }
         }
         .frame(height: 10)
@@ -221,7 +230,7 @@ struct MoodProgressUI: View {
     VStack {
         Text("Hello")
             .sheet(isPresented: .constant(true)) {
-                DreamInterpretationView(viewModel: DreamInterpretationViewModel(interpretationModel: nil, dream: nil))
+                DreamInterpretationView(dream: loadMockDreams().first!)
             }
     }
 }

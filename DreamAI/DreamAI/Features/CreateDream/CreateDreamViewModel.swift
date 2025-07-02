@@ -20,15 +20,14 @@ class CreateDreamViewModel: ObservableObject {
     @Published var isRecording: Bool = false
     @Published var showPermissionAlert: Bool = false
     @Published var permissionAlertMessage: String = ""
-    @Published var interpretationModel: DreamInterpretationFullModel?
+    @Published var interpretationModel: Interpretation?
     
     // Track text that existed before recording started
     private var textBeforeRecording: String = ""
     
     // MARK: - Dependencies
     private let speechRecognizer: SpeechRecognizing = SpeechRecognizerManager.shared
-    private let dreamManager = DreamManager.shared
-    private let dreamInterpreter = DreamInterpreter.shared
+    private let dreamInterpreter = DIContainer.dreamInterpreter
     private var cancellables = Set<AnyCancellable>()
     
     init() {
@@ -112,8 +111,8 @@ class CreateDreamViewModel: ObservableObject {
             }
         }
     }
-
-    func generateDream() async -> (UUID, DreamInterpretationFullModel?) {
+    
+    func createDream() {
         let newDream = Dream(
             emoji: generateRandomEmoji(),
             emojiBackground: generateRandomColor(),
@@ -121,7 +120,19 @@ class CreateDreamViewModel: ObservableObject {
             tags: generateRandomTags(),
             date: selectedDate
         )
-        dreamManager.addDream(newDream)
+        addDream(newDream)
+    }
+
+    /// OLD
+    func generateDream() async -> (UUID, Interpretation?) {
+        let newDream = Dream(
+            emoji: generateRandomEmoji(),
+            emojiBackground: generateRandomColor(),
+            title: String(dreamText.prefix(30)),
+            tags: generateRandomTags(),
+            date: selectedDate
+        )
+        addDream(newDream)
         
         do {
             let interpretation = try await dreamInterpreter.interpretDream(
@@ -171,5 +182,13 @@ class CreateDreamViewModel: ObservableObject {
                 self?.updateTextInRealTime()
             }
             .store(in: &cancellables)
+    }
+    
+    private func addDream(_ dream: Dream) {
+        NotificationCenter.default.post(
+            name: Notification.Name(PublisherKey.addDream.rawValue),
+            object: nil,
+            userInfo: ["value": dream]
+        )
     }
 }
