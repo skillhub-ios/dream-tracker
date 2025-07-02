@@ -14,6 +14,7 @@ protocol LanguageManaging {
     var isLanguageChanged: Bool { get }
     func setLanguage(_ language: Language)
     func resetLanguage()
+    func clearUserData()
 }
 
 final class LanguageManager: ObservableObject, LanguageManaging {
@@ -59,6 +60,13 @@ final class LanguageManager: ObservableObject, LanguageManaging {
     }
     
     func resetLanguage() {
+        isLanguageChanged = false
+    }
+    
+    /// Clear user-specific language data (call on sign out)
+    func clearUserData() {
+        // Note: Language preference is typically device-wide, not user-specific
+        // But we can reset the language change flag
         isLanguageChanged = false
     }
 }

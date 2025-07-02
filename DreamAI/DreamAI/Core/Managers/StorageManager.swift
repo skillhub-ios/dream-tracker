@@ -112,6 +112,16 @@ class StorageManager: ObservableObject {
         print("🗑️ All dreams cleared from storage")
     }
     
+    /// Clear all user data (call on sign out)
+    func clearUserData() async {
+        do {
+            try await clearAllDreams()
+            print("🗑️ All user data cleared from storage")
+        } catch {
+            print("❌ Failed to clear user data: \(error.localizedDescription)")
+        }
+    }
+    
     /// Get the last sync date
     func getLastSyncDate() -> Date? {
         return userDefaults.object(forKey: lastSyncKey) as? Date
