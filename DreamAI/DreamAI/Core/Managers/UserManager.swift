@@ -13,7 +13,7 @@ final class UserManager: ObservableObject {
     static let shared = UserManager()
     
     // MARK: - Properties
-    @Published private(set) var isSubscribed: Bool = true
+    @Published private(set) var isSubscribed: Bool = false
     
     // MARK: - Private Properties
     private let userDefaults = UserDefaults.standard

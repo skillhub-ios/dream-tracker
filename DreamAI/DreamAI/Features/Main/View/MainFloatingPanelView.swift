@@ -75,9 +75,8 @@ struct MainFloatingPanelView: View {
             } else {
                 DreamView()
                     .environmentObject(DreamViewModel(dream: dream))
-                    .environmentObject(DreamInterpretationViewModel(dream: dream))
+                    .environmentObject(DreamInterpretationViewModel())
             }
-            
         }
     }
 }

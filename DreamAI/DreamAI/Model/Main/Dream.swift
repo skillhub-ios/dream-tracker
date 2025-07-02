@@ -78,11 +78,11 @@ struct UserCredential: Identifiable, Equatable, Codable {
 
 struct Dream: Identifiable, Equatable, Codable {
     var id: UUID = UUID()
-    let emoji: String
+    var emoji: String
     let emojiBackground: Color
-    let title: String
+    var title: String
     let tags: [Tags]
-    let date: Date
+    var date: Date
     var requestStatus: RequestStatus = .idle
     var interpretation: DreamInterpretationFullModel? = nil
     var userCredential: UserCredential? = nil

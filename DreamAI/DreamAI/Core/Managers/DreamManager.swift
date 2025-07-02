@@ -157,6 +157,15 @@ class DreamManager: ObservableObject {
         }
     }
     
+    /// Update a dream with new data
+    func updateDream(_ updatedDream: Dream) {
+        if let index = dreams.firstIndex(where: { $0.id == updatedDream.id }) {
+            dreams[index] = updatedDream
+            objectWillChange.send()
+            print("📝 Updated dream: \(updatedDream.title)")
+        }
+    }
+    
     /// Get dream interpretation
     func getDreamInterpretation(dreamId: UUID) -> DreamInterpretationFullModel? {
         return getDream(by: dreamId)?.interpretation

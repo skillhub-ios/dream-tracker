@@ -133,15 +133,18 @@ class CreateDreamViewModel: ObservableObject {
     private func subscribers() {
         Publishers.CombineLatest3($selectedDate, $dreamText, $selectedMood)
             .map { date, text, mood in
-                guard UserManager.shared.isSubscribed else {
-                    self.buttonState = .locked
-                    return true
-                }
-                self.buttonState = .normal
-                return text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || mood == nil
+                text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || mood == nil
             }
             .receive(on: DispatchQueue.main)
             .assign(to: \.isButtonDisabled, on: self)
+            .store(in: &cancellables)
+        
+        UserManager.shared.$isSubscribed
+            .receive(on: DispatchQueue.main)
+            .map { isSubscribed in
+                return isSubscribed ? .normal : .locked
+            }
+            .assign(to: \.buttonState, on: self)
             .store(in: &cancellables)
         
         // Subscribe to speech recognizer updates to show text in real-time

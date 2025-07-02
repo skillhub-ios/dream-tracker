@@ -187,6 +187,8 @@ private extension DreamView {
     
     func doneNavigationButton() -> some View {
         Button(action: {
+            // Save changes before dismissing
+            viewModel.saveChanges()
             dismiss()
         }) {
             Text("Done")

@@ -10,11 +10,12 @@ import SwiftUI
 class DreamViewModel: ObservableObject {
     
     // MARK: - Properties
-    @State var buttonState: DButtonState
-    @State var dreamText: String = ""
-    @State var mood: Mood? = nil
+    @Published var buttonState: DButtonState
+    @Published var dreamText: String = ""
+    @Published var mood: Mood? = nil
     
     let dream: Dream
+    private let dreamManager = DreamManager.shared
     
     // MARK: - Services
     
@@ -26,4 +27,26 @@ class DreamViewModel: ObservableObject {
         self.mood = dream.userCredential?.selectedMood
     }
     
+    // MARK: - Methods
+    
+    /// Save changes to the dream
+    @MainActor
+    func saveChanges() {
+        // Create updated user credential
+        let updatedCredential = UserCredential(
+            dreamText: dreamText,
+            selectedMood: mood
+        )
+        
+        // Create updated dream with new credential
+        var updatedDream = dream
+        updatedDream.userCredential = updatedCredential
+        updatedDream.title = dreamText
+        updatedDream.date = Date()
+        updatedDream.emoji = (mood ?? .happy).emoji
+        
+        // Update the dream in DreamManager
+        dreamManager.updateDream(updatedDream)
+        print("✅ Successfully saved dream changes")
+    }
 }
