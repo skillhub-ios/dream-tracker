@@ -11,6 +11,7 @@ struct CreateDreamView: View {
     
     // MARK: - Properties
     @StateObject private var viewModel = CreateDreamViewModel()
+    @EnvironmentObject private var subscriptionViewModel: SubscriptionViewModel
     @Environment(\.dismiss) private var dismiss
     @FocusState private var isInputActive: Bool
     @State private var isShowingInterpretation: Bool = false
@@ -24,27 +25,26 @@ struct CreateDreamView: View {
             
             ScrollView {
                 VStack(spacing: 12) {
-                    headerUI(dreamDate: $viewModel.selectedDate)
-                    
-                    dreamTextEditor($viewModel.dreamText)
-                    
-                    microphoneButton {
-                        Task {
-                            await viewModel.toggleRecording()
+                    DreamDateView(date: $viewModel.selectedDate, isCreating: true)
+                        
+                        dreamTextEditor($viewModel.dreamText)
+                        
+                        microphoneButton {
+                            Task {
+                                await viewModel.toggleRecording()
+                            }
                         }
-                    }
-                    
-                    moodPicker($viewModel.selectedMood)
+                        
+                        moodPicker($viewModel.selectedMood)
 
                     Spacer()
                     
-                    DButton(title: "Generate Dream", isDisabled: $viewModel.isButtonDisabled) {
-                        Task {
-                            let (_, interpretation) = await viewModel.generateDream()
-                            await MainActor.run {
-                                self.interpretationModel = interpretation
-                                self.isShowingInterpretation = true
-                            }
+                    DButton(title: "Interpret Dream", isDisabled: $viewModel.isButtonDisabled) {
+                        viewModel.createDream()
+                        if subscriptionViewModel.activeSubscription == nil {
+                            subscriptionViewModel.showPaywall()
+                        } else {
+                            isShowingInterpretation = true
                         }
                     }
                 }
@@ -66,13 +66,6 @@ struct CreateDreamView: View {
         } message: {
             Text(viewModel.permissionAlertMessage)
         }
-//        .sheet(isPresented: $isShowingInterpretation) {
-//            if let interpretation = interpretationModel {
-//                DreamInterpretationView(viewModel: DreamInterpretationViewModel(interpretationModel: interpretation))
-//            } else {
-//                DreamInterpretationView(viewModel: DreamInterpretationViewModel())
-//            }
-//        }
         .onChange(of: isShowingInterpretation) {
             if !isShowingInterpretation {
                 dismiss()
@@ -132,24 +125,6 @@ private extension CreateDreamView {
         }
     }
     
-    func headerUI(dreamDate date: Binding<Date>) -> some View {
-        HStack(spacing: 8) {
-            DatePicker(selection: date) {
-                Text("Describe the dream")
-                    .font(.headline)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.1)
-                    .foregroundColor(.white)
-            }
-            .tint(Color.appPurple)
-            .font(.headline)
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
-            .background(Color.appGray1)
-            .cornerRadius(12)
-        }
-    }
-    
     func moodPicker(_ selectedMood: Binding<Mood?>) -> some View {
         
         VStack(alignment: .leading, spacing: 12) {
@@ -199,7 +174,9 @@ private extension CreateDreamView {
     
     func doneNavigationButton() -> some View {
         Button(action: {
-            viewModel.createDream()
+            if !viewModel.dreamText.isEmpty {
+                viewModel.createDream()
+            }
             dismiss()
         }) {
             Text("Done")

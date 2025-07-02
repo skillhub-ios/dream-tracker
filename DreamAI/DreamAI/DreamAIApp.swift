@@ -17,23 +17,22 @@ struct DreamAIApp: App {
     
     var body: some Scene {
         WindowGroup {
-            if authManager.isAuthenticated {
-                if authManager.hasCompletedPermissions {
-                    MainView()
-                        .environmentObject(subscriptionViewModel)
-                        .fullScreenCover(isPresented: $subscriptionViewModel.paywallIsPresent) {
-                            PaywallView()
-                        }
-                } else {
-                    NavigationStack {
-                        PermissionContainerView()
-                    }
-                }
-            } else {
-                NavigationStack {
-                    IntroView()
-                }
-            }
+            MainView()
+                .environmentObject(subscriptionViewModel)
+//            if authManager.isAuthenticated {
+//                if authManager.hasCompletedPermissions {
+//                    MainView()
+//                        .environmentObject(subscriptionViewModel)
+//                } else {
+//                    NavigationStack {
+//                        PermissionContainerView()
+//                    }
+//                }
+//            } else {
+//                NavigationStack {
+//                    IntroView()
+//                }
+//            }
         }
     }
 }
