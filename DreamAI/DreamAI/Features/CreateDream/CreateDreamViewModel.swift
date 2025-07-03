@@ -21,6 +21,7 @@ class CreateDreamViewModel: ObservableObject {
     @Published var showPermissionAlert: Bool = false
     @Published var permissionAlertMessage: String = ""
     @Published var interpretationModel: Interpretation?
+    @Published var currentDream: Dream?
     
     // Track text that existed before recording started
     private var textBeforeRecording: String = ""
@@ -121,33 +122,34 @@ class CreateDreamViewModel: ObservableObject {
             date: selectedDate
         )
         addDream(newDream)
+        currentDream = newDream
     }
 
     /// OLD
-    func generateDream() async -> (UUID, Interpretation?) {
-        let newDream = Dream(
-            emoji: generateRandomEmoji(),
-            emojiBackground: generateRandomColor(),
-            title: String(dreamText.prefix(30)),
-            tags: generateRandomTags(),
-            date: selectedDate
-        )
-        addDream(newDream)
-        
-        do {
-            let interpretation = try await dreamInterpreter.interpretDream(
-                dreamText: dreamText,
-                mood: selectedMood?.rawValue,
-                tags: []
-            )
-            self.interpretationModel = interpretation
-            return (newDream.id, interpretation)
-        } catch {
-            print("Failed to get interpretation: \(error)")
-            // Handle error appropriately - the error will be propagated to the UI
-            return (newDream.id, nil)
-        }
-    }
+//    func generateDream() async -> (UUID, Interpretation?) {
+//        let newDream = Dream(
+//            emoji: generateRandomEmoji(),
+//            emojiBackground: generateRandomColor(),
+//            title: String(dreamText.prefix(30)),
+//            tags: generateRandomTags(),
+//            date: selectedDate
+//        )
+//        addDream(newDream)
+//        
+//        do {
+//            let interpretation = try await dreamInterpreter.interpretDream(
+//                dreamText: dreamText,
+//                mood: selectedMood?.rawValue,
+//                tags: []
+//            )
+//            self.interpretationModel = interpretation
+//            return (newDream.id, interpretation)
+//        } catch {
+//            print("Failed to get interpretation: \(error)")
+//            // Handle error appropriately - the error will be propagated to the UI
+//            return (newDream.id, nil)
+//        }
+//    }
     
     private func generateRandomEmoji() -> String {
         let emojis = ["😴", "🌙", "✨", "🌟", "💫", "🌈", "☁️", "🦋", "🎭", "🎪"]

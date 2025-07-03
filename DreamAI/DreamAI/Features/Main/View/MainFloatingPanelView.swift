@@ -10,7 +10,7 @@ import CoreHaptics
 
 struct MainFloatingPanelView: View {
     @EnvironmentObject private var viewModel: MainViewModel
-        
+    @EnvironmentObject private var subscriptionViewModel: SubscriptionViewModel
     @State private var dreamlistmode: DreamListItemMode = .view
     @State private var selectedDreamIds: [UUID] = []
     @State private var hapticTrigger = false
@@ -67,15 +67,15 @@ struct MainFloatingPanelView: View {
             }
             .presentationDetents([.large])
         }
-//        .sheet(isPresented: $showDreamInterpretation) {
-//            DreamInterpretationView(
-//                viewModel: DreamInterpretationViewModel(
-//                    dream: selectedDream
-//                )
-//            )
-//        }
-        .sheet(item: $selectedDream) {
-            DreamInterpretationView(dream: $0)
+        .sheet(item: $selectedDream) { dream in
+            if subscriptionViewModel.isSubscribed {
+                DreamInterpretationView(dream: dream)
+            } else {
+                NavigationStack {
+                    DreamDetailsView(dream: dream)
+                }
+                .presentationDetents([.large])
+            }
         }
     }
 }

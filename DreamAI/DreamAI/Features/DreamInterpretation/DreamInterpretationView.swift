@@ -19,7 +19,6 @@ struct DreamInterpretationView: View {
     private var model: Interpretation {
         viewModel.interpretation ?? dreamInterpretationFullModel }
     
-    
     var body: some View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
@@ -80,7 +79,9 @@ struct DreamInterpretationView: View {
                 }
                 .padding()
             }
-            .makeShimmer(state: viewModel.contentState, retryButtonUI: retryButtonUI($viewModel.buttonState))
+            .makeShimmer(
+                state: viewModel.contentState,
+                retryButtonUI: retryButtonUI($viewModel.buttonState))
             .background(Color.appPurpleDark.ignoresSafeArea())
             .navigationTitle("Dream Interpretation")
             .navigationBarTitleDisplayMode(.inline)

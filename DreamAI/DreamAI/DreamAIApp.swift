@@ -21,9 +21,6 @@ struct DreamAIApp: App {
                 if authManager.hasCompletedPermissions {
                     MainView()
                         .environmentObject(subscriptionViewModel)
-                        .fullScreenCover(isPresented: $subscriptionViewModel.paywallIsPresent) {
-                            PaywallView()
-                        }
                 } else {
                     NavigationStack {
                         PermissionContainerView()

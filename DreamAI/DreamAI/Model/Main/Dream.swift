@@ -43,17 +43,18 @@ extension RequestStatus {
 }
 
 struct Dream: Identifiable, Equatable, Codable {
-    var id: UUID = UUID()  // var?
+    var id: UUID = UUID()
     let emoji: String
     let emojiBackground: Color
     let title: String
+    let dreamDescription: String
     let tags: [Tags]
     let date: Date
     var requestStatus: RequestStatus = .idle
     
     // MARK: - Coding Keys
     private enum CodingKeys: String, CodingKey {
-        case id, emoji, emojiBackgroundHex, title, tags, date, requestStatus
+        case id, emoji, emojiBackgroundHex, title, tags, date, requestStatus, dreamDescription
     }
     
     // MARK: - CoreData
@@ -64,6 +65,7 @@ struct Dream: Identifiable, Equatable, Codable {
         self.title = entity.title ?? ""
         self.tags = entity.tags?.split(separator: ",").compactMap { Tags(rawValue: String($0)) } ?? []
         self.date = entity.date ?? Date()
+        self.dreamDescription = entity.dreamDescription ?? ""
     }
     
     // MARK: - Custom Coding Implementation
@@ -77,6 +79,7 @@ struct Dream: Identifiable, Equatable, Codable {
         tags = try container.decode([Tags].self, forKey: .tags)
         date = try container.decode(Date.self, forKey: .date)
         requestStatus = try container.decode(RequestStatus.self, forKey: .requestStatus)
+        dreamDescription = try container.decode(String.self, forKey: .dreamDescription)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -102,6 +105,7 @@ struct Dream: Identifiable, Equatable, Codable {
         self.tags = tags
         self.date = date
         self.requestStatus = requestStatus
+        self.dreamDescription = ""
     }
 }
 
