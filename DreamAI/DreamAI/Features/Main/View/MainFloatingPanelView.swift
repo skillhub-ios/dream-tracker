@@ -12,7 +12,6 @@ struct MainFloatingPanelView: View {
     @EnvironmentObject private var viewModel: MainViewModel
     @EnvironmentObject private var subscriptionViewModel: SubscriptionViewModel
     @State private var dreamlistmode: DreamListItemMode = .view
-    @State private var selectedDreamIds: [UUID] = []
     @State private var hapticTrigger = false
     @State private var showCreateDreamView = false
     @State private var showDreamInterpretation = false
@@ -51,12 +50,13 @@ struct MainFloatingPanelView: View {
             .padding(.top, 24)
             
             FloatingActionButton(mode: dreamlistmode) {
-                if dreamlistmode == .edit {
-//                    viewModel.deleteDreams(ids: selectedDreamIds)
-                    selectedDreamIds.removeAll()
-                    dreamlistmode = .view
-                } else {
-                    showCreateDreamView = true
+                withAnimation {
+                    if dreamlistmode == .edit {
+                        viewModel.deleteSelectedDreams()
+                        dreamlistmode = .view
+                    } else {
+                        showCreateDreamView = true
+                    }
                 }
             }
             .padding(.bottom, 15)
@@ -85,14 +85,16 @@ private extension MainFloatingPanelView {
     func dreamRow(for dream: Dream) -> some View {
         DreamListItemView(
             dream: dream,
-            isSelected: selectedDreamIds.contains(dream.id),
+            isSelected: viewModel.selectedDreamIds.contains(dream.id),
             mode: dreamlistmode,
             requestStatus: dream.requestStatus
         )
-        .scaleEffect(selectedDreamIds.contains(dream.id) ? 0.95 : 1.0)
+        .scaleEffect(viewModel.selectedDreamIds.contains(dream.id) ? 0.95 : 1.0)
         .onTapGesture {
             if dreamlistmode == .edit {
-                toggleDreamSelection(dream: dream)
+                withAnimation {
+                    viewModel.toggleDreamSelection(dreamId: dream.id)
+                }
             } else {
                 // Show dream interpretation
                 selectedDream = dream
@@ -101,23 +103,15 @@ private extension MainFloatingPanelView {
         }
         .onLongPressGesture {
             hapticTrigger.toggle()
-            dreamlistmode = dreamlistmode == .edit ? .view : .edit
-            toggleDreamSelection(dream: dream)
-            if dreamlistmode == .view {
-                selectedDreamIds.removeAll()
+            withAnimation {
+                dreamlistmode = dreamlistmode == .edit ? .view : .edit
+                viewModel.toggleDreamSelection(dreamId: dream.id)
+                if dreamlistmode == .view {
+                    viewModel.selectedDreamIds.removeAll()
+                }
             }
         }
         .sensoryFeedback(.impact(weight: .heavy, intensity: 0.9), trigger: hapticTrigger )
-    }
-    
-    func toggleDreamSelection(dream: Dream) {
-        withAnimation(.easeInOut(duration: 0.1)) {
-            if selectedDreamIds.contains(dream.id) {
-                selectedDreamIds.removeAll { $0 == dream.id }
-            } else {
-                selectedDreamIds.append(dream.id)
-            }
-        }
     }
 }
 

@@ -17,6 +17,7 @@ final class MainViewModel: ObservableObject {
     @Published var lastDream: Dream?
     @Published var dreams: [Dream] = []
     @Published var dreamInterpretations: [Interpretation] = []
+    @Published var selectedDreamIds: [UUID] = []
     
     // MARK: - Private Properties
     
@@ -33,6 +34,20 @@ final class MainViewModel: ObservableObject {
     }
     
     // MARK: - Public Functions
+    
+    public func deleteSelectedDreams() {
+        dreams.removeAll { selectedDreamIds.contains($0.id) }
+        coreDataStore.deleteDreamsAndItsInterpretations(dreamsIds: selectedDreamIds)
+        selectedDreamIds.removeAll()
+    }
+    
+    func toggleDreamSelection(dreamId: UUID) {
+        if selectedDreamIds.contains(dreamId) {
+            selectedDreamIds.removeAll { $0 == dreamId }
+        } else {
+            selectedDreamIds.append(dreamId)
+        }
+    }
     
     // MARK: - Private Functions
     
@@ -89,16 +104,4 @@ final class MainViewModel: ObservableObject {
             return dreams.sorted(by: { $0.tags.count > $1.tags.count })
         }
     }
-    
-    //    func deleteDreams(ids: [UUID]) {
-    //        dreamManager.deleteDreams(ids: ids)
-    //    }
-    //
-    //    func addDream(_ dream: Dream) {
-    //        dreamManager.addDream(dream)
-    //    }
-    //
-    //    func startDreamInterpretation(dreamId: UUID) {
-    //        dreamManager.startDreamInterpretation(dreamId: dreamId)
-    //    }
 }
