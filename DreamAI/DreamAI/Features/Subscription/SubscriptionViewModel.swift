@@ -41,7 +41,7 @@ final class SubscriptionViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
-    private func subscriptionDetails(_ status: SubscriptionStatus) -> (SubscriptionType, Bool) {
+    private func subscriptionDetails(_ status: SuperwallKit.SubscriptionStatus) -> (SubscriptionType, Bool) {
         switch status {
         case .active(let entitlements):
             let hasSubscription = true
@@ -98,14 +98,4 @@ enum SubscriptionType {
     case monthly
     case yearly
     case none
-}
-
-struct ProductIDs {
-    static let monthlySubscription = "com.dreamai.monthly.subscription"
-    static let yearlySubscription = "com.dreamai.yearly.subscription"
-    
-    static let allProducts = [
-        monthlySubscription,
-        yearlySubscription
-    ]
 }
