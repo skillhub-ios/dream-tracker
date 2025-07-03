@@ -21,30 +21,26 @@ struct CreateDreamView: View {
     var body: some View {
         ZStack {
             Color.appGray4
-                .ignoresSafeArea()  
-            
+                .ignoresSafeArea()
             ScrollView {
                 VStack(spacing: 12) {
                     DreamDateView(date: $viewModel.selectedDate, isCreating: true)
-                        
                         dreamTextEditor($viewModel.dreamText)
-                        
                         microphoneButton {
                             Task {
                                 await viewModel.toggleRecording()
                             }
                         }
-                        
                         moodPicker($viewModel.selectedMood)
-
+                    
                     Spacer()
                     
                     DButton(title: "Interpret Dream", isDisabled: $viewModel.isButtonDisabled) {
-                        viewModel.createDream()
-                        if subscriptionViewModel.activeSubscription == nil {
-                            subscriptionViewModel.showPaywall()
-                        } else {
+                        if subscriptionViewModel.isSubscribed {
+                            viewModel.createDream()
                             isShowingInterpretation = true
+                        } else {
+                            subscriptionViewModel.showPaywall()
                         }
                     }
                 }
@@ -71,13 +67,17 @@ struct CreateDreamView: View {
                 dismiss()
             }
         }
+        .sheet(isPresented: $isShowingInterpretation) {
+            if let dream = viewModel.currentDream {
+                DreamInterpretationView(dream: dream)
+            }
+        }
     }
 }
 
 // MARK: - Private
 
 private extension CreateDreamView {
-    
     func dreamTextEditor(_ dreamText: Binding<String>) -> some View {
         ZStack(alignment: .topLeading) {
             if dreamText.wrappedValue.isEmpty {
@@ -126,7 +126,6 @@ private extension CreateDreamView {
     }
     
     func moodPicker(_ selectedMood: Binding<Mood?>) -> some View {
-        
         VStack(alignment: .leading, spacing: 12) {
             Text("Mood before sleep")
                 .font(.system(size: 17, weight: .semibold))

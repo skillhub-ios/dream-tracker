@@ -38,10 +38,10 @@ struct DreamDetailsView: View {
                     Spacer()
                     
                     DButton(title: "Interpret Dream") {
-                        if subscriptionViewModel.activeSubscription == nil {
-                            subscriptionViewModel.showPaywall()
-                        } else {
+                        if subscriptionViewModel.isSubscribed {
                             isShowingInterpretation = true
+                        } else {
+                            subscriptionViewModel.showPaywall()
                         }
                     }
                 }
@@ -64,6 +64,9 @@ struct DreamDetailsView: View {
             if !isShowingInterpretation {
                 dismiss()
             }
+        }
+        .sheet(isPresented: $isShowingInterpretation) {
+            DreamInterpretationView(dream: dream)
         }
     }
 }

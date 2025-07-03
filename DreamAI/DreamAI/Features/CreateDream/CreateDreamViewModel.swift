@@ -21,6 +21,7 @@ class CreateDreamViewModel: ObservableObject {
     @Published var showPermissionAlert: Bool = false
     @Published var permissionAlertMessage: String = ""
     @Published var interpretationModel: Interpretation?
+    @Published var currentDream: Dream?
     
     // Track text that existed before recording started
     private var textBeforeRecording: String = ""
@@ -121,6 +122,7 @@ class CreateDreamViewModel: ObservableObject {
             date: selectedDate
         )
         addDream(newDream)
+        currentDream = newDream
     }
 
     /// OLD

@@ -4,27 +4,63 @@
 // Created by Cesare on 27.06.2025 on Earth.
 // 
 
-
 import Foundation
 import SuperwallKit
 import Combine
 import StoreKit
 
+@MainActor
 final class SubscriptionViewModel: ObservableObject {
-    @Published var paywallIsPresent: Bool = false
-    @Published var activeSubscription: SubscriptionType?
-    @Published var selectedSubscription: SubscriptionType = .monthly
     @Published var subscriptionProducts: [SubscriptionProduct] = []
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
     @Published var showError: Bool = false
+    @Published var isSubscribed: Bool = false
+    @Published var subscriptionType: SubscriptionType = .none
+    
+    private var cancellables: Set<AnyCancellable> = []
     
     init() {
         Superwall.configure(apiKey: "pk_8beac5fd94b375e0e1e2df7bb99af2bf66f9fae6e806eca1")
+        loadProducts()
+        addSubscriptions()
     }
     
     func showPaywall() {
         Superwall.shared.register(placement: "campaign_trigger")
+    }
+    
+    private func addSubscriptions() {
+        Superwall.shared.$subscriptionStatus
+            .map(subscriptionDetails)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] subscriptionType, isSubscribed in
+                self?.subscriptionType = subscriptionType
+                self?.isSubscribed = isSubscribed
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func subscriptionDetails(_ status: SubscriptionStatus) -> (SubscriptionType, Bool) {
+        switch status {
+        case .active(let entitlements):
+            let hasSubscription = true
+            if entitlements.contains(where: { $0.id.contains("monthly") }) {
+                return (.monthly, hasSubscription)
+            } else if entitlements.contains(where: { $0.id.contains("yearly") }) {
+                return (.yearly, hasSubscription)
+            } else {
+                return (.none, hasSubscription)
+            }
+        case .unknown, .inactive:
+            return (.none, false)
+        }
+    }
+    
+    func loadProducts() {
+        Task {
+            await loadSubscriptionProducts()
+        }
     }
     
     private func loadSubscriptionProducts() async {
@@ -58,19 +94,10 @@ final class SubscriptionViewModel: ObservableObject {
     }
 }
 
-
-
-enum SubscriptionType: CaseIterable, Identifiable {
+enum SubscriptionType {
     case monthly
     case yearly
-    
-    var title: String {
-        switch self {
-        case .monthly: "Monthly"
-        case .yearly: "Yearly"
-        }
-    }
-    var id: Self { self }
+    case none
 }
 
 struct ProductIDs {

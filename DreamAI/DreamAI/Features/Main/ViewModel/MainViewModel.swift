@@ -30,7 +30,6 @@ final class MainViewModel: ObservableObject {
     
     init() {
         addSubscriptions()
-        
     }
     
     // MARK: - Public Functions

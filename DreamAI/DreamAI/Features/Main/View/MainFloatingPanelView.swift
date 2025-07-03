@@ -68,13 +68,13 @@ struct MainFloatingPanelView: View {
             .presentationDetents([.large])
         }
         .sheet(item: $selectedDream) { dream in
-            if subscriptionViewModel.activeSubscription == nil {
+            if subscriptionViewModel.isSubscribed {
+                DreamInterpretationView(dream: dream)
+            } else {
                 NavigationStack {
                     DreamDetailsView(dream: dream)
                 }
                 .presentationDetents([.large])
-            } else {
-                DreamInterpretationView(dream: dream)
             }
         }
     }
