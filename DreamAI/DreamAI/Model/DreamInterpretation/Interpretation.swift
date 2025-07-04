@@ -15,6 +15,7 @@ struct Interpretation: Codable {
     let reflectionPrompts: [String]
     let quote: Quote
     var dreamParentId: UUID?
+    let tags: [String]
     
     mutating func setDreamParentId(_ id: UUID) {
         self.dreamParentId = id
@@ -57,7 +58,8 @@ let dreamInterpretationFullModel = Interpretation(
         "What did you see in the dream?",
         "What did you hear in the dream?"
     ],
-    quote: Quote(text: "The interpretation of dreams is the royal road to the unconscious.", author: "Sigmund Freud")
+    quote: Quote(text: "The interpretation of dreams is the royal road to the unconscious.", author: "Sigmund Freud"),
+    tags: ["Sometag", "Anothertag"]
 )
 
 // MARK: Core Data Support
@@ -86,7 +88,8 @@ extension Interpretation {
             symbolism: symbolism,
             reflectionPrompts: entity.reflectionPrompts?.split(separator: ",").compactMap { String($0) } ?? [],
             quote: quote,
-            dreamParentId: entity.dreamParentId
+            dreamParentId: entity.dreamParentId,
+            tags: []
         )
     }
 }

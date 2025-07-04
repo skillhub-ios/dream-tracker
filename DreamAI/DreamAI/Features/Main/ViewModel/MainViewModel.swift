@@ -96,8 +96,23 @@ final class MainViewModel: ObservableObject {
                 guard let self = self else { return }
                 for (id, state) in dictionary {
                     self.loadingStatesByDreamId[id] = state
-                    print(dictionary)
                 }
+            }
+            .store(in: &cancellables)
+        
+        NotificationCenter.default.publisher(for: Notification.Name(PublisherKey.updateTags.rawValue))
+            .compactMap { extractValue(from: $0, as: [UUID: [String]].self) }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] tagsById in
+                guard let self = self else { return }
+                for (id, tags) in tagsById {
+                    if let index = self.dreams.firstIndex(where: { $0.id == id }) {
+                        self.dreams[index].updateTags(tags)
+                        let updatedDream = self.dreams[index]
+                        self.coreDataStore.updateDream(updatedDream)
+                    }
+                }
+                
             }
             .store(in: &cancellables)
     }

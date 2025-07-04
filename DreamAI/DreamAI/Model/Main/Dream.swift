@@ -72,7 +72,10 @@ struct Dream: Identifiable, Equatable, Codable {
         self.emoji = entity.emoji ?? "?"
         self.emojiBackground = Color(hex: entity.emojiBackground ?? "#FFFFFF")
         self.title = entity.title ?? ""
-        self.tags = entity.tags?.split(separator: ",").compactMap { Tags(rawValue: String($0)) } ?? []
+        self.tags = entity.tags?
+            .split(separator: ",")
+            .map { $0.trimmingCharacters(in: .whitespaces) }
+            .compactMap { Tags(rawValue: String($0)) } ?? []
         self.date = entity.date ?? Date()
         self.description = entity.dreamDescription ?? ""
     }

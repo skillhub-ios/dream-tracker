@@ -58,6 +58,18 @@ class DreamInterpretationViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
+    private func tagSubscriber() {
+        $interpretation
+            .compactMap { $0 }
+            .sink { [weak self] interpretation in
+                guard let self else { return }
+                if let id = self.dream?.id, !interpretation.tags.isEmpty {
+                    self.updateTags([id: interpretation.tags])
+                }
+            }
+            .store(in: &cancellables)
+    }
+    
     private func loadInterpretation(for dream: Dream) async {
         contentState = .loading
         
@@ -71,7 +83,7 @@ class DreamInterpretationViewModel: ObservableObject {
         // Fethcing data from OpenAPI
         do {
             var fetchedModel = try await dreamInterpreter.interpretDream(
-                dreamText: dream.title, // Assuming title is the full text for now
+                dreamText: dream.description,
                 mood: dream.emoji,
                 tags: dream.tags.map { $0.rawValue }
             )
@@ -79,13 +91,18 @@ class DreamInterpretationViewModel: ObservableObject {
             self.interpretation = fetchedModel
             contentState = .success
             coreDataStore.saveInterpretation(fetchedModel)
+            tagSubscriber()
         } catch {
             contentState = .error(error)
         }
     }
     
-    private func updateTags(_ tags: [Tags]) {
-        
+    private func updateTags(_ tags: [UUID: [String]]) {
+        NotificationCenter.default.post(
+            name: Notification.Name(PublisherKey.updateTags.rawValue),
+            object: nil,
+            userInfo: ["value": tags]
+        )
     }
     
     private func interpretationLoadingStatus(id: UUID, status: ContentStateType) {

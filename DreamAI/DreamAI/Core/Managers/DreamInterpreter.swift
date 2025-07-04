@@ -61,7 +61,8 @@ class DreamInterpreter {
                 moodInsights: enhancedInterpretation.moodInsights,
                 symbolism: enhancedInterpretation.symbolism,
                 reflectionPrompts: enhancedInterpretation.reflectionPrompts,
-                quote: enhancedInterpretation.quote
+                quote: enhancedInterpretation.quote,
+                tags: enhancedInterpretation.tags
             )
         }
         
@@ -74,7 +75,8 @@ class DreamInterpreter {
                 moodInsights: generateDefaultMoodInsights(),
                 symbolism: enhancedInterpretation.symbolism,
                 reflectionPrompts: enhancedInterpretation.reflectionPrompts,
-                quote: enhancedInterpretation.quote
+                quote: enhancedInterpretation.quote,
+                tags: enhancedInterpretation.tags
             )
         }
         
@@ -87,7 +89,8 @@ class DreamInterpreter {
                 moodInsights: enhancedInterpretation.moodInsights,
                 symbolism: generateDefaultSymbolism(),
                 reflectionPrompts: enhancedInterpretation.reflectionPrompts,
-                quote: enhancedInterpretation.quote
+                quote: enhancedInterpretation.quote,
+                tags: enhancedInterpretation.tags
             )
         }
         
@@ -100,7 +103,8 @@ class DreamInterpreter {
                 moodInsights: enhancedInterpretation.moodInsights,
                 symbolism: enhancedInterpretation.symbolism,
                 reflectionPrompts: generateDefaultReflectionPrompts(),
-                quote: enhancedInterpretation.quote
+                quote: enhancedInterpretation.quote,
+                tags: enhancedInterpretation.tags
             )
         }
         
