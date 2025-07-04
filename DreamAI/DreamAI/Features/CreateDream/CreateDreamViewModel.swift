@@ -118,7 +118,7 @@ class CreateDreamViewModel: ObservableObject {
             emoji: generateRandomEmoji(),
             emojiBackground: generateRandomColor(),
             title: String(dreamText.prefix(30)),
-            tags: generateRandomTags(),
+            tags: [],
             date: selectedDate,
             description: dreamText
         )

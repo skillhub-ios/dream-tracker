@@ -30,7 +30,7 @@ final class DreamsDataManager: ObservableObject {
     // MARK: - Lifecycle
     
     init() {
-        container = NSPersistentContainer(name: "DreamDataModel")
+        container = NSPersistentCloudKitContainer(name: "DreamDataModel")
         container.loadPersistentStores { _, error in
             if let error {
                 print("Error loadind CoreData \(error)")
@@ -141,6 +141,39 @@ final class DreamsDataManager: ObservableObject {
         } catch let error {
             print("⚠️ Error load Interpretation with parentId \(parentId): \(error)")
             return nil
+        }
+    }
+    
+    func deleteAllData() {
+        let context = container.viewContext
+        let model = container.managedObjectModel
+
+        for entity in model.entities {
+            guard let entityName = entity.name else { continue }
+
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+            let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+            deleteRequest.resultType = .resultTypeObjectIDs
+
+            do {
+                // Выполняем удаление
+                let result = try context.execute(deleteRequest) as? NSBatchDeleteResult
+
+                // Синхронизируем изменения с in-memory context
+                if let objectIDs = result?.result as? [NSManagedObjectID] {
+                    let changes: [AnyHashable: Any] = [NSDeletedObjectsKey: objectIDs]
+                    NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [context])
+                }
+
+            } catch {
+                print("❌ Failed to delete data from entity: \(entityName), error: \(error)")
+            }
+        }
+
+        do {
+            try context.save()
+        } catch {
+            print("❌ Failed to save context after deletion: \(error)")
         }
     }
     

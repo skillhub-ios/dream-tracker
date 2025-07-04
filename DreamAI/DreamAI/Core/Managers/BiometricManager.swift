@@ -93,6 +93,12 @@ class BiometricManager: ObservableObject {
         isAuthenticated = false
     }
     
+    /// Clear user-specific biometric data (call on sign out)
+    func clearUserData() {
+        isAuthenticated = false
+        // Note: We don't clear isFaceIDEnabled as it's a device setting, not user-specific
+    }
+    
     /// Get biometric type description
     var biometricTypeDescription: String {
         switch biometricType {
@@ -174,4 +180,4 @@ enum BiometricError: LocalizedError {
             return "Authentication failed"
         }
     }
-} 
+}

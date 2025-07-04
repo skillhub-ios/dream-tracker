@@ -84,8 +84,7 @@ class DreamInterpretationViewModel: ObservableObject {
         do {
             var fetchedModel = try await dreamInterpreter.interpretDream(
                 dreamText: dream.description,
-                mood: dream.emoji,
-                tags: dream.tags.map { $0.rawValue }
+                mood: dream.emoji
             )
             fetchedModel.setDreamParentId(dream.id)
             self.interpretation = fetchedModel
