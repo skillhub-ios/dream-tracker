@@ -25,22 +25,32 @@ class OpenAIManager {
         print("🚀 Starting dream interpretation for text: \(dreamText.prefix(50))...")
         
         // Use Chat Completion API with function calling
-        return try await getDreamInterpretationWithFunctionCalling(dreamText: dreamText, mood: mood, tags: tags)
+        return try await getDreamInterpretationWithFunctionCalling(dreamText: dreamText, mood: mood)
     }
     
     // MARK: - Function Calling Method
-    private func getDreamInterpretationWithFunctionCalling(dreamText: String, mood: String?, tags: [String]) async throws -> Interpretation {
+    private func getDreamInterpretationWithFunctionCalling(dreamText: String, mood: String?) async throws -> Interpretation {
         let url = URL(string: "https://api.openai.com/v1/chat/completions")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         addHeaders(to: &request)
         
         let systemPrompt = """
-        You are a dream interpretation expert. Analyze the user's dream and provide a comprehensive psychological interpretation. 
-        Focus on the emotional content, symbolism, and potential meanings in the dreamer's life.
-        """
+                You are a dream interpretation expert. Analyze the user's dream and provide a comprehensive psychological interpretation. 
+                Focus on the emotional content, symbolism, and potential meanings in the dreamer's life.
+                
+                IMPORTANT RULES:
+                1. moodInsights must contain exactly 3 items with different emotions
+                2. symbolism must contain exactly 3 items with short, concise meanings (1-3 words max)
+                3. reflectionPrompts must be an ARRAY of strings, each containing one question with "\\n" at the end
+                4. All scores in moodInsights must be between 0.0 and 1.0 (decimal values, not integers)
+                5. dreamEmoji should be a single emoji that best represents the overall theme of the dream
+                6. ALL emoji fields (dreamEmoji, moodInsights.emoji, symbolism.icon) must be actual emoji characters (🐶, 😊, 🌲) NOT text names ("Dog", "Happy", "Tree")
+                7. dreamEmojiBackgroundColor must be a hex color code (e.g., "#FF6B6B", "#4ECDC4", "#45B7D1") that complements the emoji and creates a visually appealing background
+                8. tags must be an array of strings with maximum 2 items, selected from these exact values: "Daydream", "Epic Dream", "Continuous Dream", "Prophetic Dream", "Nightmare", "Night Terror", "Lucid Dream", "False Awakening", "Supernatural Dream", "Telepathic Dream", "Creative Dream", "Healing Dream", "Sleep Paralysis". Choose the most logically fitting tags based on the dream content.
+                """
         
-        let userMessage = "Please interpret this dream: \(dreamText). Mood: \(mood ?? "not specified"). Tags: \(tags.joined(separator: ", "))"
+        let userMessage = "Please interpret this dream: \(dreamText). Mood: \(mood ?? "not specified")."
         
         let body: [String: Any] = [
             "model": "gpt-4",

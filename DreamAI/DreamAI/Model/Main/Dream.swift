@@ -48,13 +48,17 @@ struct Dream: Identifiable, Equatable, Codable {
     let emojiBackground: Color
     var title: String
     var description: String
-    let tags: [Tags]
+    var tags: [Tags]
     var date: Date
     var requestStatus: RequestStatus = .idle
     
     mutating func updateEmoji(_ emoji: String?) {
         guard let emoji else { return }
         self.emoji = emoji
+    }
+    
+    mutating func updateTags(_ tags: [String]) {
+        self.tags = tags.compactMap { Tags(rawValue: $0) }
     }
     
     // MARK: - Coding Keys

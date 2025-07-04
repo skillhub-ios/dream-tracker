@@ -87,7 +87,7 @@ private extension MainFloatingPanelView {
             dream: dream,
             isSelected: viewModel.selectedDreamIds.contains(dream.id),
             mode: dreamlistmode,
-            requestStatus: dream.requestStatus
+            requestStatus: interpretationState(for: dream.id)
         )
         .scaleEffect(viewModel.selectedDreamIds.contains(dream.id) ? 0.95 : 1.0)
         .onTapGesture {
@@ -112,6 +112,15 @@ private extension MainFloatingPanelView {
             }
         }
         .sensoryFeedback(.impact(weight: .heavy, intensity: 0.9), trigger: hapticTrigger )
+    }
+    
+    func interpretationState(for id: UUID) -> RequestStatus {
+        guard let loadingState = viewModel.loadingStatesByDreamId[id] else { return .idle }
+        switch loadingState {
+        case .success: return .success
+        case .loading: return .loading(progress: 0.5)
+        case .error: return .error
+        }
     }
 }
 

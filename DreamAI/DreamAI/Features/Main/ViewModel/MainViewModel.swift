@@ -18,6 +18,7 @@ final class MainViewModel: ObservableObject {
     @Published var dreams: [Dream] = []
     @Published var dreamInterpretations: [Interpretation] = []
     @Published var selectedDreamIds: [UUID] = []
+    @Published var loadingStatesByDreamId: [UUID: ContentStateType] = [:]
     
     // MARK: - Private Properties
     
@@ -82,8 +83,20 @@ final class MainViewModel: ObservableObject {
             .sink { [weak self] updatedDream in
                 guard let self = self else { return }
                 if let index = dreams.firstIndex(where: { $0.id == updatedDream.id }) {
-                    dreams[index] = updatedDream
-                    coreDataStore.updateDream(updatedDream)
+                    self.dreams[index] = updatedDream
+                    self.coreDataStore.updateDream(updatedDream)
+                }
+            }
+            .store(in: &cancellables)
+        
+        NotificationCenter.default.publisher(for: Notification.Name(PublisherKey.interpretationLoadingStatus.rawValue))
+            .compactMap { extractValue(from: $0, as: [UUID: ContentStateType].self) }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] dictionary in
+                guard let self = self else { return }
+                for (id, state) in dictionary {
+                    self.loadingStatesByDreamId[id] = state
+                    print(dictionary)
                 }
             }
             .store(in: &cancellables)

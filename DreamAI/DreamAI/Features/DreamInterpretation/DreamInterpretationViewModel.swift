@@ -17,12 +17,14 @@ class DreamInterpretationViewModel: ObservableObject {
     @Published var contentState: ContentStateType = .loading
     @Published var buttonState: DButtonState = .normal
     
-    //MARK: - Private Properties
+    // MARK: - Private Properties
+    private var cancellables = Set<AnyCancellable>()
+    private var dream: Dream?
+    
+    // MARK: - External Dependencies
     private let userManager: UserManager = .shared
     private let dreamInterpreter = DIContainer.dreamInterpreter
     private let coreDataStore = DIContainer.coreDataStore
-    
-    private var dream: Dream?
     
     init(dream: Dream) {
         self.dream = dream
@@ -31,7 +33,6 @@ class DreamInterpretationViewModel: ObservableObject {
         }
         subscribers()
     }
-    
     
     //MARK: - Private Methods
     
@@ -46,6 +47,15 @@ class DreamInterpretationViewModel: ObservableObject {
                 }
             }
             .assign(to: &$buttonState)
+        
+        $contentState
+            .sink { [weak self] state in
+                guard let self else { return }
+                if let id = self.dream?.id {
+                    self.interpretationLoadingStatus(id: id, status: state)
+                }
+            }
+            .store(in: &cancellables)
     }
     
     private func loadInterpretation(for dream: Dream) async {
@@ -72,5 +82,17 @@ class DreamInterpretationViewModel: ObservableObject {
         } catch {
             contentState = .error(error)
         }
+    }
+    
+    private func updateTags(_ tags: [Tags]) {
+        
+    }
+    
+    private func interpretationLoadingStatus(id: UUID, status: ContentStateType) {
+        NotificationCenter.default.post(
+            name: Notification.Name(PublisherKey.interpretationLoadingStatus.rawValue),
+            object: nil,
+            userInfo: ["value": [id: status]]
+        )
     }
 }
