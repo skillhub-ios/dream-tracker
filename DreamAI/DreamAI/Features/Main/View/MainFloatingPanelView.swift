@@ -72,7 +72,7 @@ struct MainFloatingPanelView: View {
                 DreamInterpretationView(dream: dream)
             } else {
                 NavigationStack {
-                    DreamDetailsView(dream: dream)
+                    EditDreamView(dream: dream)
                 }
                 .presentationDetents([.large])
             }

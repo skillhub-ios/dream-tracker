@@ -50,8 +50,40 @@ final class DreamsDataManager: ObservableObject {
         newDream.emoji = dream.emoji
         newDream.emojiBackground = dream.emojiBackground.toHex()
         newDream.tags = dream.tags.map(\.rawValue).joined(separator: ", ")
+        newDream.dreamDescription = dream.description
         
         saveData()
+    }
+    
+    func updateDream(_ dream: Dream) {
+        let request: NSFetchRequest<DreamEntity> = DreamEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "id == %@", dream.id as CVarArg)
+        
+        do {
+            let results = try container.viewContext.fetch(request)
+            if let existing = results.first {
+                // обновляем поля
+                existing.title = dream.title
+                existing.date = dream.date
+                existing.emoji = dream.emoji
+                existing.emojiBackground = dream.emojiBackground.toHex()
+                existing.tags = dream.tags.map(\.rawValue).joined(separator: ", ")
+                existing.dreamDescription = dream.description
+            } else {
+                // создаём новый, если не найден (опционально)
+                let new = DreamEntity(context: container.viewContext)
+                new.id = dream.id
+                new.title = dream.title
+                new.date = dream.date
+                new.emoji = dream.emoji
+                new.emojiBackground = dream.emojiBackground.toHex()
+                new.tags = dream.tags.map(\.rawValue).joined(separator: ", ")
+                new.dreamDescription = dream.description
+            }
+            saveData()
+        } catch {
+            print("Failed to update dream: \(error)")
+        }
     }
     
     func deleteDreamsAndItsInterpretations(dreamsIds: [UUID]) {
@@ -135,7 +167,7 @@ final class DreamsDataManager: ObservableObject {
 #if DEBUG
 
 func loadMockDreams() -> [Dream] {[
-    Dream(emoji: "😰", emojiBackground: .appGreen, title: "Falling from a great height", tags: [.nightmare, .epicDream], date: Date().addingTimeInterval(-86400)),
+    Dream(emoji: "😰", emojiBackground: .appGreen, title: "Falling from a great height", tags: [.nightmare, .epicDream], date: Date().addingTimeInterval(-86400), description: "Description of the dream goes here... Falling from a great height and feeling scared"),
     Dream(emoji: "🏃‍♂️", emojiBackground: .appBlue, title: "Running but can't escape", tags: [.nightmare, .epicDream], date: Date().addingTimeInterval(-172800)),
     Dream(emoji: "🌊", emojiBackground: .appPurple, title: "Drowning in the ocean", tags: [.nightmare, .propheticDream], date: Date().addingTimeInterval(-259200)),
     Dream(emoji: "✈️", emojiBackground: .appOrange, title: "Flying over the mountains", tags: [.lucidDream, .epicDream], date: Date().addingTimeInterval(-345600)),

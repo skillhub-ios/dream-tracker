@@ -9,6 +9,7 @@ import Foundation
 
 enum PublisherKey: String {
     case addDream
+    case changeDream
 }
 
 func extractValue<T>(from notification: Notification, as type: T.Type) -> T? {

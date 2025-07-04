@@ -57,8 +57,8 @@ final class MainViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] dream in
                 guard let self = self else { return }
-                self.dreams.insert(dream, at: 0)
-                self.coreDataStore.saveDream(dream)
+                dreams.insert(dream, at: 0)
+                coreDataStore.saveDream(dream)
             }
             .store(in: &cancellables)
         
@@ -73,6 +73,18 @@ final class MainViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] dreams in
                 self?.lastDream = dreams.first
+            }
+            .store(in: &cancellables)
+        
+        NotificationCenter.default.publisher(for: Notification.Name(PublisherKey.changeDream.rawValue))
+            .compactMap { extractValue(from: $0, as: Dream.self) }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] updatedDream in
+                guard let self = self else { return }
+                if let index = dreams.firstIndex(where: { $0.id == updatedDream.id }) {
+                    dreams[index] = updatedDream
+                    coreDataStore.updateDream(updatedDream)
+                }
             }
             .store(in: &cancellables)
     }

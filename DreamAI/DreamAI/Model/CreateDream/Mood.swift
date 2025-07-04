@@ -15,7 +15,7 @@ enum Mood: String, CaseIterable {
     case sad = "Sad"
     case inLove = "In Love"
     case stressed = "Stressed"
-
+    
     var emoji: String {
         return switch self {
         case .happy: "😊"
@@ -25,6 +25,14 @@ enum Mood: String, CaseIterable {
         case .sad: "😢"
         case .inLove: "😍"
         case .stressed: "😵‍💫"
+        }
+    }
+    
+    init?(emoji: String) {
+        if let mood = Mood.allCases.first(where: { $0.emoji == emoji }) {
+            self = mood
+        } else {
+            return nil
         }
     }
 }

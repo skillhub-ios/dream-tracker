@@ -25,7 +25,6 @@ struct DreamDateView: View {
             .padding(.vertical, 8)
             .background(Color.appGray1)
             .cornerRadius(12)
-            .disabled(!isCreating)
         }
     }
 }
