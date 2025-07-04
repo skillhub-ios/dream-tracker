@@ -17,7 +17,7 @@ class OpenAIManager {
         decoder.keyDecodingStrategy = .convertFromSnakeCase
     }
 
-    func getDreamInterpretation(dreamText: String, mood: String?, tags: [String]) async throws -> Interpretation {
+    func getDreamInterpretation(dreamText: String, mood: String?) async throws -> Interpretation {
         guard !apiKey.isEmpty else {
             throw NSError(domain: "OpenAIManager", code: -1, userInfo: [NSLocalizedDescriptionKey: "OpenAI API key is missing."])
         }

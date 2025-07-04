@@ -10,7 +10,7 @@ import Foundation
 class DreamInterpreter {
     private let openAIManager = OpenAIManager.shared
     
-    func interpretDream(dreamText: String, mood: String?, tags: [String]) async throws -> Interpretation {
+    func interpretDream(dreamText: String, mood: String?) async throws -> Interpretation {
         // Validate input
         guard !dreamText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
             throw DreamInterpreterError.emptyDreamText
@@ -23,8 +23,7 @@ class DreamInterpreter {
         do {
             let interpretation = try await openAIManager.getDreamInterpretation(
                 dreamText: cleanedDreamText,
-                mood: mood,
-                tags: tags
+                mood: mood
             )
             
             // Validate the interpretation
