@@ -25,13 +25,14 @@ struct CreateDreamView: View {
             ScrollView {
                 VStack(spacing: 12) {
                     DreamDateView(date: $viewModel.selectedDate, isCreating: true)
-                        dreamTextEditor($viewModel.dreamText)
-                        microphoneButton {
-                            Task {
-                                await viewModel.toggleRecording()
-                            }
+                    dreamTextEditor($viewModel.dreamText)
+                    microphoneButton {
+                        Task {
+                            await viewModel.toggleRecording()
                         }
-                        moodPicker($viewModel.selectedMood)
+                    }
+                    moodPicker($viewModel.selectedMood)
+                        .opacity(subscriptionViewModel.isSubscribed ? 1 : 0)
                     
                     Spacer()
                     
@@ -72,6 +73,14 @@ struct CreateDreamView: View {
                 DreamInterpretationView(dream: dream)
             }
         }
+        .gesture(
+            DragGesture(minimumDistance: 20, coordinateSpace: .local)
+                .onEnded { value in
+                    if value.translation.height > 20 {
+                        isInputActive = false
+                    }
+                }
+        )
     }
 }
 
@@ -94,7 +103,7 @@ private extension CreateDreamView {
                 .toolbar {
                     ToolbarItemGroup(placement: .keyboard) {
                         Spacer()
-
+                        
                         Button("Done") {
                             isInputActive = false
                         }

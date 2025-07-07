@@ -34,7 +34,6 @@ struct EditDreamView: View {
     }
     
     var body: some View {
-        
         NavigationStack {
             ZStack {
                 Color.appGray4
@@ -45,6 +44,7 @@ struct EditDreamView: View {
                         DreamDateView(date: dateBinding, isCreating: false)
                         dreamTextEditor(descriptionBinding)
                         moodPicker($editDreamViewModel.mood)
+                            .opacity(subscriptionViewModel.isSubscribed ? 1 : 0)
                         Spacer()
                         
                         DButton(title: "Interpret Dream") {
@@ -77,6 +77,14 @@ struct EditDreamView: View {
             .sheet(isPresented: $isShowingInterpretation) {
                 DreamInterpretationView(dream: editDreamViewModel.dream)
             }
+            .gesture(
+                DragGesture(minimumDistance: 20, coordinateSpace: .local)
+                    .onEnded { value in
+                        if value.translation.height > 20 {
+                            isInputActive = false
+                        }
+                    }
+            )
         }
     }
 }

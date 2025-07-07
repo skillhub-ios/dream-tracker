@@ -42,6 +42,11 @@ final class MainViewModel: ObservableObject {
         selectedDreamIds.removeAll()
     }
     
+    public func deleteDreamBy(id: UUID) {
+        dreams.removeAll { $0.id == id }
+        coreDataStore.deleteDreamsAndItsInterpretations(dreamsIds: selectedDreamIds)
+    }
+    
     func toggleDreamSelection(dreamId: UUID) {
         if selectedDreamIds.contains(dreamId) {
             selectedDreamIds.removeAll { $0 == dreamId }

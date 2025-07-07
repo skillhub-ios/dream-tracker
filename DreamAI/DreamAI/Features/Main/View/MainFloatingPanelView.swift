@@ -16,6 +16,7 @@ struct MainFloatingPanelView: View {
     @State private var showCreateDreamView = false
     @State private var showDreamInterpretation = false
     @State private var selectedDream: Dream?
+    @Binding var isBlured: Bool
     
     var filteredDreams: [Dream] {
         viewModel.filterDreams()
@@ -35,16 +36,32 @@ struct MainFloatingPanelView: View {
                     }
                     Spacer()
                 } else {
-                    ScrollView {
-                        VStack(spacing: 16) {
-                            ForEach(filteredDreams) { dream in
-                                dreamRow(for: dream)
+                    List(filteredDreams) { dream in
+                        dreamRow(for: dream)
+                            .listRowSeparator(.hidden)
+                            .blur(radius: isBlured ? 12 : 0)
+                            .applyIf(dreamlistmode == .view) {
+                                $0.swipeActions(edge: .trailing) {
+                                    Button(role: .destructive) {
+                                        viewModel.deleteDreamBy(id: dream.id)
+                                    } label: {
+                                        Label("Delete", systemImage: "trash")
+                                    }
+                                }
+                                .swipeActions(edge: .leading) {
+                                    Button() {
+                                        showCreateDreamView = true
+                                    } label: {
+                                        Label("Add", systemImage: "plus")
+                                            .tint(.appPurple)
+                                    }
+                                }
                             }
-                        }
-                        .padding(.top, 8)
-                        .padding(.horizontal)
-                        .padding(.bottom, 100)
+                            .applyIf(dream.id == filteredDreams.last?.id) {
+                                $0.padding(.bottom, 100)
+                            }
                     }
+                    .listStyle(.plain)
                 }
             }
             .padding(.top, 24)
@@ -125,6 +142,6 @@ private extension MainFloatingPanelView {
 }
 
 #Preview {
-    MainFloatingPanelView()
+    MainFloatingPanelView(isBlured: .constant(false))
         .environmentObject(MainViewModel())
 }

@@ -10,8 +10,10 @@ import SwiftUI
 struct MainView: View {
     @StateObject private var viewModel = MainViewModel()
     @StateObject private var biometricManager = BiometricManager.shared
+    @EnvironmentObject private var subscriptionViewModel: SubscriptionViewModel
     @State private var showProfileView = false
     @State private var showBiometricAlert = false
+    @State private var isBlured: Bool = false
     
     var body: some View {
         Group {
@@ -66,18 +68,34 @@ struct MainView: View {
                 }
             }
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
+                ToolbarItem(placement: .topBarLeading) {
                     Button {
                         showProfileView.toggle()
                     } label: {
-                        Image(systemName: "person.circle")
-                            .font(.title)
+                        Image(.profileButton)
+                            .resizable()
+                            .frame(width: 40, height: 40)
+                    }
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        if subscriptionViewModel.isSubscribed {
+                            withAnimation {
+                                isBlured.toggle()
+                            }
+                        } else {
+                            subscriptionViewModel.showPaywall()
+                        }
+                    } label: {
+                        Image(systemName: isBlured ? "eye" : "eye.slash")
+                            .resizable()
+                            .frame(width: 28, height: 24)
                             .foregroundStyle(.white)
                     }
                 }
             }
             .sheet(isPresented: .constant(true)) {
-                MainFloatingPanelView()
+                MainFloatingPanelView(isBlured: $isBlured)
                     .presentationDetents([.fraction(0.7), .large])
                     .presentationDragIndicator(.visible)
                     .presentationBackground(.ultraThickMaterial)
