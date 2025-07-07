@@ -18,6 +18,7 @@ struct PermissionsSettingsUI: View {
     @State private var showMainView = false
     @State private var showAlert = false
     @State private var alertMessage = ""
+    @State private var isUpdatingNotificationStatus = false
     
     var body: some View {
         ZStack {
@@ -41,7 +42,7 @@ struct PermissionsSettingsUI: View {
             .navigationDestination(isPresented: $showMainView) {
                 NavigationStack {
                     MainView()
-                }   
+                }
             }
         }
         .navigationTitle("Notifications")
@@ -52,7 +53,16 @@ struct PermissionsSettingsUI: View {
             Text(alertMessage)
         }
         .task {
-            await checkNotificationStatus()
+            // Initial status will be set by the ViewModel
+        }
+        .onChange(of: pushNotificationManager.authorizationStatus) { oldValue, newValue in
+            Task {
+                await MainActor.run {
+                    isUpdatingNotificationStatus = true
+                    viewModel.remindersEnabled = (newValue == .authorized)
+                    isUpdatingNotificationStatus = false
+                }
+            }
         }
     }
 }
@@ -68,7 +78,10 @@ private extension PermissionsSettingsUI {
                     .toggleStyle(SwitchToggleStyle(tint: .purple))
                     .labelsHidden()
                     .onChange(of: viewModel.remindersEnabled) { oldValue, newValue in
-                        handleNotificationToggle(newValue)
+                        // Only handle user-initiated changes, not programmatic updates
+                        if !isUpdatingNotificationStatus {
+                            handleNotificationToggle(newValue)
+                        }
                     }
             }
             .padding(.vertical, 8)
@@ -85,6 +98,11 @@ private extension PermissionsSettingsUI {
                     .opacity(viewModel.remindersEnabled ? 1 : 0.5)
                     .accentColor(.white)
                     .colorScheme(.dark)
+                    .onChange(of: viewModel.bedtime) { oldValue, newValue in
+                        if viewModel.remindersEnabled {
+                            scheduleNotifications()
+                        }
+                    }
             }
             .padding(.vertical, 8)
             Divider()
@@ -100,25 +118,13 @@ private extension PermissionsSettingsUI {
                     .opacity(viewModel.remindersEnabled ? 1 : 0.5)
                     .accentColor(.white)
                     .colorScheme(.dark)
-                
+                    .onChange(of: viewModel.wakeup) { oldValue, newValue in
+                        if viewModel.remindersEnabled {
+                            scheduleNotifications()
+                        }
+                    }
             }
             .padding(.vertical, 8)
-            
-            // Device Token Display (for debugging)
-            if pushNotificationManager.isRegistered, let deviceToken = pushNotificationManager.deviceToken {
-                Divider()
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Device Token")
-                        .font(.caption)
-                        .foregroundColor(.white.opacity(0.7))
-                    Text(deviceToken)
-                        .font(.caption2)
-                        .foregroundColor(.white.opacity(0.5))
-                        .lineLimit(2)
-                        .textSelection(.enabled)
-                }
-                .padding(.vertical, 8)
-            }
         }
         .padding(12)
         .background(Color.appPurpleDark)
@@ -176,27 +182,27 @@ private extension PermissionsSettingsUI {
         }
     }
     
-    private func checkNotificationStatus() async {
-        let isEnabled = await pushNotificationManager.areNotificationsEnabled()
-        await MainActor.run {
-            viewModel.remindersEnabled = isEnabled
-        }
-    }
-    
     private func handleNotificationToggle(_ enabled: Bool) {
         Task {
             if enabled {
                 await pushNotificationManager.requestPermissions()
-                await checkNotificationStatus()
+                // Schedule notifications with current bedtime/wakeup times
+                await pushNotificationManager.scheduleDreamReminders(
+                    bedtime: viewModel.bedtime,
+                    wakeup: viewModel.wakeup
+                )
             } else {
-                // Note: We can't programmatically disable notifications
-                // Users need to do this in Settings
-                alertMessage = "To disable notifications, please go to Settings > DreamAI > Notifications"
-                showAlert = true
-                await MainActor.run {
-                    viewModel.remindersEnabled = true // Reset the toggle
-                }
+                pushNotificationManager.disableNotifications()
             }
+        }
+    }
+    
+    private func scheduleNotifications() {
+        Task {
+            await pushNotificationManager.scheduleDreamReminders(
+                bedtime: viewModel.bedtime,
+                wakeup: viewModel.wakeup
+            )
         }
     }
 }

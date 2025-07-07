@@ -14,46 +14,119 @@ class PushNotificationManager: NSObject, ObservableObject {
     static let shared = PushNotificationManager()
     
     @Published var isRegistered = false
-    @Published var deviceToken: String?
     @Published var authorizationStatus: UNAuthorizationStatus = .notDetermined
     
     private override init() {
         super.init()
         UNUserNotificationCenter.current().delegate = self
+        Task {
+            await updateAuthorizationStatus()
+        }
     }
     
     // MARK: - Public Methods
     
-    /// Request notification permissions and register for remote notifications
+    /// Request notification permissions for local notifications
     func requestPermissions() async {
         do {
             let granted = try await UNUserNotificationCenter.current().requestAuthorization(
-                options: [.alert, .badge, .sound, .provisional]
+                options: [.alert, .badge, .sound]
             )
             
             await MainActor.run {
                 self.authorizationStatus = granted ? .authorized : .denied
+                self.isRegistered = granted
             }
             
             if granted {
-                await registerForRemoteNotifications()
+                await scheduleDreamReminders()
             }
         } catch {
             print("Error requesting notification permissions: \(error)")
         }
     }
     
-    /// Register for remote notifications
-    func registerForRemoteNotifications() async {
-        await MainActor.run {
-            UIApplication.shared.registerForRemoteNotifications()
+    /// Schedule local notifications for dream reminders
+    func scheduleDreamReminders(bedtime: Date? = nil, wakeup: Date? = nil) async {
+        guard authorizationStatus == .authorized else { return }
+        
+        // Clear existing notifications
+        clearAllPendingNotifications()
+        
+        // Schedule bedtime reminder
+        if let bedtime = bedtime {
+            await scheduleBedtimeReminder(at: bedtime)
+        }
+        
+        // Schedule wake-up reminder
+        if let wakeup = wakeup {
+            await scheduleWakeupReminder(at: wakeup)
         }
     }
     
-    /// Unregister from remote notifications
-    func unregisterFromRemoteNotifications() {
-        UIApplication.shared.unregisterForRemoteNotifications()
-        deviceToken = nil
+    /// Schedule bedtime reminder notification
+    private func scheduleBedtimeReminder(at time: Date) async {
+        let content = UNMutableNotificationContent()
+        content.title = "Dream Time"
+        content.body = "Time to record your dreams before sleep"
+        content.sound = .default
+        content.categoryIdentifier = "DREAM_REMINDER"
+        
+        // Create daily trigger for bedtime
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.hour, .minute], from: time)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
+        
+        let request = UNNotificationRequest(
+            identifier: "bedtime_reminder",
+            content: content,
+            trigger: trigger
+        )
+        
+        do {
+            try await UNUserNotificationCenter.current().add(request)
+            print("Bedtime reminder scheduled for \(time)")
+        } catch {
+            print("Error scheduling bedtime reminder: \(error)")
+        }
+    }
+    
+    /// Schedule wake-up reminder notification
+    private func scheduleWakeupReminder(at time: Date) async {
+        let content = UNMutableNotificationContent()
+        content.title = "Dream Recall"
+        content.body = "Don't forget to record your dreams from last night"
+        content.sound = .default
+        content.categoryIdentifier = "DREAM_REMINDER"
+        
+        // Create daily trigger for wake-up time
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.hour, .minute], from: time)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
+        
+        let request = UNNotificationRequest(
+            identifier: "wakeup_reminder",
+            content: content,
+            trigger: trigger
+        )
+        
+        do {
+            try await UNUserNotificationCenter.current().add(request)
+            print("Wake-up reminder scheduled for \(time)")
+        } catch {
+            print("Error scheduling wake-up reminder: \(error)")
+        }
+    }
+    
+    /// Disable notifications and clear all scheduled reminders
+    func disableNotifications() {
+        clearAllPendingNotifications()
+        clearAllDeliveredNotifications()
+        
+        Task {
+            await updateAuthorizationStatus(.denied)
+        }
+        
         isRegistered = false
     }
     
@@ -65,18 +138,18 @@ class PushNotificationManager: NSObject, ObservableObject {
     /// Check if notifications are enabled
     func areNotificationsEnabled() async -> Bool {
         let settings = await getNotificationSettings()
+        await updateAuthorizationStatus(settings.authorizationStatus)
         return settings.authorizationStatus == .authorized
     }
     
-    /// Get device token as formatted string for easy copying
-    var deviceTokenString: String? {
-        return deviceToken
-    }
-    
-    /// Get device token with formatting for display
-    var deviceTokenDisplay: String? {
-        guard let token = deviceToken else { return nil }
-        return String(token.prefix(20)) + "..."
+    /// Update authorization status
+    private func updateAuthorizationStatus(_ status: UNAuthorizationStatus? = nil) async {
+        let settings = await getNotificationSettings()
+        let currentStatus = status ?? settings.authorizationStatus
+        
+        await MainActor.run {
+            self.authorizationStatus = currentStatus
+        }
     }
     
     /// Send local notification for testing
@@ -106,33 +179,9 @@ class PushNotificationManager: NSObject, ObservableObject {
         UNUserNotificationCenter.current().removeAllDeliveredNotifications()
     }
     
-    // MARK: - Private Methods
-    
-    /// Handle device token registration
-    private func handleDeviceToken(_ deviceToken: Data) {
-        let tokenParts = deviceToken.map { data in String(format: "%02.2hhx", data) }
-        let token = tokenParts.joined()
-        
-        self.deviceToken = token
-        self.isRegistered = true
-        
-        print("Device Token: \(token)")
-        
-        // Here you would typically send the token to your backend server
-        // sendTokenToServer(token)
-    }
-    
-    /// Handle registration error
-    private func handleRegistrationError(_ error: Error) {
-        print("Failed to register for remote notifications: \(error)")
-        self.isRegistered = false
-    }
-    
-    /// Send token to your backend server (implement as needed)
-    private func sendTokenToServer(_ token: String) {
-        // TODO: Implement sending token to your backend
-        // This is where you would make an API call to your server
-        // to register the device token for push notifications
+    /// Get pending notifications for debugging
+    func getPendingNotifications() async -> [UNNotificationRequest] {
+        return await UNUserNotificationCenter.current().pendingNotificationRequests()
     }
 }
 
@@ -166,23 +215,12 @@ extension PushNotificationManager: UNUserNotificationCenterDelegate {
     
     /// Handle notification tap based on user info
     private func handleNotificationTap(userInfo: [AnyHashable: Any]) {
-        // Extract custom data from notification
-        if let customData = userInfo["custom_data"] as? [String: Any] {
-            // Handle custom data
-            print("Custom data: \(customData)")
-        }
-        
         // Handle different notification types
-        if let notificationType = userInfo["type"] as? String {
-            switch notificationType {
-            case "dream_reminder":
+        if let categoryIdentifier = userInfo["categoryIdentifier"] as? String {
+            switch categoryIdentifier {
+            case "DREAM_REMINDER":
                 // Navigate to create dream view
-                break
-            case "interpretation_ready":
-                // Navigate to dream interpretation
-                break
-            case "general":
-                // Handle general notifications
+                print("Dream reminder tapped - navigate to create dream")
                 break
             default:
                 break
@@ -197,26 +235,17 @@ extension PushNotificationManager {
     
     /// Handle successful device token registration
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        handleDeviceToken(deviceToken)
+        // This method is no longer used as we're focusing on local notifications
     }
     
     /// Handle registration failure
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        handleRegistrationError(error)
+        // This method is no longer used as we're focusing on local notifications
     }
     
     /// Handle incoming remote notification
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        
-        // Handle the remote notification
-        print("Received remote notification: \(userInfo)")
-        
-        // Process the notification data
-        if let aps = userInfo["aps"] as? [String: Any] {
-            print("APS data: \(aps)")
-        }
-        
-        // Call completion handler
+        // This method is no longer used as we're focusing on local notifications
         completionHandler(.newData)
     }
 } 
