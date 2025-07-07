@@ -23,7 +23,7 @@ class DreamInterpretationViewModel: ObservableObject {
     
     // MARK: - External Dependencies
     private let userManager: UserManager = .shared
-    private let dreamInterpreter = DIContainer.dreamInterpreter
+    private let dreamInterpreter = DIContainer.interpretationLoadingStore
     private let coreDataStore = DIContainer.coreDataStore
     
     init(dream: Dream) {
@@ -73,19 +73,16 @@ class DreamInterpretationViewModel: ObservableObject {
     private func loadInterpretation(for dream: Dream) async {
         contentState = .loading
         
-        // Trying load data from CoreData
+        // Try load data from CoreData
         if let interpretation = coreDataStore.loadInterpretation(with: dream.id) {
             self.interpretation = interpretation
             contentState = .success
             return
         }
         
-        // Fethcing data from OpenAPI
+        // Try get data from OpenAPI
         do {
-            var fetchedModel = try await dreamInterpreter.interpretDream(
-                dreamText: dream.description,
-                mood: dream.emoji
-            )
+            var fetchedModel = try await dreamInterpreter.loadInterpretation(dream: dream)
             fetchedModel.setDreamParentId(dream.id)
             self.interpretation = fetchedModel
             contentState = .success
@@ -94,6 +91,20 @@ class DreamInterpretationViewModel: ObservableObject {
         } catch {
             contentState = .error(error)
         }
+        
+        //        do {
+        //            var fetchedModel = try await dreamInterpreter.interpretDream(
+        //                dreamText: dream.description,
+        //                mood: dream.emoji
+        //            )
+        //            fetchedModel.setDreamParentId(dream.id)
+        //            self.interpretation = fetchedModel
+        //            contentState = .success
+        //            coreDataStore.saveInterpretation(fetchedModel)
+        //            tagSubscriber()
+        //        } catch {
+        //            contentState = .error(error)
+        //        }
     }
     
     private func updateTags(_ tags: [UUID: [String]]) {

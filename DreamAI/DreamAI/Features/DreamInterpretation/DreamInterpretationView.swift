@@ -166,6 +166,7 @@ private extension DreamInterpretationView {
                 .font(.body.italic())
                 .foregroundColor(.appWhite)
         }
+        .frame(maxWidth: .infinity)
         .padding(.vertical, 10)
         .padding(.horizontal, 16)
         .background(Color.appPurpleDarkBackground)
