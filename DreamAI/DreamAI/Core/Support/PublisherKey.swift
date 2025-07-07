@@ -12,6 +12,7 @@ enum PublisherKey: String {
     case changeDream
     case updateTags
     case interpretationLoadingStatus
+    case hasSubscription
 }
 
 func extractValue<T>(from notification: Notification, as type: T.Type) -> T? {

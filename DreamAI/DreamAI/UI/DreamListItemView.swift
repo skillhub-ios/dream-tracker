@@ -97,7 +97,7 @@ private extension DreamListItemView {
             case .idle where mode != .edit, .success where mode != .edit :
                 dateVerticalUI
             case .loading(let progress): 
-                MagicLoadingUI(progress: progress)
+                MagicLoadingUI()
                     .frame(width: 26, height: 26)
             case .error:
                 Image(systemName: "exclamationmark.circle")

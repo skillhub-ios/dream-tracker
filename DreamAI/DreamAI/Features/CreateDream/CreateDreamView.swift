@@ -106,7 +106,7 @@ private extension CreateDreamView {
         .padding(.vertical, 6)
         .padding(.horizontal, 10)
         .frame(height: SCREEN_HEIGHT * 0.3)
-        .background(Color.appGray1)
+        .background(Color.appGray3)
         .clipShape(RoundedRectangle(cornerRadius: 16))
     }
     
@@ -120,7 +120,7 @@ private extension CreateDreamView {
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 10)
                 .padding(.horizontal, 16)
-                .background(viewModel.isRecording ? Color.appRed : Color.appGray1)
+                .background(viewModel.isRecording ? Color.appRed : Color.appGray3)
                 .clipShape(RoundedRectangle(cornerRadius: 10))
         }
     }
@@ -132,7 +132,6 @@ private extension CreateDreamView {
                 .foregroundStyle(Color.appWhite)
             
             ScrollView(.horizontal, showsIndicators: false) {
-                
                 HStack(spacing: 10) {
                     ForEach(Mood.allCases, id: \.self) { mood in
                         Button(action: {

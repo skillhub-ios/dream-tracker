@@ -37,6 +37,7 @@ final class SubscriptionViewModel: ObservableObject {
             .sink { [weak self] subscriptionType, isSubscribed in
                 self?.subscriptionType = subscriptionType
                 self?.isSubscribed = isSubscribed
+                self?.informAboutSubscriptionStatus(isSubscribed)
             }
             .store(in: &cancellables)
     }
@@ -91,6 +92,14 @@ final class SubscriptionViewModel: ObservableObject {
             errorMessage = "\(SubscriptionConstants.ErrorMessages.loadProductsFailed): \(error.localizedDescription)"
             showError = true
         }
+    }
+    
+    private func informAboutSubscriptionStatus(_ hasSubscription: Bool) {
+        NotificationCenter.default.post(
+            name: Notification.Name(PublisherKey.hasSubscription.rawValue),
+            object: nil,
+            userInfo: ["value": hasSubscription]
+        )
     }
 }
 

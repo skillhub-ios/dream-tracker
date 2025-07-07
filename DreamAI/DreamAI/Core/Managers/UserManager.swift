@@ -21,14 +21,22 @@ final class UserManager: ObservableObject {
     
     // MARK: - Initialization
     private init() {
+        addSubscribers()
         // Initialize with stored value
-        self.isSubscribed = storedIsSubscribed
+//        self.isSubscribed = storedIsSubscribed
         
         // In a real app, you would check with a backend service
         // For now, we'll just use the stored value
     }
     
     // MARK: - Public Methods
+        
+    private func addSubscribers() {
+        NotificationCenter.default.publisher(for: Notification.Name(PublisherKey.hasSubscription.rawValue))
+            .compactMap { extractValue(from: $0, as: Bool.self) }
+            .receive(on: DispatchQueue.main)
+            .assign(to: &$isSubscribed)
+    }
     
     /// Checks the subscription status with the backend service
     func checkSubscriptionStatus() async {

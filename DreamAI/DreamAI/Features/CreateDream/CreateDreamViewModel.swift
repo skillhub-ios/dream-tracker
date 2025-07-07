@@ -22,6 +22,7 @@ class CreateDreamViewModel: ObservableObject {
     @Published var permissionAlertMessage: String = ""
     @Published var interpretationModel: Interpretation?
     @Published var currentDream: Dream?
+    @Published var buttonState: DButtonState = .normal
     
     // Track text that existed before recording started
     private var textBeforeRecording: String = ""
@@ -35,7 +36,7 @@ class CreateDreamViewModel: ObservableObject {
         self.selectedMood = Mood.allCases.randomElement()
         subscribers()
     }
-
+    
     // MARK: - Methods
     func toggleRecording() async {
         print("🔊 ViewModel: toggleRecording called, isRecording: \(isRecording)")
@@ -141,7 +142,7 @@ class CreateDreamViewModel: ObservableObject {
         let numberOfTags = Int.random(in: 1...3)
         return Array(allTags.shuffled().prefix(numberOfTags))
     }
-
+    
     private func subscribers() {
         Publishers.CombineLatest3($selectedDate, $dreamText, $selectedMood)
             .map { date, text, mood in
@@ -149,6 +150,14 @@ class CreateDreamViewModel: ObservableObject {
             }
             .receive(on: DispatchQueue.main)
             .assign(to: \.isButtonDisabled, on: self)
+            .store(in: &cancellables)
+        
+        UserManager.shared.$isSubscribed
+            .receive(on: DispatchQueue.main)
+            .map { isSubscribed in
+                return isSubscribed ? .normal : .locked
+            }
+            .assign(to: \.buttonState, on: self)
             .store(in: &cancellables)
         
         // Subscribe to speech recognizer updates to show text in real-time
