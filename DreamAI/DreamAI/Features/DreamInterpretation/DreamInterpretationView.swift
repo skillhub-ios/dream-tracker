@@ -79,10 +79,7 @@ struct DreamInterpretationView: View {
                 }
                 .padding()
             }
-            .makeShimmer(
-                state: viewModel.contentState,
-                retryButtonUI: retryButtonUI($viewModel.buttonState))
-            .background(Color.appPurpleDark.ignoresSafeArea())
+            .makeshimmer(state: viewModel.contentState, retryButtonUI: retryButtonUI($viewModel.buttonState))
             .navigationTitle("Dream Interpretation")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

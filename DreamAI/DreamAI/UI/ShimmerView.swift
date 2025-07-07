@@ -9,10 +9,10 @@ import SwiftUI
 
 struct ShimmerView: ViewModifier {
     let state: ContentStateType
-    var retryButtonUI: AnyView? = nil
-
+    let retryButtonUI: AnyView
+    
     @State private var toast: ToastData? = nil
-
+    
     func body(content: Content) -> some View {
         let mainContent: AnyView = {
             switch state {
@@ -41,18 +41,18 @@ struct ShimmerView: ViewModifier {
             .onChange(of: state) { oldValue, newValue in
                 if [ContentStateType.success, ContentStateType.loading].contains(newValue) {
                     toast = nil
-                }   
+                }
             }
     }
 }
 
 extension View {
-    func makeShimmer(state: ContentStateType, retryButtonUI: AnyView? = nil) -> some View {
+    func makeshimmer(state: ContentStateType, retryButtonUI: AnyView) -> some View {
         self.modifier(ShimmerView(state: state, retryButtonUI: retryButtonUI))
     }
-}   
-
-
+}
+    
+    
 #Preview {
     ScrollView {
         VStack(spacing: 20) {
@@ -63,5 +63,5 @@ extension View {
             }
         }
     }
-    .makeShimmer(state: .error(NSError(domain: "asd", code: 200)), retryButtonUI: AnyView(DButton(title: "Try again", state: .constant(.tryAgain), isDisabled: .constant(false), action: {})))
+    .makeshimmer(state: .error(NSError(domain: "asd", code: 200)), retryButtonUI: AnyView(DButton(title: "Try again", state: .constant(.tryAgain), isDisabled: .constant(false), action: {})))
 }
