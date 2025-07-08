@@ -8,7 +8,6 @@
 import Foundation
 
 struct Mood: Equatable, Hashable, Identifiable {
-    
     let id: UUID = UUID()
     let title: String
     let emoji: String
@@ -23,4 +22,14 @@ struct Mood: Equatable, Hashable, Identifiable {
     
     static let predefined: [Mood] = [.happy, .calm, .anxious, .angry, .sad, .inLove, .stressed]
     
+    init(title: String, emoji: String) {
+        self.title = title
+        self.emoji = emoji
+    }
+    
+    // MARK: - CoreData
+    init(from entity: MoodEntity) {
+        self.emoji = entity.emoji ?? "💤"
+        self.title = entity.title ?? ""
+    }
 }

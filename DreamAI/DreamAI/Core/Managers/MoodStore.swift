@@ -6,6 +6,7 @@
 
 
 import Foundation
+import CoreData
 
 final class MoodStore {
     
@@ -14,19 +15,37 @@ final class MoodStore {
     @Published var moods: [Mood] = []
     
     // MARK: - Private Properties
+    private let container: NSPersistentContainer
 
     // MARK: - Lifecycle
 
     init() {
+        container = NSPersistentCloudKitContainer(name: "MoodDataModel")
+        container.loadPersistentStores { _, error in
+            if let error {
+                print("Error loadind CoreData \(error)")
+            }
+        }
         loadMoods()
     }
     // MARK: - Public Functions
 
     func addMood(_ mood: Mood) {
         moods.append(mood)
+        saveMood(mood)
     }
     
     // MARK: - Private Functions
+    
+    private func saveMood(_ mood: Mood) {
+        let newMood = MoodEntity(context: container.viewContext)
+        
+        newMood.id = mood.id
+        newMood.title = mood.title
+        newMood.emoji = mood.emoji
+        
+        saveData()
+    }
     
     private func loadMoods() {
         moods = loadDefaultMoods()
@@ -38,6 +57,23 @@ final class MoodStore {
     }
     
     private func loadCustomMoods() -> [Mood] {
-        []
+        let moodsRequest = NSFetchRequest<MoodEntity>(entityName: "MoodEntity")
+        var moodsEntity: [MoodEntity] = []
+        
+        do {
+            moodsEntity = try container.viewContext.fetch(moodsRequest)
+        } catch let error {
+            print("⚠️ Error fetch moods: \(error)")
+        }
+        
+        return moodsEntity.map { Mood(from: $0) }
+    }
+    
+    private func saveData() {
+        do {
+            try container.viewContext.save()
+        } catch let error {
+            print("Error saving \(error)")
+        }
     }
 }

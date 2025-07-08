@@ -96,8 +96,13 @@ private extension MoodsView {
             HStack(spacing: 20) {
                 TextField("Emoji", text: $viewModel.creatingMoodEmoji)
                     .frame(width: 44)
+                    .padding(.vertical, 12)
+                    .border(.gray)
                 TextField("Mood", text: $viewModel.creatingMoodTitle)
                     .frame(width: 44)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.vertical, 12)
+                    .border(.gray)
             }
             Spacer()
             VStack(spacing: 20) {

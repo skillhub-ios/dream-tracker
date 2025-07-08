@@ -67,6 +67,14 @@ class OpenAIManager {
                         "parameters": [
                             "type": "object",
                             "properties": [
+                                "dreamEmoji": [
+                                    "type": "string",
+                                    "description": "A single emoji character that best represents the overall theme or mood of the dream (e.g., 🐶, 😊, 🌲, NOT 'Dog', 'Happy', 'Tree')"
+                                ],
+                                "dreamEmojiBackgroundColor": [
+                                    "type": "string",
+                                    "description": "A hex color code that complements the dream emoji and creates a visually appealing background (e.g., '#FF6B6B', '#4ECDC4', '#45B7D1')"
+                                ],
                                 "dreamTitle": [
                                     "type": "string",
                                     "description": "A brief, evocative title for the dream"
@@ -86,7 +94,7 @@ class OpenAIManager {
                                         "properties": [
                                             "emoji": [
                                                 "type": "string",
-                                                "description": "An emoji representing the mood"
+                                                "description": "An emoji character representing the mood (e.g., 😊, 😢, 😠, NOT 'Happy', 'Sad', 'Angry')"
                                             ],
                                             "label": [
                                                 "type": "string",
@@ -94,12 +102,14 @@ class OpenAIManager {
                                             ],
                                             "score": [
                                                 "type": "number",
-                                                "description": "A score between 0.0 and 1.0 representing the intensity of this mood"
+                                                "description": "A decimal score between 0.0 and 1.0 representing the intensity of this mood (e.g., 0.7, 0.4, 0.2)"
                                             ]
                                         ],
                                         "required": ["emoji", "label", "score"]
                                     ],
-                                    "description": "Array of mood insights reflecting the emotional tone of the dream"
+                                    "description": "Array of exactly 3 mood insights reflecting the emotional tone of the dream. Must include 3 different emotions.",
+                                    "minItems": 3,
+                                    "maxItems": 3
                                 ],
                                 "symbolism": [
                                     "type": "array",
@@ -108,23 +118,36 @@ class OpenAIManager {
                                         "properties": [
                                             "icon": [
                                                 "type": "string",
-                                                "description": "An emoji or symbol representing the dream element"
+                                                "description": "An emoji character representing the dream element (e.g., 🐶, 🌲, 🏠, NOT 'Dog', 'Tree', 'House')"
                                             ],
                                             "meaning": [
                                                 "type": "string",
-                                                "description": "The psychological meaning of this symbol"
+                                                "description": "The psychological meaning of this symbol (keep it short, 1-3 words max)"
                                             ]
                                         ],
                                         "required": ["icon", "meaning"]
                                     ],
-                                    "description": "Array of symbolic elements and their psychological meanings"
+                                    "description": "Array of exactly 3 symbolic elements and their psychological meanings. Keep meanings concise.",
+                                    "minItems": 3,
+                                    "maxItems": 3
                                 ],
                                 "reflectionPrompts": [
                                     "type": "array",
                                     "items": [
                                         "type": "string"
                                     ],
-                                    "description": "Array of questions to encourage self-reflection about the dream"
+                                    "description": "Array of 3 questions to encourage self-reflection about the dream. Each question should be a separate string in the array with '\\n' at the end. Example: ['What did you feel in the dream?\\n', 'What does this dream mean to you?\\n', 'How does this relate to your life?\\n']",
+                                    "minItems": 3,
+                                    "maxItems": 3
+                                ],
+                                "tags": [
+                                    "type": "array",
+                                    "items": [
+                                        "type": "string"
+                                    ],
+                                    "description": "Array of dream tags (maximum 2 items) selected from: 'Daydream', 'Epic Dream', 'Continuous Dream', 'Prophetic Dream', 'Nightmare', 'Night Terror', 'Lucid Dream', 'False Awakening', 'Supernatural Dream', 'Telepathic Dream', 'Creative Dream', 'Healing Dream', 'Sleep Paralysis'. Choose the most logically fitting tags based on the dream content.",
+                                    "minItems": 0,
+                                    "maxItems": 2
                                 ],
                                 "quote": [
                                     "type": "object",
@@ -142,7 +165,7 @@ class OpenAIManager {
                                     "description": "An inspirational quote related to dreams or psychology"
                                 ]
                             ],
-                            "required": ["dreamTitle", "dreamSummary", "fullInterpretation", "moodInsights", "symbolism", "reflectionPrompts", "quote"]
+                            "required": ["dreamEmoji", "dreamEmojiBackgroundColor", "dreamTitle", "dreamSummary", "fullInterpretation", "moodInsights", "symbolism", "reflectionPrompts", "tags", "quote"]
                         ]
                     ]
                 ]
