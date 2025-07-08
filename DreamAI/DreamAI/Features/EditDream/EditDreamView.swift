@@ -43,8 +43,9 @@ struct EditDreamView: View {
                     VStack(spacing: 12) {
                         DreamDateView(date: dateBinding, isCreating: false)
                         dreamTextEditor(descriptionBinding)
-                        moodPicker($editDreamViewModel.mood)
-                            .opacity(subscriptionViewModel.isSubscribed ? 1 : 0)
+                        MoodsView(selectedMood: $editDreamViewModel.mood) { mood in
+                            editDreamViewModel.mood = mood
+                        }
                         Spacer()
                         
                         DButton(title: "Interpret Dream") {
@@ -127,11 +128,9 @@ private extension EditDreamView {
             Text("Mood before sleep")
                 .font(.system(size: 17, weight: .semibold))
                 .foregroundStyle(Color.appWhite)
-            
             ScrollView(.horizontal, showsIndicators: false) {
-                
                 HStack(spacing: 10) {
-                    ForEach(Mood.allCases, id: \.self) { mood in
+                    ForEach(Mood.predefined) { mood in
                         Button(action: {
                             withAnimation {
                                 selectedMood.wrappedValue = mood
@@ -143,8 +142,7 @@ private extension EditDreamView {
                                     .padding(10)
                                     .background(selectedMood.wrappedValue == mood ?  Color.appPurple : Color.appGray7.opacity(0.35))
                                     .clipShape(.circle)
-                                
-                                Text(mood.rawValue)
+                                Text(mood.title)
                                     .font(.caption2)
                                     .foregroundStyle(Color.appWhite)
                             }

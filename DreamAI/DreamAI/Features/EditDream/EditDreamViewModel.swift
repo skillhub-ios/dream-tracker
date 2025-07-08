@@ -13,7 +13,7 @@ final class EditDreamViewModel: ObservableObject {
     
     init(dream: Dream) {
         self.dream = dream
-        self.mood = .init(emoji: dream.emoji)
+//        self.mood = Mood(rawValue: dream.emoji)
     }
     
     func saveDream() {

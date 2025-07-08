@@ -31,11 +31,10 @@ struct CreateDreamView: View {
                             await viewModel.toggleRecording()
                         }
                     }
-                    moodPicker($viewModel.selectedMood)
-                        .opacity(subscriptionViewModel.isSubscribed ? 1 : 0)
-                    
+                    MoodsView(selectedMood: $viewModel.selectedMood) { mood in
+                        viewModel.selectedMood = mood
+                    }
                     Spacer()
-                    
                     DButton(title: "Interpret Dream", isDisabled: $viewModel.isButtonDisabled) {
                         if subscriptionViewModel.isSubscribed {
                             viewModel.createDream()
@@ -47,6 +46,7 @@ struct CreateDreamView: View {
                 }
                 .padding(.horizontal, 16)
             }
+            
         }
         .navigationTitle("Create Dream")
         .navigationBarTitleDisplayMode(.inline)
@@ -134,42 +134,6 @@ private extension CreateDreamView {
         }
     }
     
-    func moodPicker(_ selectedMood: Binding<Mood?>) -> some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Mood before sleep")
-                .font(.system(size: 17, weight: .semibold))
-                .foregroundStyle(Color.appWhite)
-            
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 10) {
-                    ForEach(Mood.allCases, id: \.self) { mood in
-                        Button(action: {
-                            withAnimation {
-                                selectedMood.wrappedValue = mood
-                            }
-                        }) {
-                            VStack {
-                                Text(mood.emoji)
-                                    .font(.system(size: 28))
-                                    .padding(10)
-                                    .background(selectedMood.wrappedValue == mood ?  Color.appPurple : Color.appGray7.opacity(0.35))
-                                    .clipShape(.circle)
-                                
-                                Text(mood.rawValue)
-                                    .font(.caption2)
-                                    .foregroundStyle(Color.appWhite)
-                            }
-                        }
-                    }
-                }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 18)
-            }
-            .background(Color.appGray1)
-            .clipShape(RoundedRectangle(cornerRadius: 16))
-        }
-    }
-    
     func cancelNavigationButton() -> some View {
         Button(action: {
             dismiss()
@@ -207,4 +171,5 @@ private struct LeftImageLabel: LabelStyle {
         CreateDreamView()
     }
     .colorScheme(.dark)
+    .environmentObject(SubscriptionViewModel())
 }

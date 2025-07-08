@@ -15,7 +15,7 @@ class CreateDreamViewModel: ObservableObject {
     // MARK: - PROPERTIES
     @Published var selectedDate: Date = Date()
     @Published var dreamText = ""
-    @Published var selectedMood: Mood? = .calm
+    @Published var selectedMood: Mood?
     @Published var isButtonDisabled: Bool = true
     @Published var isRecording: Bool = false
     @Published var showPermissionAlert: Bool = false
@@ -33,11 +33,11 @@ class CreateDreamViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     init() {
-        self.selectedMood = Mood.allCases.randomElement()
         subscribers()
     }
     
     // MARK: - Methods
+        
     func toggleRecording() async {
         print("🔊 ViewModel: toggleRecording called, isRecording: \(isRecording)")
         if isRecording {

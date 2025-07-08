@@ -83,28 +83,8 @@ struct DButton: View {
                         .font(.title3)
                 }
             }
-            .frame(maxWidth: .infinity)
-            .padding()
-            .background(
-                LinearGradient(
-                    gradient: Gradient(
-                        colors: [
-                            Color.black,
-                            Color.purple,
-                            Color.black
-                        ]
-                    ),
-                    startPoint: .leading,
-                    endPoint: .trailing
-                )
-            )
-            .foregroundColor(.white)
-            .cornerRadius(13)
-            .overlay(
-                RoundedRectangle(cornerRadius: 13)
-                    .stroke(Color.purple.opacity(0.4), lineWidth: 1)
-            )
         }
+        .buttonStyle(PrimaryButtonStyle())
         .disabled(isDisabled || effectiveIsLoading)
         .overlay(
             RoundedRectangle(cornerRadius: 13)
