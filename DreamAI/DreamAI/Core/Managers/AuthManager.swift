@@ -194,7 +194,7 @@ final class AuthManager: ObservableObject, AuthManaging {
     
     func attemptToEnableiCloudSync() {
         isSyncingWithiCloudInProgress = true
-        CKContainer(identifier: "iCloud.com.get.DreamAI").accountStatus { [weak self] status, error in
+        CKContainer(identifier: "iCloud.com.skillhub.DreamAI").accountStatus { [weak self] status, error in
             DispatchQueue.main.async {
                 guard let self = self else { return }
                 self.isSyncingWithiCloudInProgress = false

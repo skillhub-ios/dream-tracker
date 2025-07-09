@@ -177,7 +177,11 @@ private extension EditDreamView {
     }
 }
 
+#if DEBUG
+
 #Preview {
     EditDreamView(dream: loadMockDreams().first!)
         .environmentObject(SubscriptionViewModel())
 }
+
+#endif

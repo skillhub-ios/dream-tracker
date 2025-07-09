@@ -10,7 +10,7 @@ import CloudKit
 
 class CloudKitManager {
     static let shared = CloudKitManager()
-    private let privateDB = CKContainer(identifier: "iCloud.com.get.DreamAI").privateCloudDatabase
+    private let privateDB = CKContainer(identifier: "iCloud.com.skillhub.DreamAI").privateCloudDatabase
     
     private init() {}
     

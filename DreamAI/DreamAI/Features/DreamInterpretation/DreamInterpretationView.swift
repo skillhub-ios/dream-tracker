@@ -224,6 +224,7 @@ struct MoodProgressUI: View {
     }
 }
 
+#if DEBUG
 
 #Preview {
     VStack {
@@ -233,3 +234,5 @@ struct MoodProgressUI: View {
             }
     }
 }
+
+#endif
