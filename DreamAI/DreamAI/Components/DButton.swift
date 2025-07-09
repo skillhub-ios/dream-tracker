@@ -67,7 +67,7 @@ struct DButton: View {
                 case .loading:
                     Text("Loading")
                         .font(.title3.bold())
-                    MagicLoadingUI(progress: loadingProgress, lineWidth: 2)
+                    MagicLoadingUI(lineWidth: 2)
                         .frame(width: 25, height: 25)
                 case .tryAgain:
                     Text("Try again")
@@ -83,29 +83,9 @@ struct DButton: View {
                         .font(.title3)
                 }
             }
-            .frame(maxWidth: .infinity)
-            .padding()
-            .background(
-                LinearGradient(
-                    gradient: Gradient(
-                        colors: [
-                            Color.black,
-                            Color.purple,
-                            Color.black
-                        ]
-                    ),
-                    startPoint: .leading,
-                    endPoint: .trailing
-                )
-            )
-            .foregroundColor(.white)
-            .cornerRadius(13)
-            .overlay(
-                RoundedRectangle(cornerRadius: 13)
-                    .stroke(Color.purple.opacity(0.4), lineWidth: 1)
-            )
         }
-        .disabled(isDisabled || state == .locked || effectiveIsLoading)
+        .buttonStyle(PrimaryButtonStyle())
+        .disabled(isDisabled || effectiveIsLoading)
         .overlay(
             RoundedRectangle(cornerRadius: 13)
                 .fill(isDisabled || effectiveIsLoading ? Color.black.opacity(0.5) : Color.clear)

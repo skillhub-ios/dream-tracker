@@ -15,13 +15,14 @@ class CreateDreamViewModel: ObservableObject {
     // MARK: - PROPERTIES
     @Published var selectedDate: Date = Date()
     @Published var dreamText = ""
-    @Published var selectedMood: Mood? = .calm
+    @Published var selectedMood: Mood?
     @Published var isButtonDisabled: Bool = true
     @Published var isRecording: Bool = false
     @Published var showPermissionAlert: Bool = false
     @Published var permissionAlertMessage: String = ""
     @Published var interpretationModel: Interpretation?
     @Published var currentDream: Dream?
+    @Published var buttonState: DButtonState = .normal
     
     // Track text that existed before recording started
     private var textBeforeRecording: String = ""
@@ -32,11 +33,11 @@ class CreateDreamViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     init() {
-        self.selectedMood = Mood.allCases.randomElement()
         subscribers()
     }
-
+    
     // MARK: - Methods
+        
     func toggleRecording() async {
         print("🔊 ViewModel: toggleRecording called, isRecording: \(isRecording)")
         if isRecording {
@@ -118,38 +119,13 @@ class CreateDreamViewModel: ObservableObject {
             emoji: generateRandomEmoji(),
             emojiBackground: generateRandomColor(),
             title: String(dreamText.prefix(30)),
-            tags: generateRandomTags(),
-            date: selectedDate
+            tags: [],
+            date: selectedDate,
+            description: dreamText
         )
         addDream(newDream)
         currentDream = newDream
     }
-
-    /// OLD
-//    func generateDream() async -> (UUID, Interpretation?) {
-//        let newDream = Dream(
-//            emoji: generateRandomEmoji(),
-//            emojiBackground: generateRandomColor(),
-//            title: String(dreamText.prefix(30)),
-//            tags: generateRandomTags(),
-//            date: selectedDate
-//        )
-//        addDream(newDream)
-//        
-//        do {
-//            let interpretation = try await dreamInterpreter.interpretDream(
-//                dreamText: dreamText,
-//                mood: selectedMood?.rawValue,
-//                tags: []
-//            )
-//            self.interpretationModel = interpretation
-//            return (newDream.id, interpretation)
-//        } catch {
-//            print("Failed to get interpretation: \(error)")
-//            // Handle error appropriately - the error will be propagated to the UI
-//            return (newDream.id, nil)
-//        }
-//    }
     
     private func generateRandomEmoji() -> String {
         let emojis = ["😴", "🌙", "✨", "🌟", "💫", "🌈", "☁️", "🦋", "🎭", "🎪"]
@@ -166,7 +142,7 @@ class CreateDreamViewModel: ObservableObject {
         let numberOfTags = Int.random(in: 1...3)
         return Array(allTags.shuffled().prefix(numberOfTags))
     }
-
+    
     private func subscribers() {
         Publishers.CombineLatest3($selectedDate, $dreamText, $selectedMood)
             .map { date, text, mood in
@@ -174,6 +150,14 @@ class CreateDreamViewModel: ObservableObject {
             }
             .receive(on: DispatchQueue.main)
             .assign(to: \.isButtonDisabled, on: self)
+            .store(in: &cancellables)
+        
+        UserManager.shared.$isSubscribed
+            .receive(on: DispatchQueue.main)
+            .map { isSubscribed in
+                return isSubscribed ? .normal : .locked
+            }
+            .assign(to: \.buttonState, on: self)
             .store(in: &cancellables)
         
         // Subscribe to speech recognizer updates to show text in real-time

@@ -11,6 +11,7 @@ import AuthenticationServices
 import GoogleSignIn
 import UIKit
 import CloudKit
+import SwiftUI
 
 protocol AuthManaging {
     var isAuthenticated: Bool { get }
@@ -34,38 +35,60 @@ final class AuthManager: ObservableObject, AuthManaging {
     private let client = SupabaseService.shared.client
     
     // MARK: - Debug Mode
-    #if DEBUG
+#if DEBUG
     let isDebugMode = true
-    #else
+#else
     let isDebugMode = false
-    #endif
+#endif
     
+    // MARK: - AppStorage Properties for Persistence
+    @AppStorage("user_is_authenticated") private var storedIsAuthenticated: Bool = false
+    @AppStorage("user_has_completed_permissions") private var storedHasCompletedPermissions: Bool = false
+    
+    // MARK: - Published Properties
     @Published private(set) var user: User?
     @Published var isAuthenticated: Bool = false
     @Published var hasCompletedPermissions: Bool = false
+    @Published var isLoading: Bool = true
     @Published var showiCloudSignInAlert = false
     @Published var isSyncingWithiCloud: Bool = false
     @Published var isSyncingWithiCloudInProgress = false
     @Published var showiCloudStatusAlert = false
     @Published var iCloudStatusMessage = ""
-
+    
     private let userDefaults = UserDefaults.standard
     private let permissionsCompletedKey = "user_has_completed_permissions"
-
+    
     private init() {
-        // Load permissions completion status
-        hasCompletedPermissions = userDefaults.bool(forKey: permissionsCompletedKey)
+        // Initialize with stored values to prevent glitching
+        self.isAuthenticated = storedIsAuthenticated
+        self.hasCompletedPermissions = storedHasCompletedPermissions
+        
+        print("🔐 AuthManager initialized - stored auth: \(storedIsAuthenticated), stored permissions: \(storedHasCompletedPermissions)")
+        
+        // Start session refresh
         Task { await refreshSession() }
     }
     
     func refreshSession() async {
+        await MainActor.run {
+            isLoading = true
+        }
+        
+        print("🔄 Refreshing session...")
+        
         do {
             let session = try await client.auth.session
             await MainActor.run {
                 self.user = session.user
-                self.isAuthenticated = !session.user.isAnonymous
+                let newAuthState = !session.user.isAnonymous
+                self.isAuthenticated = newAuthState
+                self.storedIsAuthenticated = newAuthState
+                self.isLoading = false
+                print("✅ Session refreshed - authenticated: \(newAuthState)")
             }
         } catch {
+            print("❌ Session refresh failed: \(error.localizedDescription)")
             // If in debug mode and not authenticated, try to sign in anonymously
             if isDebugMode && !isAuthenticated {
                 await signInAnonymously()
@@ -73,6 +96,9 @@ final class AuthManager: ObservableObject, AuthManaging {
                 await MainActor.run {
                     self.user = nil
                     self.isAuthenticated = false
+                    self.storedIsAuthenticated = false
+                    self.isLoading = false
+                    print("❌ Authentication failed - user not authenticated")
                 }
             }
         }
@@ -86,6 +112,8 @@ final class AuthManager: ObservableObject, AuthManaging {
             await MainActor.run {
                 self.user = session.user
                 self.isAuthenticated = true
+                self.storedIsAuthenticated = true
+                self.isLoading = false
             }
             print("DEBUG: Successfully signed in anonymously")
         } catch {
@@ -93,6 +121,8 @@ final class AuthManager: ObservableObject, AuthManaging {
             await MainActor.run {
                 self.user = nil
                 self.isAuthenticated = false
+                self.storedIsAuthenticated = false
+                self.isLoading = false
             }
         }
     }
@@ -123,14 +153,14 @@ final class AuthManager: ObservableObject, AuthManaging {
               let tokenString = String(data: idToken, encoding: .utf8) else {
             throw NSError(domain: "AuthManager", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid Apple ID token"])
         }
-
+        
         try await client.auth.signInWithIdToken(
             credentials: .init(
                 provider: .apple,
                 idToken: tokenString
             )
         )
-
+        
         await refreshSession()
     }
     
@@ -138,9 +168,23 @@ final class AuthManager: ObservableObject, AuthManaging {
         try await client.auth.signOut()
         await refreshSession()
         clearUserDefaults()
-        isAuthenticated = false
-        hasCompletedPermissions = false
-        user = nil
+        
+        // Clear all user data on main thread
+        await MainActor.run {
+            isAuthenticated = false
+            hasCompletedPermissions = false
+            storedIsAuthenticated = false
+            storedHasCompletedPermissions = false
+            user = nil
+        }
+        
+        // Clear all manager data
+            UserManager.shared.clearUserData()
+            await BiometricManager.shared.clearUserData()
+            LanguageManager.shared.clearUserData()
+        
+        // Clear storage data
+        DIContainer.coreDataStore.deleteAllData()
     }
     
     func markPermissionsCompleted() {
@@ -154,7 +198,7 @@ final class AuthManager: ObservableObject, AuthManaging {
             DispatchQueue.main.async {
                 guard let self = self else { return }
                 self.isSyncingWithiCloudInProgress = false
-
+                
                 if let error = error {
                     print("Error checking iCloud status: \(error.localizedDescription)")
                     self.isSyncingWithiCloud = false
@@ -162,7 +206,7 @@ final class AuthManager: ObservableObject, AuthManaging {
                     self.showiCloudStatusAlert = true
                     return
                 }
-
+                
                 switch status {
                 case .available:
                     print("iCloud is available.")
@@ -189,8 +233,10 @@ final class AuthManager: ObservableObject, AuthManaging {
             }
         }
     }
-
+    
     func clearUserDefaults() {
-        userDefaults.removeObject(forKey: permissionsCompletedKey)
-    }
+            // Clear all stored authentication data
+            storedIsAuthenticated = false
+            storedHasCompletedPermissions = false
+        }
 }

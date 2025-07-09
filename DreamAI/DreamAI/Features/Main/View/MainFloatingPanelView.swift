@@ -12,11 +12,11 @@ struct MainFloatingPanelView: View {
     @EnvironmentObject private var viewModel: MainViewModel
     @EnvironmentObject private var subscriptionViewModel: SubscriptionViewModel
     @State private var dreamlistmode: DreamListItemMode = .view
-    @State private var selectedDreamIds: [UUID] = []
     @State private var hapticTrigger = false
     @State private var showCreateDreamView = false
     @State private var showDreamInterpretation = false
     @State private var selectedDream: Dream?
+    @Binding var isBlured: Bool
     
     var filteredDreams: [Dream] {
         viewModel.filterDreams()
@@ -36,27 +36,44 @@ struct MainFloatingPanelView: View {
                     }
                     Spacer()
                 } else {
-                    ScrollView {
-                        VStack(spacing: 16) {
-                            ForEach(filteredDreams) { dream in
-                                dreamRow(for: dream)
+                    List(filteredDreams) { dream in
+                        dreamRow(for: dream)
+                            .listRowSeparator(.hidden)
+                            .blur(radius: isBlured ? 12 : 0)
+                            .applyIf(dreamlistmode == .view) {
+                                $0.swipeActions(edge: .trailing) {
+                                    Button(role: .destructive) {
+                                        viewModel.deleteDreamBy(id: dream.id)
+                                    } label: {
+                                        Label("Delete", systemImage: "trash")
+                                    }
+                                }
+                                .swipeActions(edge: .leading) {
+                                    Button() {
+                                        showCreateDreamView = true
+                                    } label: {
+                                        Label("Add", systemImage: "plus")
+                                            .tint(.appPurple)
+                                    }
+                                }
                             }
-                        }
-                        .padding(.top, 8)
-                        .padding(.horizontal)
-                        .padding(.bottom, 100)
+                            .applyIf(dream.id == filteredDreams.last?.id) {
+                                $0.padding(.bottom, 100)
+                            }
                     }
+                    .listStyle(.plain)
                 }
             }
             .padding(.top, 24)
             
             FloatingActionButton(mode: dreamlistmode) {
-                if dreamlistmode == .edit {
-//                    viewModel.deleteDreams(ids: selectedDreamIds)
-                    selectedDreamIds.removeAll()
-                    dreamlistmode = .view
-                } else {
-                    showCreateDreamView = true
+                withAnimation {
+                    if dreamlistmode == .edit {
+                        viewModel.deleteSelectedDreams()
+                        dreamlistmode = .view
+                    } else {
+                        showCreateDreamView = true
+                    }
                 }
             }
             .padding(.bottom, 15)
@@ -72,7 +89,7 @@ struct MainFloatingPanelView: View {
                 DreamInterpretationView(dream: dream)
             } else {
                 NavigationStack {
-                    DreamDetailsView(dream: dream)
+                    EditDreamView(dream: dream)
                 }
                 .presentationDetents([.large])
             }
@@ -85,14 +102,16 @@ private extension MainFloatingPanelView {
     func dreamRow(for dream: Dream) -> some View {
         DreamListItemView(
             dream: dream,
-            isSelected: selectedDreamIds.contains(dream.id),
+            isSelected: viewModel.selectedDreamIds.contains(dream.id),
             mode: dreamlistmode,
-            requestStatus: dream.requestStatus
+            requestStatus: interpretationState(for: dream.id)
         )
-        .scaleEffect(selectedDreamIds.contains(dream.id) ? 0.95 : 1.0)
+        .scaleEffect(viewModel.selectedDreamIds.contains(dream.id) ? 0.95 : 1.0)
         .onTapGesture {
             if dreamlistmode == .edit {
-                toggleDreamSelection(dream: dream)
+                withAnimation {
+                    viewModel.toggleDreamSelection(dreamId: dream.id)
+                }
             } else {
                 // Show dream interpretation
                 selectedDream = dream
@@ -101,27 +120,28 @@ private extension MainFloatingPanelView {
         }
         .onLongPressGesture {
             hapticTrigger.toggle()
-            dreamlistmode = dreamlistmode == .edit ? .view : .edit
-            toggleDreamSelection(dream: dream)
-            if dreamlistmode == .view {
-                selectedDreamIds.removeAll()
+            withAnimation {
+                dreamlistmode = dreamlistmode == .edit ? .view : .edit
+                viewModel.toggleDreamSelection(dreamId: dream.id)
+                if dreamlistmode == .view {
+                    viewModel.selectedDreamIds.removeAll()
+                }
             }
         }
         .sensoryFeedback(.impact(weight: .heavy, intensity: 0.9), trigger: hapticTrigger )
     }
     
-    func toggleDreamSelection(dream: Dream) {
-        withAnimation(.easeInOut(duration: 0.1)) {
-            if selectedDreamIds.contains(dream.id) {
-                selectedDreamIds.removeAll { $0 == dream.id }
-            } else {
-                selectedDreamIds.append(dream.id)
-            }
+    func interpretationState(for id: UUID) -> RequestStatus {
+        guard let loadingState = viewModel.loadingStatesByDreamId[id] else { return .idle }
+        switch loadingState {
+        case .success: return .success
+        case .loading: return .loading(progress: 0.5)
+        case .error: return .error
         }
     }
 }
 
 #Preview {
-    MainFloatingPanelView()
+    MainFloatingPanelView(isBlured: .constant(false))
         .environmentObject(MainViewModel())
 }

@@ -10,7 +10,7 @@ import Foundation
 class DreamInterpreter {
     private let openAIManager = OpenAIManager.shared
     
-    func interpretDream(dreamText: String, mood: String?, tags: [String]) async throws -> Interpretation {
+    func interpretDream(dreamText: String, mood: String?) async throws -> Interpretation {
         // Validate input
         guard !dreamText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
             throw DreamInterpreterError.emptyDreamText
@@ -23,8 +23,7 @@ class DreamInterpreter {
         do {
             let interpretation = try await openAIManager.getDreamInterpretation(
                 dreamText: cleanedDreamText,
-                mood: mood,
-                tags: tags
+                mood: mood
             )
             
             // Validate the interpretation
@@ -61,7 +60,8 @@ class DreamInterpreter {
                 moodInsights: enhancedInterpretation.moodInsights,
                 symbolism: enhancedInterpretation.symbolism,
                 reflectionPrompts: enhancedInterpretation.reflectionPrompts,
-                quote: enhancedInterpretation.quote
+                quote: enhancedInterpretation.quote,
+                tags: enhancedInterpretation.tags
             )
         }
         
@@ -74,7 +74,8 @@ class DreamInterpreter {
                 moodInsights: generateDefaultMoodInsights(),
                 symbolism: enhancedInterpretation.symbolism,
                 reflectionPrompts: enhancedInterpretation.reflectionPrompts,
-                quote: enhancedInterpretation.quote
+                quote: enhancedInterpretation.quote,
+                tags: enhancedInterpretation.tags
             )
         }
         
@@ -87,7 +88,8 @@ class DreamInterpreter {
                 moodInsights: enhancedInterpretation.moodInsights,
                 symbolism: generateDefaultSymbolism(),
                 reflectionPrompts: enhancedInterpretation.reflectionPrompts,
-                quote: enhancedInterpretation.quote
+                quote: enhancedInterpretation.quote,
+                tags: enhancedInterpretation.tags
             )
         }
         
@@ -100,7 +102,8 @@ class DreamInterpreter {
                 moodInsights: enhancedInterpretation.moodInsights,
                 symbolism: enhancedInterpretation.symbolism,
                 reflectionPrompts: generateDefaultReflectionPrompts(),
-                quote: enhancedInterpretation.quote
+                quote: enhancedInterpretation.quote,
+                tags: enhancedInterpretation.tags
             )
         }
         

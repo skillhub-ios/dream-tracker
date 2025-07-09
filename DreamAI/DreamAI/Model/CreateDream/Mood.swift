@@ -7,24 +7,29 @@
 
 import Foundation
 
-enum Mood: String, CaseIterable {
-    case happy = "Happy"
-    case calm = "Calm"
-    case anxious = "Anxious"
-    case angry = "Angry"
-    case sad = "Sad"
-    case inLove = "In Love"
-    case stressed = "Stressed"
-
-    var emoji: String {
-        return switch self {
-        case .happy: "😊"
-        case .calm: "😌"
-        case .anxious: "😰"
-        case .angry: "😠"
-        case .sad: "😢"
-        case .inLove: "😍"
-        case .stressed: "😵‍💫"
-        }
+struct Mood: Equatable, Hashable, Identifiable {
+    let id: UUID = UUID()
+    let title: String
+    let emoji: String
+    
+    static let happy = Mood(title: "Happy", emoji: "😊")
+    static let calm = Mood(title: "Calm", emoji: "😌")
+    static let anxious = Mood(title: "Anxious", emoji: "😌")
+    static let angry = Mood(title: "Angry", emoji: "😠")
+    static let sad = Mood(title: "Sad", emoji: "😢")
+    static let inLove = Mood(title: "In Love", emoji: "😍")
+    static let stressed = Mood(title: "Stressed", emoji: "😵‍💫")
+    
+    static let predefined: [Mood] = [.happy, .calm, .anxious, .angry, .sad, .inLove, .stressed]
+    
+    init(title: String, emoji: String) {
+        self.title = title
+        self.emoji = emoji
+    }
+    
+    // MARK: - CoreData
+    init(from entity: MoodEntity) {
+        self.emoji = entity.emoji ?? "💤"
+        self.title = entity.title ?? ""
     }
 }

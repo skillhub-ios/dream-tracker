@@ -14,7 +14,7 @@ struct DreamDateView: View {
         HStack(spacing: 8) {
             DatePicker(selection: $date) {
                 Text(isCreating ? "Describe the dream" : "Dream description")
-                    .font(.headline)
+                    .font(.subheadline.bold())
                     .lineLimit(1)
                     .minimumScaleFactor(0.1)
                     .foregroundColor(.white)
@@ -25,7 +25,6 @@ struct DreamDateView: View {
             .padding(.vertical, 8)
             .background(Color.appGray1)
             .cornerRadius(12)
-            .disabled(!isCreating)
         }
     }
 }

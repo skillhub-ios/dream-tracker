@@ -14,9 +14,10 @@ final class PermissionsSettingsViewModel: ObservableObject {
     // MARK: - Dependencies
     private let languageManager: LanguageManaging = LanguageManager.shared
     private let biometricManager: BiometricManager = BiometricManager.shared
+    private let pushNotificationManager: PushNotificationManager = PushNotificationManager.shared
     
     // MARK: - Published Properties
-    @Published var remindersEnabled: Bool = true
+    @Published var remindersEnabled: Bool = false
     @Published var bedtime: Date = DateComponents(calendar: .current, hour: 8, minute: 0).date ?? Date()
     @Published var wakeup: Date = DateComponents(calendar: .current, hour: 8, minute: 0).date ?? Date()
     @Published var faceIDEnabled: Bool = false
@@ -32,6 +33,7 @@ final class PermissionsSettingsViewModel: ObservableObject {
         self.faceIDEnabled = biometricManager.isFaceIDEnabled
         
         setupBindings()
+        initializeNotificationStatus()
     }
     
     // MARK: - Private Methods
@@ -52,6 +54,15 @@ final class PermissionsSettingsViewModel: ObservableObject {
                 self?.faceIDEnabled = self?.biometricManager.isFaceIDEnabled ?? false
             }
             .store(in: &cancellables)
+    }
+    
+    private func initializeNotificationStatus() {
+        Task {
+            let isEnabled = await pushNotificationManager.areNotificationsEnabled()
+            await MainActor.run {
+                self.remindersEnabled = isEnabled
+            }
+        }
     }
     
     // MARK: - Public Methods

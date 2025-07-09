@@ -15,7 +15,7 @@ extension View {
 struct AnimatedGradientBackgroundModifier: ViewModifier {
     func body(content: Content) -> some View {
         ZStack {
-            AnimatedGradientBackground()
+            VideoBackgroundView(videoName: "gradientBackground", videoType: "mp4")
                 .ignoresSafeArea()
 
             content

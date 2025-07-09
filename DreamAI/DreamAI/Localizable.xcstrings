@@ -57,6 +57,9 @@
     "A few quick details to personalize insights" : {
 
     },
+    "Add" : {
+
+    },
     "Authenticate" : {
 
     },
@@ -100,16 +103,19 @@
     "Create Dream" : {
 
     },
+    "Custom" : {
+
+    },
     "Data Deletion" : {
 
     },
     "Debug Info" : {
 
     },
-    "Describe the dream" : {
+    "Delete" : {
 
     },
-    "Device Token" : {
+    "Describe the dream" : {
 
     },
     "Do you already have an account?" : {
@@ -128,6 +134,12 @@
 
     },
     "Dream Interpretation" : {
+
+    },
+    "DreamAI" : {
+
+    },
+    "Emoji" : {
 
     },
     "Error" : {
@@ -214,6 +226,9 @@
     "Log your first dream 🌙" : {
 
     },
+    "Mood" : {
+
+    },
     "Mood before sleep" : {
 
     },
@@ -296,9 +311,6 @@
 
     },
     "To understand your dreams better" : {
-
-    },
-    "Token: %@..." : {
 
     },
     "Try again" : {

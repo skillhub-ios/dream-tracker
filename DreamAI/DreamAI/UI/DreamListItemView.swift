@@ -32,17 +32,17 @@ struct DreamListItemView: View {
                     .font(.headline)
                     .foregroundColor(.white)
                     .lineLimit(2)
-//                HStack(spacing: 6) {
-//                    ForEach(dream.tags.prefix(2), id: \ .self) { tag in
-//                        Text(tag.rawValue)
-//                            .font(.caption)
-//                            .padding(.horizontal, 8)
-//                            .padding(.vertical, 4)
-//                            .background(Color.appGray7.opacity(0.36))
-//                            .cornerRadius(8)
-//                            .foregroundColor(.white)
-//                    }
-//                }
+                HStack(spacing: 6) {
+                    ForEach(dream.tags.prefix(2), id: \ .self) { tag in
+                        Text(tag.rawValue)
+                            .font(.caption)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(Color.appGray7.opacity(0.36))
+                            .cornerRadius(8)
+                            .foregroundColor(.white)
+                    }
+                }
                 if ![.idle, .success].contains(requestStatus) || mode == .edit {
                     dateUI
                 }
@@ -51,17 +51,16 @@ struct DreamListItemView: View {
             
             Spacer()
             
-                if mode == .edit && isSelected {
-                    Image(systemName: "checkmark.circle.fill")
+                if mode == .edit {
+                    Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
                         .foregroundColor(Color.appPurple)
                         .font(.title2)
                         .frame(maxHeight: .infinity)
-                        .background(.white)
+                        .background(isSelected ? .white : .appGray3)
                         .clipShape(Circle())
                 } else {
                     stateUI(requestStatus)
                 }
-            
         }
         .padding()
         .frame(maxHeight: 110)
@@ -83,11 +82,11 @@ private extension DreamListItemView {
     }
 
     var dateVerticalUI: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .trailing, spacing: 4) {
             Text(dream.date.formattedWithSpace())
                 .font(.footnote)
                 .foregroundColor(.gray)
-                .multilineTextAlignment(.leading)
+                .multilineTextAlignment(.trailing)
         }
     }
     
@@ -96,8 +95,8 @@ private extension DreamListItemView {
             switch state {
             case .idle where mode != .edit, .success where mode != .edit :
                 dateVerticalUI
-            case .loading(let progress): 
-                MagicLoadingUI(progress: progress)
+            case .loading: 
+                MagicLoadingUI()
                     .frame(width: 26, height: 26)
             case .error:
                 Image(systemName: "exclamationmark.circle")

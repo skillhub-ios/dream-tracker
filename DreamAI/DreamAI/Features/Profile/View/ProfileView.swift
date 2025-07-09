@@ -69,7 +69,7 @@ struct ProfileView: View {
             }
             .overlay {
                 if isSigningOut {
-                    MagicLoadingUI(progress: 0.8)
+                    MagicLoadingUI()
                         .frame(width: 40, height: 40)
                 }
             }

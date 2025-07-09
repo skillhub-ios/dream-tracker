@@ -17,6 +17,8 @@ final class MainViewModel: ObservableObject {
     @Published var lastDream: Dream?
     @Published var dreams: [Dream] = []
     @Published var dreamInterpretations: [Interpretation] = []
+    @Published var selectedDreamIds: [UUID] = []
+    @Published var loadingStatesByDreamId: [UUID: ContentStateType] = [:]
     
     // MARK: - Private Properties
     
@@ -34,6 +36,25 @@ final class MainViewModel: ObservableObject {
     
     // MARK: - Public Functions
     
+    public func deleteSelectedDreams() {
+        dreams.removeAll { selectedDreamIds.contains($0.id) }
+        coreDataStore.deleteDreamsAndItsInterpretations(dreamsIds: selectedDreamIds)
+        selectedDreamIds.removeAll()
+    }
+    
+    public func deleteDreamBy(id: UUID) {
+        dreams.removeAll { $0.id == id }
+        coreDataStore.deleteDreamsAndItsInterpretations(dreamsIds: selectedDreamIds)
+    }
+    
+    func toggleDreamSelection(dreamId: UUID) {
+        if selectedDreamIds.contains(dreamId) {
+            selectedDreamIds.removeAll { $0 == dreamId }
+        } else {
+            selectedDreamIds.append(dreamId)
+        }
+    }
+    
     // MARK: - Private Functions
     
     private func addSubscriptions() {
@@ -42,8 +63,8 @@ final class MainViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] dream in
                 guard let self = self else { return }
-                self.dreams.insert(dream, at: 0)
-                self.coreDataStore.saveDream(dream)
+                dreams.insert(dream, at: 0)
+                coreDataStore.saveDream(dream)
             }
             .store(in: &cancellables)
         
@@ -58,6 +79,45 @@ final class MainViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] dreams in
                 self?.lastDream = dreams.first
+            }
+            .store(in: &cancellables)
+        
+        NotificationCenter.default.publisher(for: Notification.Name(PublisherKey.changeDream.rawValue))
+            .compactMap { extractValue(from: $0, as: Dream.self) }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] updatedDream in
+                guard let self = self else { return }
+                if let index = dreams.firstIndex(where: { $0.id == updatedDream.id }) {
+                    self.dreams[index] = updatedDream
+                    self.coreDataStore.updateDream(updatedDream)
+                }
+            }
+            .store(in: &cancellables)
+        
+        NotificationCenter.default.publisher(for: Notification.Name(PublisherKey.interpretationLoadingStatus.rawValue))
+            .compactMap { extractValue(from: $0, as: [UUID: ContentStateType].self) }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] dictionary in
+                guard let self = self else { return }
+                for (id, state) in dictionary {
+                    self.loadingStatesByDreamId[id] = state
+                }
+            }
+            .store(in: &cancellables)
+        
+        NotificationCenter.default.publisher(for: Notification.Name(PublisherKey.updateTags.rawValue))
+            .compactMap { extractValue(from: $0, as: [UUID: [String]].self) }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] tagsById in
+                guard let self = self else { return }
+                for (id, tags) in tagsById {
+                    if let index = self.dreams.firstIndex(where: { $0.id == id }) {
+                        self.dreams[index].updateTags(tags)
+                        let updatedDream = self.dreams[index]
+                        self.coreDataStore.updateDream(updatedDream)
+                    }
+                }
+                
             }
             .store(in: &cancellables)
     }
@@ -89,16 +149,4 @@ final class MainViewModel: ObservableObject {
             return dreams.sorted(by: { $0.tags.count > $1.tags.count })
         }
     }
-    
-    //    func deleteDreams(ids: [UUID]) {
-    //        dreamManager.deleteDreams(ids: ids)
-    //    }
-    //
-    //    func addDream(_ dream: Dream) {
-    //        dreamManager.addDream(dream)
-    //    }
-    //
-    //    func startDreamInterpretation(dreamId: UUID) {
-    //        dreamManager.startDreamInterpretation(dreamId: dreamId)
-    //    }
 }

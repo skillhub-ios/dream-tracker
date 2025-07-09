@@ -16,35 +16,51 @@ struct CreateDreamView: View {
     @FocusState private var isInputActive: Bool
     @State private var isShowingInterpretation: Bool = false
     @State private var interpretationModel: Interpretation?
+    private let actionButtonId = "actionButton"
+    @StateObject private var keyboardObserver = KeyboardObserver()
     
     // MARK: - Body
     var body: some View {
         ZStack {
             Color.appGray4
                 .ignoresSafeArea()
-            ScrollView {
-                VStack(spacing: 12) {
-                    DreamDateView(date: $viewModel.selectedDate, isCreating: true)
+            ScrollViewReader { scrollProxy in
+                ScrollView {
+                    VStack(spacing: 12) {
+                        DreamDateView(date: $viewModel.selectedDate, isCreating: true)
                         dreamTextEditor($viewModel.dreamText)
                         microphoneButton {
                             Task {
                                 await viewModel.toggleRecording()
                             }
                         }
-                        moodPicker($viewModel.selectedMood)
-                    
-                    Spacer()
-                    
-                    DButton(title: "Interpret Dream", isDisabled: $viewModel.isButtonDisabled) {
-                        if subscriptionViewModel.isSubscribed {
-                            viewModel.createDream()
-                            isShowingInterpretation = true
-                        } else {
-                            subscriptionViewModel.showPaywall()
+                        MoodsView(
+                            selectedMood: $viewModel.selectedMood,
+                            onAddAction: { mood in
+                                viewModel.selectedMood = mood
+                            },
+                            onStartTypingAction: {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                    withAnimation {
+                                        scrollProxy.scrollTo(actionButtonId)
+                                    }
+                                }
+                            }
+                        )
+                        Spacer()
+                        DButton(title: "Interpret Dream", isDisabled: $viewModel.isButtonDisabled) {
+                            if subscriptionViewModel.isSubscribed {
+                                viewModel.createDream()
+                                isShowingInterpretation = true
+                            } else {
+                                subscriptionViewModel.showPaywall()
+                            }
                         }
+                        .id(actionButtonId)
+                        .padding(.bottom, keyboardObserver.keyboardHeight / 3)
                     }
+                    .padding(.horizontal, 16)
                 }
-                .padding(.horizontal, 16)
             }
         }
         .navigationTitle("Create Dream")
@@ -72,6 +88,14 @@ struct CreateDreamView: View {
                 DreamInterpretationView(dream: dream)
             }
         }
+        .gesture(
+            DragGesture(minimumDistance: 20, coordinateSpace: .local)
+                .onEnded { value in
+                    if value.translation.height > 20 {
+                        isInputActive = false
+                    }
+                }
+        )
     }
 }
 
@@ -91,22 +115,17 @@ private extension CreateDreamView {
             TextEditor(text: dreamText)
                 .font(.system(size: 17))
                 .focused($isInputActive)
-                .toolbar {
-                    ToolbarItemGroup(placement: .keyboard) {
-                        Spacer()
-
-                        Button("Done") {
-                            isInputActive = false
-                        }
+                .submitLabel(.done)
+                    .onSubmit {
+                        isInputActive = false
                     }
-                }
                 .scrollContentBackground(.hidden)
                 .foregroundStyle(Color.appWhite)
         }
         .padding(.vertical, 6)
         .padding(.horizontal, 10)
         .frame(height: SCREEN_HEIGHT * 0.3)
-        .background(Color.appGray1)
+        .background(Color.appGray3)
         .clipShape(RoundedRectangle(cornerRadius: 16))
     }
     
@@ -120,45 +139,8 @@ private extension CreateDreamView {
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 10)
                 .padding(.horizontal, 16)
-                .background(viewModel.isRecording ? Color.appRed : Color.appGray1)
+                .background(viewModel.isRecording ? Color.appRed : Color.appGray3)
                 .clipShape(RoundedRectangle(cornerRadius: 10))
-        }
-    }
-    
-    func moodPicker(_ selectedMood: Binding<Mood?>) -> some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Mood before sleep")
-                .font(.system(size: 17, weight: .semibold))
-                .foregroundStyle(Color.appWhite)
-            
-            ScrollView(.horizontal, showsIndicators: false) {
-                
-                HStack(spacing: 10) {
-                    ForEach(Mood.allCases, id: \.self) { mood in
-                        Button(action: {
-                            withAnimation {
-                                selectedMood.wrappedValue = mood
-                            }
-                        }) {
-                            VStack {
-                                Text(mood.emoji)
-                                    .font(.system(size: 28))
-                                    .padding(10)
-                                    .background(selectedMood.wrappedValue == mood ?  Color.appPurple : Color.appGray7.opacity(0.35))
-                                    .clipShape(.circle)
-                                
-                                Text(mood.rawValue)
-                                    .font(.caption2)
-                                    .foregroundStyle(Color.appWhite)
-                            }
-                        }
-                    }
-                }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 18)
-            }
-            .background(Color.appGray1)
-            .clipShape(RoundedRectangle(cornerRadius: 16))
         }
     }
     
@@ -199,4 +181,5 @@ private struct LeftImageLabel: LabelStyle {
         CreateDreamView()
     }
     .colorScheme(.dark)
+    .environmentObject(SubscriptionViewModel())
 }

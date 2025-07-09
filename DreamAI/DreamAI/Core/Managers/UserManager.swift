@@ -7,28 +7,36 @@
 
 import Foundation
 import Combine
+import SwiftUI
 
 final class UserManager: ObservableObject {
     // MARK: - Singleton
     static let shared = UserManager()
     
-    // MARK: - Properties
-    @Published private(set) var isSubscribed: Bool = false
+    // MARK: - AppStorage Properties for Persistence
+    @AppStorage("user_is_subscribed") private var storedIsSubscribed: Bool = false
     
-    // MARK: - Private Properties
-    private let userDefaults = UserDefaults.standard
-    private let subscriptionKey = "user_is_subscribed"
+    // MARK: - Published Properties
+    @Published private(set) var isSubscribed: Bool = false
     
     // MARK: - Initialization
     private init() {
-        // Load subscription status from UserDefaults
-        isSubscribed = userDefaults.bool(forKey: subscriptionKey)
+        addSubscribers()
+        // Initialize with stored value
+//        self.isSubscribed = storedIsSubscribed
         
         // In a real app, you would check with a backend service
         // For now, we'll just use the stored value
     }
     
     // MARK: - Public Methods
+        
+    private func addSubscribers() {
+        NotificationCenter.default.publisher(for: Notification.Name(PublisherKey.hasSubscription.rawValue))
+            .compactMap { extractValue(from: $0, as: Bool.self) }
+            .receive(on: DispatchQueue.main)
+            .assign(to: &$isSubscribed)
+    }
     
     /// Checks the subscription status with the backend service
     func checkSubscriptionStatus() async {
@@ -41,6 +49,12 @@ final class UserManager: ObservableObject {
     /// - Parameter isSubscribed: The new subscription status
     func updateSubscriptionStatus(isSubscribed: Bool) {
         self.isSubscribed = isSubscribed
-        userDefaults.set(isSubscribed, forKey: subscriptionKey)
+        self.storedIsSubscribed = isSubscribed
+    }
+    
+    /// Clears all user data (called on sign out)
+    func clearUserData() {
+        isSubscribed = false
+        storedIsSubscribed = false
     }
 } 

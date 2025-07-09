@@ -96,14 +96,7 @@ private extension ProfileSettingsSection {
             Image(systemName: "bell.fill")
                 .font(.title3)
                 .foregroundStyle(Color.appPurple)
-            VStack(alignment: .leading, spacing: 2) {
-                Text("Notifications")
-                if pushNotificationManager.isRegistered, let deviceToken = pushNotificationManager.deviceToken {
-                    Text("Token: \(String(deviceToken.prefix(20)))...")
-                        .font(.caption2)
-                        .foregroundColor(.secondary)
-                }
-            }
+            Text("Notifications")
             Spacer()
             if viewModel.isSubscribed {
                 Toggle("", isOn: notificationBinding)
@@ -112,16 +105,6 @@ private extension ProfileSettingsSection {
                 Image(systemName: "lock.fill")
                     .font(.title3)
                     .tint(.secondary)
-            }
-        }
-        .onTapGesture {
-            if viewModel.isSubscribed && pushNotificationManager.isRegistered {
-                // Copy device token to clipboard
-                if let deviceToken = pushNotificationManager.deviceToken {
-                    UIPasteboard.general.string = deviceToken
-                    alertMessage = "Device token copied to clipboard"
-                    showAlert = true
-                }
             }
         }
     }
@@ -153,10 +136,7 @@ private extension ProfileSettingsSection {
             if enabled {
                 await pushNotificationManager.requestPermissions()
             } else {
-                // Note: We can't programmatically disable notifications
-                // Users need to do this in Settings
-                alertMessage = "To disable notifications, please go to Settings > DreamAI > Notifications"
-                showAlert = true
+                pushNotificationManager.disableNotifications()
             }
         }
     }

@@ -44,13 +44,22 @@ extension RequestStatus {
 
 struct Dream: Identifiable, Equatable, Codable {
     var id: UUID = UUID()
-    let emoji: String
+    var emoji: String
     let emojiBackground: Color
-    let title: String
-    let dreamDescription: String
-    let tags: [Tags]
-    let date: Date
+    var title: String
+    var description: String
+    var tags: [Tags]
+    var date: Date
     var requestStatus: RequestStatus = .idle
+    
+    mutating func updateEmoji(_ emoji: String?) {
+        guard let emoji else { return }
+        self.emoji = emoji
+    }
+    
+    mutating func updateTags(_ tags: [String]) {
+        self.tags = tags.compactMap { Tags(rawValue: $0) }
+    }
     
     // MARK: - Coding Keys
     private enum CodingKeys: String, CodingKey {
@@ -63,9 +72,12 @@ struct Dream: Identifiable, Equatable, Codable {
         self.emoji = entity.emoji ?? "?"
         self.emojiBackground = Color(hex: entity.emojiBackground ?? "#FFFFFF")
         self.title = entity.title ?? ""
-        self.tags = entity.tags?.split(separator: ",").compactMap { Tags(rawValue: String($0)) } ?? []
+        self.tags = entity.tags?
+            .split(separator: ",")
+            .map { $0.trimmingCharacters(in: .whitespaces) }
+            .compactMap { Tags(rawValue: String($0)) } ?? []
         self.date = entity.date ?? Date()
-        self.dreamDescription = entity.dreamDescription ?? ""
+        self.description = entity.dreamDescription ?? ""
     }
     
     // MARK: - Custom Coding Implementation
@@ -79,7 +91,7 @@ struct Dream: Identifiable, Equatable, Codable {
         tags = try container.decode([Tags].self, forKey: .tags)
         date = try container.decode(Date.self, forKey: .date)
         requestStatus = try container.decode(RequestStatus.self, forKey: .requestStatus)
-        dreamDescription = try container.decode(String.self, forKey: .dreamDescription)
+        description = try container.decode(String.self, forKey: .dreamDescription)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -98,14 +110,14 @@ struct Dream: Identifiable, Equatable, Codable {
     }
     
     // MARK: - Initializer
-    init(emoji: String, emojiBackground: Color, title: String, tags: [Tags], date: Date, requestStatus: RequestStatus = .idle) {
+    init(emoji: String, emojiBackground: Color, title: String, tags: [Tags], date: Date, requestStatus: RequestStatus = .idle, description: String = "") {
         self.emoji = emoji
         self.emojiBackground = emojiBackground
         self.title = title
         self.tags = tags
         self.date = date
         self.requestStatus = requestStatus
-        self.dreamDescription = ""
+        self.description = description
     }
 }
 

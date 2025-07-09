@@ -79,10 +79,7 @@ struct DreamInterpretationView: View {
                 }
                 .padding()
             }
-            .makeShimmer(
-                state: viewModel.contentState,
-                retryButtonUI: retryButtonUI($viewModel.buttonState))
-            .background(Color.appPurpleDark.ignoresSafeArea())
+            .makeshimmer(state: viewModel.contentState, retryButtonUI: retryButtonUI($viewModel.buttonState))
             .navigationTitle("Dream Interpretation")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -169,6 +166,7 @@ private extension DreamInterpretationView {
                 .font(.body.italic())
                 .foregroundColor(.appWhite)
         }
+        .frame(maxWidth: .infinity)
         .padding(.vertical, 10)
         .padding(.horizontal, 16)
         .background(Color.appPurpleDarkBackground)

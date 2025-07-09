@@ -63,6 +63,10 @@ extension Color {
     static let appPurpleGray = Color(hex: "2E2632")
     /// #36273C - appPurpleGrayBackground
     static let appPurpleGrayBackground = Color(hex: "36273C")
+    /// #4B3256 - appPurpleDark1
+    static let appPurpleGradient1 = Color(hex: "#4B3256")
+    /// #1F1524 - appPurpleDark2
+    static let appPurpleGradient2 = Color(hex: "#1F1524")
     
     // MARK: - Hex Initializer
     init(hex: String) {
