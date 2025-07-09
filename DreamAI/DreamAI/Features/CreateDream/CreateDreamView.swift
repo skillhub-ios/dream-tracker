@@ -16,37 +16,52 @@ struct CreateDreamView: View {
     @FocusState private var isInputActive: Bool
     @State private var isShowingInterpretation: Bool = false
     @State private var interpretationModel: Interpretation?
+    private let actionButtonId = "actionButton"
+    @StateObject private var keyboardObserver = KeyboardObserver()
     
     // MARK: - Body
     var body: some View {
         ZStack {
             Color.appGray4
                 .ignoresSafeArea()
-            ScrollView {
-                VStack(spacing: 12) {
-                    DreamDateView(date: $viewModel.selectedDate, isCreating: true)
-                    dreamTextEditor($viewModel.dreamText)
-                    microphoneButton {
-                        Task {
-                            await viewModel.toggleRecording()
+            ScrollViewReader { scrollProxy in
+                ScrollView {
+                    VStack(spacing: 12) {
+                        DreamDateView(date: $viewModel.selectedDate, isCreating: true)
+                        dreamTextEditor($viewModel.dreamText)
+                        microphoneButton {
+                            Task {
+                                await viewModel.toggleRecording()
+                            }
                         }
-                    }
-                    MoodsView(selectedMood: $viewModel.selectedMood) { mood in
-                        viewModel.selectedMood = mood
-                    }
-                    Spacer()
-                    DButton(title: "Interpret Dream", isDisabled: $viewModel.isButtonDisabled) {
-                        if subscriptionViewModel.isSubscribed {
-                            viewModel.createDream()
-                            isShowingInterpretation = true
-                        } else {
-                            subscriptionViewModel.showPaywall()
+                        MoodsView(
+                            selectedMood: $viewModel.selectedMood,
+                            onAddAction: { mood in
+                                viewModel.selectedMood = mood
+                            },
+                            onStartTypingAction: {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                    withAnimation {
+                                        scrollProxy.scrollTo(actionButtonId)
+                                    }
+                                }
+                            }
+                        )
+                        Spacer()
+                        DButton(title: "Interpret Dream", isDisabled: $viewModel.isButtonDisabled) {
+                            if subscriptionViewModel.isSubscribed {
+                                viewModel.createDream()
+                                isShowingInterpretation = true
+                            } else {
+                                subscriptionViewModel.showPaywall()
+                            }
                         }
+                        .id(actionButtonId)
+                        .padding(.bottom, keyboardObserver.keyboardHeight / 3)
                     }
+                    .padding(.horizontal, 16)
                 }
-                .padding(.horizontal, 16)
             }
-            
         }
         .navigationTitle("Create Dream")
         .navigationBarTitleDisplayMode(.inline)
@@ -100,15 +115,10 @@ private extension CreateDreamView {
             TextEditor(text: dreamText)
                 .font(.system(size: 17))
                 .focused($isInputActive)
-                .toolbar {
-                    ToolbarItemGroup(placement: .keyboard) {
-                        Spacer()
-                        
-                        Button("Done") {
-                            isInputActive = false
-                        }
+                .submitLabel(.done)
+                    .onSubmit {
+                        isInputActive = false
                     }
-                }
                 .scrollContentBackground(.hidden)
                 .foregroundStyle(Color.appWhite)
         }

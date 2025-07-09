@@ -11,8 +11,24 @@ struct MoodsView: View {
     
     @StateObject private var viewModel = MoodsViewModel()
     @EnvironmentObject private var subscriptionViewModel: SubscriptionViewModel
+    @FocusState private var focused: Field?
     @Binding var selectedMood: Mood?
     var onAddAction: ((Mood) -> Void)?
+    var onStartTypingAction: (() -> Void)?
+    
+    private var limitedEmojiBinding: Binding<String> {
+        Binding(
+            get: { viewModel.creatingMoodEmoji },
+            set: { newValue in
+                if let first = newValue.first {
+                    viewModel.creatingMoodEmoji = String(first)
+                } else {
+                    viewModel.creatingMoodEmoji = ""
+                }
+            }
+        )
+    }
+    
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -37,6 +53,10 @@ struct MoodsView: View {
             }
             .animation(.easeInOut(duration: 0.6), value: viewModel.moodCreationMode)
             .clipped()
+        }.onChange(of: focused) {
+            if focused != nil {
+                onStartTypingAction?()
+            }
         }
     }
 }
@@ -93,36 +113,51 @@ private extension MoodsView {
     
     var creationView: some View {
         HStack(spacing: 12) {
-            HStack(spacing: 20) {
-                TextField("Emoji", text: $viewModel.creatingMoodEmoji)
-                    .frame(width: 44)
+            HStack(spacing: 12) {
+                TextField("Emoji", text: limitedEmojiBinding)
+                    .frame(width: 60)
+                    .padding(.leading, 4)
                     .padding(.vertical, 12)
-                    .border(.gray)
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.gray.opacity(0.6), lineWidth: 1)
+                    )
+                    .focused($focused, equals: .emoji)
+                    .submitLabel(.done)
                 TextField("Mood", text: $viewModel.creatingMoodTitle)
-                    .frame(width: 44)
                     .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.leading, 4)
                     .padding(.vertical, 12)
-                    .border(.gray)
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.gray.opacity(0.6), lineWidth: 1)
+                    )
+                    .focused($focused, equals: .title)
+                    .submitLabel(.done)
+                    .onSubmit {
+                        onSubmitAction()
+                    }
             }
             Spacer()
             VStack(spacing: 20) {
                 Button {
                     viewModel.disableAndRestoreMoodCreation()
+                    focused = nil
                 } label: {
                     Image(.xMarkCircled)
                         .resizable()
                         .frame(width: 24, height: 24)
                 }
                 Button {
-                    guard let mood = viewModel.createMood() else {
-                        return
-                    }
-                    onAddAction?(mood)
+                    onSubmitAction()
                 } label: {
                     Text("Add")
                         .font(.subheadline.bold())
-                        .foregroundStyle(Color.appPurple)
+                        .foregroundStyle(viewModel.creatingMoodTitle.isEmpty
+                                         ? Color.appGray1
+                                         : Color.appPurple)
                 }
+                .disabled(viewModel.creatingMoodTitle.isEmpty)
             }
         }
         .padding(12)
@@ -149,6 +184,19 @@ private extension MoodsView {
                     .foregroundStyle(Color.appWhite)
             }
         }
+    }
+    
+    func onSubmitAction() {
+        focused = nil
+        guard let mood = viewModel.createMood() else {
+            return
+        }
+        onAddAction?(mood)
+    }
+    
+    enum Field: Hashable {
+        case title
+        case emoji
     }
 }
 
