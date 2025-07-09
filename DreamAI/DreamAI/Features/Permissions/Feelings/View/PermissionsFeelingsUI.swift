@@ -79,5 +79,4 @@ struct PermissionsFeelingsUI: View {
 
 #Preview {
     PermissionsFeelingsUI()
-        .animatedGradientBackground()
 }

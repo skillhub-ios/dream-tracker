@@ -168,7 +168,11 @@ private extension MoodsView {
     
     var moodCreationButton: some View {
         Button {
-            viewModel.moodCreationMode = true
+            if subscriptionViewModel.isSubscribed {
+                viewModel.moodCreationMode = true
+            } else {
+                subscriptionViewModel.showPaywall()
+            }
         } label: {
             VStack {
                 Image(systemName: "plus")

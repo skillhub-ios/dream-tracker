@@ -38,7 +38,6 @@ struct EditDreamView: View {
             ZStack {
                 Color.appGray4
                     .ignoresSafeArea()
-                
                 ScrollView {
                     VStack(spacing: 12) {
                         DreamDateView(date: dateBinding, isCreating: false)
@@ -47,7 +46,6 @@ struct EditDreamView: View {
                             editDreamViewModel.mood = mood
                         }
                         Spacer()
-                        
                         DButton(title: "Interpret Dream") {
                             if subscriptionViewModel.isSubscribed {
                                 editDreamViewModel.saveDream()
@@ -57,7 +55,7 @@ struct EditDreamView: View {
                             }
                         }
                     }
-                    .padding(.horizontal, 16)
+                    .padding([.horizontal, .bottom], 16)
                 }
             }
             .navigationTitle("Dream Details")

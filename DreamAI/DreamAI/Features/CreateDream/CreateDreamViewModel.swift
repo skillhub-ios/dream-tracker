@@ -146,7 +146,7 @@ class CreateDreamViewModel: ObservableObject {
     private func subscribers() {
         Publishers.CombineLatest3($selectedDate, $dreamText, $selectedMood)
             .map { date, text, mood in
-                text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || mood == nil
+                text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
             }
             .receive(on: DispatchQueue.main)
             .assign(to: \.isButtonDisabled, on: self)

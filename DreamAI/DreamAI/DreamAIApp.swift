@@ -17,25 +17,26 @@ struct DreamAIApp: App {
     
     var body: some Scene {
         WindowGroup {
-            Group {
-                if authManager.isLoading {
-                    // Show loading screen while checking authentication status
-                    LoadingView()
-                } else if authManager.isAuthenticated {
-                    if authManager.hasCompletedPermissions {
-                        MainView()
-                            .environmentObject(subscriptionViewModel)
-                    } else {
+//            Group {
+//                if authManager.isLoading {
+//                    // Show loading screen while checking authentication status
+//                    LoadingView()
+//                } else if authManager.isAuthenticated {
+//                    if authManager.hasCompletedPermissions {
+//                        MainView()
+//                            .environmentObject(subscriptionViewModel)
+//                    } else {
                         NavigationStack {
                             PermissionContainerView()
+                                .environmentObject(subscriptionViewModel)
                         }
-                    }
-                } else {
-                    NavigationStack {
-                        IntroView()
-                    }
-                }
-            }
+//                    }
+//                } else {
+//                    NavigationStack {
+//                        IntroView()
+//                    }
+//                }
+//            }
         }
     }
 }

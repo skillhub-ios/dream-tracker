@@ -41,7 +41,6 @@ struct MainView: View {
         NavigationStack {
             ZStack {
                 lineGradient
-                
                 VStack {
                     VStack(spacing: 0) {
                         Text("Good morning!")

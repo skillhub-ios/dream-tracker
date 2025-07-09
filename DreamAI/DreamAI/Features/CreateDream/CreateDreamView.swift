@@ -59,7 +59,7 @@ struct CreateDreamView: View {
                         .id(actionButtonId)
                         .padding(.bottom, keyboardObserver.keyboardHeight / 3)
                     }
-                    .padding(.horizontal, 16)
+                    .padding([.horizontal, .bottom], 16)
                 }
             }
         }
