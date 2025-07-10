@@ -17,6 +17,7 @@ final class SubscriptionViewModel: ObservableObject {
     @Published var showError: Bool = false
     @Published var isSubscribed: Bool = false
     @Published var subscriptionType: SubscriptionType = .none
+    @Published var subscriptionExpiry: Date?
     
     private var cancellables: Set<AnyCancellable> = []
     
@@ -38,6 +39,7 @@ final class SubscriptionViewModel: ObservableObject {
                 self?.subscriptionType = subscriptionType
                 self?.isSubscribed = isSubscribed
                 self?.informAboutSubscriptionStatus(isSubscribed)
+                self?.getSubscriptionExpirationDate()
             }
             .store(in: &cancellables)
     }
@@ -61,6 +63,12 @@ final class SubscriptionViewModel: ObservableObject {
     func loadProducts() {
         Task {
             await loadSubscriptionProducts()
+        }
+    }
+    
+    func getSubscriptionExpirationDate() {
+        Task {
+            await getActiveSubscriptionExpirationDate()
         }
     }
     
@@ -101,10 +109,30 @@ final class SubscriptionViewModel: ObservableObject {
             userInfo: ["value": hasSubscription]
         )
     }
+    
+    private func getActiveSubscriptionExpirationDate() async  {
+        for await result in Transaction.currentEntitlements {
+            if case .verified(let transaction) = result,
+               transaction.productType == .autoRenewable {
+                subscriptionExpiry = transaction.expirationDate
+            }
+        }
+    }
 }
 
 enum SubscriptionType {
     case monthly
     case yearly
     case none
+    
+    func title() -> String {
+        switch self {
+        case .monthly:
+            "Monthly"
+        case .yearly:
+            "Yearly"
+        case .none:
+            ""
+        }
+    }
 }

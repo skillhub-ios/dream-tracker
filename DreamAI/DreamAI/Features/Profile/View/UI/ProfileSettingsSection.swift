@@ -10,6 +10,7 @@ import UserNotifications
 
 struct ProfileSettingsSection: View {
     @EnvironmentObject var viewModel: ProfileViewModel
+    @EnvironmentObject private var subscriptionViewModel: SubscriptionViewModel
     @StateObject private var pushNotificationManager = PushNotificationManager.shared
     let exportImportAction: () -> Void
     @State private var showAlert = false
@@ -62,8 +63,8 @@ struct ProfileSettingsSection: View {
         } message: {
             Text(alertMessage)
         }
-        .disabled(!viewModel.isSubscribed)
-        .applyIf(!viewModel.isSubscribed) {
+        .disabled(!subscriptionViewModel.isSubscribed)
+        .applyIf(!subscriptionViewModel.isSubscribed) {
             $0.mask(Color.black.opacity(0.5))
         }
     }
@@ -80,7 +81,7 @@ private extension ProfileSettingsSection {
                 .foregroundStyle(Color.appPurple)
             Text("iCloud")
             Spacer()
-            if viewModel.isSubscribed {
+            if subscriptionViewModel.isSubscribed {
                 Toggle("", isOn: toggle)
                 .tint(.appPurple)
             } else {
@@ -98,7 +99,7 @@ private extension ProfileSettingsSection {
                 .foregroundStyle(Color.appPurple)
             Text("Notifications")
             Spacer()
-            if viewModel.isSubscribed {
+            if subscriptionViewModel.isSubscribed {
                 Toggle("", isOn: notificationBinding)
                     .tint(.appPurple)
             } else {
@@ -118,7 +119,7 @@ private extension ProfileSettingsSection {
                 Text("Export/Import")
                     .foregroundStyle(.white)
                 Spacer()
-                if viewModel.isSubscribed {
+                if subscriptionViewModel.isSubscribed {
                     Image(systemName: "chevron.right")
                         .font(.callout)
                         .foregroundColor(.secondary)

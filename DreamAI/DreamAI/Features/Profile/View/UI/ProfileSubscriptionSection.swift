@@ -8,9 +8,7 @@
 import SwiftUI
 
 struct ProfileSubscriptionSection: View {
-    var isPremium: Bool
-    var plan: String
-    var expiry: String
+    @EnvironmentObject private var subsriptionVeiwModel: SubscriptionViewModel
     
     var body: some View {
         Section {
@@ -26,27 +24,23 @@ struct ProfileSubscriptionSection: View {
                                 endPoint: .trailing
                             )
                         )
-                    
                     Spacer()
-                    
-                    if isPremium {
-                        Text(expiry)
+                    if subsriptionVeiwModel.isSubscribed {
+                        Text(subsriptionVeiwModel.subscriptionType.title())
                             .font(.callout)
                             .foregroundColor(.secondary)
                     }
-                    
                     Image(systemName: "chevron.right")
                         .font(.callout)
                         .foregroundColor(.secondary)
                 }
-                
                 HStack {
                     VStack(alignment: .leading) {
-                        if isPremium {
+                        if subsriptionVeiwModel.isSubscribed {
                             Text("Your Plan")
                                 .font(.headline)
                                 .foregroundColor(.secondary)
-                            Text(plan)
+                            Text(subsriptionVeiwModel.subscriptionExpiry?.dayMonthYear ?? "")
                                 .font(.title2)
                                 .bold()
                                 .foregroundColor(.primary)
@@ -56,9 +50,7 @@ struct ProfileSubscriptionSection: View {
                                 .foregroundColor(.primary)
                         }
                     }
-                 
                     Spacer()
-                    
                     ZStack {
                         Circle()
                             .fill(Color.purple.opacity(0.15))
@@ -76,12 +68,15 @@ struct ProfileSubscriptionSection: View {
                 }
             }
         }
-        
+        .onTapGesture {
+            subsriptionVeiwModel.showPaywall()
+        }
     }
 }
 
 #Preview {
     List {
-        ProfileSubscriptionSection(isPremium: true, plan: "Monthly", expiry: "18.07.2024")
+        ProfileSubscriptionSection()
+            .environmentObject(SubscriptionViewModel())
     }
 }

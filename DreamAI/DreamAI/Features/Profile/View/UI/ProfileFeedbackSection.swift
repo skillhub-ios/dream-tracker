@@ -67,7 +67,7 @@ struct ProfileFeedbackSection: View {
             }
             
             Button(action: {
-                // Action for writing feedback
+#warning("Missed email")
             }) {
                 HStack {
                     Image(systemName: "envelope.fill")
