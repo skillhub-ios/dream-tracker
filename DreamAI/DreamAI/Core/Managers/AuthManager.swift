@@ -33,6 +33,7 @@ final class AuthManager: ObservableObject, AuthManaging {
     // MARK: - Singleton
     static let shared = AuthManager()
     private let client = SupabaseService.shared.client
+    let analitics = DIContainer.analyticsManager
     
     // MARK: - Debug Mode
 #if DEBUG
@@ -182,9 +183,6 @@ final class AuthManager: ObservableObject, AuthManaging {
             UserManager.shared.clearUserData()
             await BiometricManager.shared.clearUserData()
             LanguageManager.shared.clearUserData()
-        
-        // Clear storage data
-        DIContainer.coreDataStore.deleteAllData()
     }
     
     func markPermissionsCompleted() {
@@ -235,8 +233,10 @@ final class AuthManager: ObservableObject, AuthManaging {
     }
     
     func clearUserDefaults() {
-            // Clear all stored authentication data
-            storedIsAuthenticated = false
-            storedHasCompletedPermissions = false
+        // Clear all stored authentication data
+        DispatchQueue.main.async { [weak self] in
+            self?.storedIsAuthenticated = false
+            self?.storedHasCompletedPermissions = false
         }
+    }
 }

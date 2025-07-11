@@ -50,11 +50,12 @@ struct PermissionContainerView: View {
                 }
             }
             .toolbarVisibility(.hidden, for: .navigationBar)
-            .sheet(isPresented: $showSettings) {
+            .fullScreenCover(isPresented: $showSettings) {
                 NavigationStack {
                     PermissionsSettingsUI()
                 }
             }
+            .logScreenView(ScreenName.onboarding)
         }
     }
 }

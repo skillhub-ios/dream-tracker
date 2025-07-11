@@ -2,23 +2,23 @@
 // MoodStore.swift
 //
 // Created by Cesare on 08.07.2025 on Earth.
-// 
+//
 
 
 import Foundation
 import CoreData
 
-final class MoodStore {
-    
+final class MoodStore: AppDataResettable {
+
     // MARK: - Public Properties
     
     @Published var moods: [Mood] = []
     
     // MARK: - Private Properties
     private let container: NSPersistentContainer
-
+    
     // MARK: - Lifecycle
-
+    
     init() {
         container = NSPersistentCloudKitContainer(name: "MoodDataModel")
         container.loadPersistentStores { _, error in
@@ -29,10 +29,24 @@ final class MoodStore {
         loadMoods()
     }
     // MARK: - Public Functions
-
+    
     func addMood(_ mood: Mood) {
         moods.append(mood)
         saveMood(mood)
+    }
+    
+    func resetAppData() {
+        moods.removeAll()
+        
+        let request: NSFetchRequest<NSFetchRequestResult> = MoodEntity.fetchRequest()
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: request)
+        
+        do {
+            try container.viewContext.execute(deleteRequest)
+            saveData()
+        } catch {
+            print("Ошибка при очистке MoodEntity: \(error)")
+        }
     }
     
     // MARK: - Private Functions
@@ -47,7 +61,7 @@ final class MoodStore {
         saveData()
     }
     
-    private func loadMoods() {
+    func loadMoods() {
         moods = loadDefaultMoods()
         moods.append(contentsOf: loadCustomMoods())
     }

@@ -2,7 +2,7 @@
 // SubscriptionViewModel.swift
 //
 // Created by Cesare on 27.06.2025 on Earth.
-// 
+//
 
 import Foundation
 import SuperwallKit
@@ -16,7 +16,8 @@ final class SubscriptionViewModel: ObservableObject {
     @Published var errorMessage: String?
     @Published var showError: Bool = false
     @Published var isSubscribed: Bool = false
-    @Published var subscriptionType: SubscriptionType = .none
+    @Published var subscriptionType: SubscriptionType = .other
+    @Published var subscriptionExpiry: Date?
     
     private var cancellables: Set<AnyCancellable> = []
     
@@ -35,9 +36,9 @@ final class SubscriptionViewModel: ObservableObject {
             .map(subscriptionDetails)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] subscriptionType, isSubscribed in
-                self?.subscriptionType = subscriptionType
                 self?.isSubscribed = isSubscribed
                 self?.informAboutSubscriptionStatus(isSubscribed)
+                self?.getSubscriptionExpirationDate()
             }
             .store(in: &cancellables)
     }
@@ -51,16 +52,22 @@ final class SubscriptionViewModel: ObservableObject {
             } else if entitlements.contains(where: { $0.id.contains("yearly") }) {
                 return (.yearly, hasSubscription)
             } else {
-                return (.none, hasSubscription)
+                return (.other, hasSubscription)
             }
         case .unknown, .inactive:
-            return (.none, false)
+            return (.other, false)
         }
     }
     
     func loadProducts() {
         Task {
             await loadSubscriptionProducts()
+        }
+    }
+    
+    func getSubscriptionExpirationDate() {
+        Task {
+            await getActiveSubscriptionDetails()
         }
     }
     
@@ -101,10 +108,42 @@ final class SubscriptionViewModel: ObservableObject {
             userInfo: ["value": hasSubscription]
         )
     }
+    
+    private func getActiveSubscriptionDetails() async  {
+        for await result in Transaction.currentEntitlements {
+            if case .verified(let transaction) = result,
+               transaction.productType == .autoRenewable {
+                subscriptionExpiry = transaction.expirationDate
+                
+                let id = transaction.productID
+                
+                let type: SubscriptionType
+                if id.contains("month") {
+                    type = .monthly
+                } else if id.contains("year") {
+                    type = .yearly
+                } else {
+                    type = .other
+                }
+                subscriptionType = type
+            }
+        }
+    }
 }
 
 enum SubscriptionType {
     case monthly
     case yearly
-    case none
+    case other
+    
+    func title() -> String {
+        switch self {
+        case .monthly:
+            "Monthly"
+        case .yearly:
+            "Yearly"
+        case .other:
+            ""
+        }
+    }
 }

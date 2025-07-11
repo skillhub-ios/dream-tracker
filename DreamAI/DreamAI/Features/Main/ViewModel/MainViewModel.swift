@@ -27,6 +27,7 @@ final class MainViewModel: ObservableObject {
     // MARK: - External Dependencies
     
     private let coreDataStore = DIContainer.coreDataStore
+    let analitics = DIContainer.analyticsManager
     
     // MARK: - Lifecycle
     
@@ -36,13 +37,13 @@ final class MainViewModel: ObservableObject {
     
     // MARK: - Public Functions
     
-    public func deleteSelectedDreams() {
+    func deleteSelectedDreams() {
         dreams.removeAll { selectedDreamIds.contains($0.id) }
         coreDataStore.deleteDreamsAndItsInterpretations(dreamsIds: selectedDreamIds)
         selectedDreamIds.removeAll()
     }
     
-    public func deleteDreamBy(id: UUID) {
+    func deleteDreamBy(id: UUID) {
         dreams.removeAll { $0.id == id }
         coreDataStore.deleteDreamsAndItsInterpretations(dreamsIds: selectedDreamIds)
     }
@@ -69,7 +70,7 @@ final class MainViewModel: ObservableObject {
             .store(in: &cancellables)
         
         coreDataStore.$dreams
-            .dropIfEmpty()
+//            .dropIfEmpty()
             .map(fromEntitiesToSortedDreams)
             .receive(on: DispatchQueue.main)
             .assign(to: &$dreams)

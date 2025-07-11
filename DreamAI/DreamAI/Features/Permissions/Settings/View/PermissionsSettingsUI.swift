@@ -225,16 +225,13 @@ struct LanguagePicker: View {
         NavigationStack {
             ZStack {
                 Color.appGray4.ignoresSafeArea()
-                
                 VStack {
                     List(selection: $selectedLanguage) {
                         ForEach(Language.allCases, id: \.self) { language in
                             HStack(spacing: 9) {
-                                
                                 Image(systemName: selectedLanguage == language ? "checkmark.circle.fill" : "circle")
                                     .foregroundColor(selectedLanguage == language ? .purple : .gray.opacity(0.5))
                                     .font(.system(size: 24))
-                                
                                 Image(language.flag)
                                     .resizable()
                                     .scaledToFit()

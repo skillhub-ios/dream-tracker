@@ -21,28 +21,17 @@ struct ProfileView: View {
             ZStack {
                 Color.appGray4
                     .ignoresSafeArea()
-                
                     List {
-
-                        // Subscription Section
-                        ProfileSubscriptionSection(isPremium: viewModel.isSubscribed, plan: viewModel.subscriptionPlan, expiry: viewModel.subscriptionExpiry)
-                        
-                        // Settings Section
+                        ProfileSubscriptionSection()
                         ProfileSettingsSection(exportImportAction: {
                             showExportImport = true
                         })
-                        
-                        // Feedback
                         ProfileFeedbackSection()
-
-                        // Exit Button
                         ProfileExitButton {
                             Task {
                                 await signOut()
                             }
                         }
-                        
-                        // Footer
                         ProfileFooterLinks()
                             .listRowBackground(Color.appGray4)
                     }
@@ -74,6 +63,7 @@ struct ProfileView: View {
                 }
             }
         }
+        .logScreenView(ScreenName.profile)
     }
     
     // MARK: - Sign Out Logic

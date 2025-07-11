@@ -12,6 +12,7 @@ struct IntroView: View {
     @State private var animateGradient = false
     @State private var showAuthSheet = false
     @State private var authMode: AuthSheetMode = .login
+    @Environment(\.deviceFamily) var deviceFamily
     
     var body: some View {
         NavigationStack {
@@ -22,9 +23,16 @@ struct IntroView: View {
             .animatedGradientBackground()
             .sheet(isPresented: $showAuthSheet) {
                 AuthSheetView(mode: authMode)
-                    .presentationDetents([.fraction(0.28)])
+                    .presentationDetents([.fraction(sheetHeight())])
                     .presentationDragIndicator(.visible)
             }
+        }
+    }
+    
+    private func sheetHeight() -> CGFloat {
+        switch deviceFamily {
+        case .pad: 0.35
+        case .phone: 0.28
         }
     }
 }
@@ -32,6 +40,7 @@ struct IntroView: View {
 struct IntroBottomCard: View {
     @Binding var showAuthSheet: Bool
     @Binding var authMode: AuthSheetMode
+    @Environment(\.deviceFamily) var deviceFamily
     
     var body: some View {
         VStack(spacing: 20) {
@@ -50,12 +59,10 @@ struct IntroBottomCard: View {
                     .foregroundColor(.gray)
                     .multilineTextAlignment(.leading)
             }
-            
             DButton(title: "Get Started") {
                 authMode = .signup
                 showAuthSheet = true
             }
-            .padding(.horizontal, 8)
             HStack(spacing: 4) {
                 Text("Do you already have an account?")
                     .foregroundColor(.white)
@@ -70,7 +77,14 @@ struct IntroBottomCard: View {
                         .font(.footnote.bold())
                 }
             }
-            .padding(.bottom, 8)
+        }
+        .padding([.horizontal, .bottom], contentPadding())
+    }
+    
+    private func contentPadding() -> CGFloat {
+        switch deviceFamily {
+        case .pad: 16
+        case .phone: 8
         }
     }
 }

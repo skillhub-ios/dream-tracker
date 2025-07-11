@@ -16,6 +16,10 @@
 		3429D1982DF46C6C0066B0DF /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 3429D1972DF46C6C0066B0DF /* GoogleSignIn */; };
 		3429D19A2DF46C6C0066B0DF /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 3429D1992DF46C6C0066B0DF /* GoogleSignInSwift */; };
 		345DE1132E0953DB00D88F88 /* SuperwallKit in Frameworks */ = {isa = PBXBuildFile; productRef = 345DE1122E0953DB00D88F88 /* SuperwallKit */; };
+		A8F00CD42E1FD40400B01401 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = A8F00CD32E1FD40400B01401 /* FirebaseAnalytics */; };
+		A8F00CD62E1FD40400B01401 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = A8F00CD52E1FD40400B01401 /* FirebaseCore */; };
+		A8F00CD82E1FD40400B01401 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = A8F00CD72E1FD40400B01401 /* FirebaseCrashlytics */; };
+		A8F00CDA2E1FD40400B01401 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = A8F00CD92E1FD40400B01401 /* FirebaseMessaging */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,12 +54,16 @@
 			files = (
 				3429D15B2DF459B50066B0DF /* PostgREST in Frameworks */,
 				3429D1592DF459B50066B0DF /* Functions in Frameworks */,
+				A8F00CD62E1FD40400B01401 /* FirebaseCore in Frameworks */,
 				345DE1132E0953DB00D88F88 /* SuperwallKit in Frameworks */,
 				3429D1812DF45E240066B0DF /* Supabase in Frameworks */,
 				3429D19A2DF46C6C0066B0DF /* GoogleSignInSwift in Frameworks */,
 				3429D1572DF459B50066B0DF /* Auth in Frameworks */,
 				3429D15F2DF459B50066B0DF /* Storage in Frameworks */,
+				A8F00CDA2E1FD40400B01401 /* FirebaseMessaging in Frameworks */,
 				3429D15D2DF459B50066B0DF /* Realtime in Frameworks */,
+				A8F00CD82E1FD40400B01401 /* FirebaseCrashlytics in Frameworks */,
+				A8F00CD42E1FD40400B01401 /* FirebaseAnalytics in Frameworks */,
 				3429D1982DF46C6C0066B0DF /* GoogleSignIn in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -116,6 +124,10 @@
 				3429D1972DF46C6C0066B0DF /* GoogleSignIn */,
 				3429D1992DF46C6C0066B0DF /* GoogleSignInSwift */,
 				345DE1122E0953DB00D88F88 /* SuperwallKit */,
+				A8F00CD32E1FD40400B01401 /* FirebaseAnalytics */,
+				A8F00CD52E1FD40400B01401 /* FirebaseCore */,
+				A8F00CD72E1FD40400B01401 /* FirebaseCrashlytics */,
+				A8F00CD92E1FD40400B01401 /* FirebaseMessaging */,
 			);
 			productName = DreamAI;
 			productReference = 3429D13A2DF44ABB0066B0DF /* DreamAI.app */;
@@ -163,6 +175,7 @@
 				3429D1552DF459B50066B0DF /* XCRemoteSwiftPackageReference "supabase-swift" */,
 				3429D1962DF46C6C0066B0DF /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				345DE1112E0953DB00D88F88 /* XCRemoteSwiftPackageReference "Superwall-iOS" */,
+				A8F00CD22E1FD40400B01401 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 3429D13B2DF44ABB0066B0DF /* Products */;
@@ -325,8 +338,9 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ALLOW_ENTITLEMENTS_MODIFICATION = YES;
 				CODE_SIGN_ENTITLEMENTS = DreamAI/DreamAI.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = U6WX293A7Z;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -349,6 +363,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.get.DreamAI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -366,8 +381,9 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ALLOW_ENTITLEMENTS_MODIFICATION = YES;
 				CODE_SIGN_ENTITLEMENTS = DreamAI/DreamAI.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = U6WX293A7Z;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -390,6 +406,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.get.DreamAI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -448,6 +465,14 @@
 				minimumVersion = 4.5.2;
 			};
 		};
+		A8F00CD22E1FD40400B01401 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.15.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -495,6 +520,26 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 345DE1112E0953DB00D88F88 /* XCRemoteSwiftPackageReference "Superwall-iOS" */;
 			productName = SuperwallKit;
+		};
+		A8F00CD32E1FD40400B01401 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A8F00CD22E1FD40400B01401 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		A8F00CD52E1FD40400B01401 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A8F00CD22E1FD40400B01401 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		A8F00CD72E1FD40400B01401 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A8F00CD22E1FD40400B01401 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		A8F00CD92E1FD40400B01401 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A8F00CD22E1FD40400B01401 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

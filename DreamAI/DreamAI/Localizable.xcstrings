@@ -115,6 +115,9 @@
     "Delete" : {
 
     },
+    "Delete All Data?" : {
+
+    },
     "Describe the dream" : {
 
     },
@@ -305,6 +308,9 @@
 
     },
     "Terms" : {
+
+    },
+    "This action will permanently delete all data and cannot be undone." : {
 
     },
     "To enable sync, you need to sign in to your Apple account" : {

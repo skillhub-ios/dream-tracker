@@ -92,6 +92,7 @@ struct DreamInterpretationView: View {
                 }
             }
         }
+        .logScreenView(ScreenName.interpretation)
     }
 }
 

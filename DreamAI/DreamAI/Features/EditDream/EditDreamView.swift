@@ -38,7 +38,6 @@ struct EditDreamView: View {
             ZStack {
                 Color.appGray4
                     .ignoresSafeArea()
-                
                 ScrollView {
                     VStack(spacing: 12) {
                         DreamDateView(date: dateBinding, isCreating: false)
@@ -47,17 +46,20 @@ struct EditDreamView: View {
                             editDreamViewModel.mood = mood
                         }
                         Spacer()
-                        
                         DButton(title: "Interpret Dream") {
                             if subscriptionViewModel.isSubscribed {
                                 editDreamViewModel.saveDream()
                                 isShowingInterpretation = true
+                                editDreamViewModel.analitics.log(
+                                    .premiumFeatureUsed(
+                                        feature: PremiumFeature.interpretDream,
+                                        screen: ScreenName.editDream))
                             } else {
                                 subscriptionViewModel.showPaywall()
                             }
                         }
                     }
-                    .padding(.horizontal, 16)
+                    .padding([.horizontal, .bottom], 16)
                 }
             }
             .navigationTitle("Dream Details")
@@ -86,6 +88,14 @@ struct EditDreamView: View {
                         }
                     }
             )
+        }
+        .logScreenView(ScreenName.editDream)
+        .onChange(of: editDreamViewModel.mood) { oldValue, newValue in
+            if oldValue == nil && newValue != nil {
+                editDreamViewModel.analitics.log(.premiumFeatureUsed(
+                    feature: PremiumFeature.selectMood,
+                    screen: ScreenName.editDream))
+            }
         }
     }
 }

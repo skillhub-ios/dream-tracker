@@ -30,6 +30,7 @@ class CreateDreamViewModel: ObservableObject {
     // MARK: - Dependencies
     private let speechRecognizer: SpeechRecognizing = SpeechRecognizerManager.shared
     private let dreamInterpreter = DIContainer.dreamInterpreter
+    let analitics = DIContainer.analyticsManager
     private var cancellables = Set<AnyCancellable>()
     
     init() {
@@ -146,7 +147,7 @@ class CreateDreamViewModel: ObservableObject {
     private func subscribers() {
         Publishers.CombineLatest3($selectedDate, $dreamText, $selectedMood)
             .map { date, text, mood in
-                text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || mood == nil
+                text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
             }
             .receive(on: DispatchQueue.main)
             .assign(to: \.isButtonDisabled, on: self)
