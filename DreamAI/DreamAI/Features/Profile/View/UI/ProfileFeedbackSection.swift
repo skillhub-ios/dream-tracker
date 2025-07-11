@@ -13,6 +13,7 @@ struct ProfileFeedbackSection: View {
     @State private var areNotificationsEnabled: Bool = true
     @State private var bedtime: Date = Date()
     @State private var wakeupTime: Date = Date()
+    @Environment(\.openURL) private var openURL
 
     var body: some View {
         Section {
@@ -67,7 +68,7 @@ struct ProfileFeedbackSection: View {
             }
             
             Button(action: {
-#warning("Missed email")
+                openURL(Constants.feedbackMailboxURL)
             }) {
                 HStack {
                     Image(systemName: "envelope.fill")

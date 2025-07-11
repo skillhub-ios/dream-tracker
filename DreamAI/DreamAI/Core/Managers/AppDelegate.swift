@@ -8,6 +8,7 @@
 import UIKit
 import UserNotifications
 import SuperwallKit
+import FirebaseCore
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     
@@ -18,7 +19,12 @@ class AppDelegate: NSObject, UIApplicationDelegate {
             await PushNotificationManager.shared.requestPermissions()
         }
         
-//        Superwall.configure(apiKey: "pk_8b...6eca1")
+        // Firebase
+        FirebaseApp.configure()
+        
+        // Support for deleting user data
+        DIContainer.appDataResetManager.register(DIContainer.coreDataStore)
+        DIContainer.appDataResetManager.register(DIContainer.moodStore)
         
         return true
     }
@@ -43,4 +49,4 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         // Handle background app refresh
         completionHandler(.newData)
     }
-} 
+}

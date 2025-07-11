@@ -27,7 +27,6 @@ struct ProfileView: View {
                             showExportImport = true
                         })
                         ProfileFeedbackSection()
-
                         ProfileExitButton {
                             Task {
                                 await signOut()
@@ -64,6 +63,7 @@ struct ProfileView: View {
                 }
             }
         }
+        .logScreenView(ScreenName.profile)
     }
     
     // MARK: - Sign Out Logic

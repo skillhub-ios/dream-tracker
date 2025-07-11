@@ -110,6 +110,7 @@ struct AuthSheetView: View {
         }
         .background(bridge.frame(width: 0, height: 0))
         .preferredColorScheme(.dark)
+        .logScreenView(ScreenName.login)
     }
     
     private func signInWithGoogle() async {

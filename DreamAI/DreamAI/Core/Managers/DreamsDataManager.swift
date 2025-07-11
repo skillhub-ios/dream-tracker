@@ -10,7 +10,7 @@ import Combine
 import CloudKit
 import CoreData
 
-final class DreamsDataManager: ObservableObject {
+final class DreamsDataManager: ObservableObject, AppDataResettable {
     
     // MARK: - Public Properties
     
@@ -22,10 +22,6 @@ final class DreamsDataManager: ObservableObject {
     
     private var cancellables = Set<AnyCancellable>()
     private let container: NSPersistentContainer
-    
-    // MARK: - External Dependencies
-    
-    private let authManager = AuthManager.shared
     
     // MARK: - Lifecycle
     
@@ -144,7 +140,8 @@ final class DreamsDataManager: ObservableObject {
         }
     }
     
-    func deleteAllData() {
+    func resetAppData() {
+        dreams.removeAll()
         let context = container.viewContext
         let model = container.managedObjectModel
 

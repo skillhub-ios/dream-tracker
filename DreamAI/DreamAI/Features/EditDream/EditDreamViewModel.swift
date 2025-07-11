@@ -11,6 +11,8 @@ final class EditDreamViewModel: ObservableObject {
     @Published var dream: Dream
     @Published var mood: Mood?
     
+    let analitics = DIContainer.analyticsManager
+    
     init(dream: Dream) {
         self.dream = dream
 //        self.mood = Mood(rawValue: dream.emoji)

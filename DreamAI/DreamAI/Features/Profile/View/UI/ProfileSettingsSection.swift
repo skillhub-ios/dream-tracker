@@ -142,10 +142,12 @@ private extension ProfileSettingsSection {
         }
     }
 }
+
 #Preview {
     List {
         ProfileSettingsSection(exportImportAction: {})
             .environmentObject(ProfileViewModel())
+            .environmentObject(SubscriptionViewModel())
     }
 }
 

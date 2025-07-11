@@ -52,6 +52,9 @@ struct CreateDreamView: View {
                             if subscriptionViewModel.isSubscribed {
                                 viewModel.createDream()
                                 isShowingInterpretation = true
+                                viewModel.analitics.log(.premiumFeatureUsed(
+                                    feature: PremiumFeature.interpretDream,
+                                    screen: ScreenName.createDream))
                             } else {
                                 subscriptionViewModel.showPaywall()
                             }
@@ -96,6 +99,14 @@ struct CreateDreamView: View {
                     }
                 }
         )
+        .logScreenView(ScreenName.createDream)
+        .onChange(of: viewModel.selectedMood) { oldValue, newValue in
+            if oldValue == nil && newValue != nil {
+                viewModel.analitics.log(.premiumFeatureUsed(
+                    feature: PremiumFeature.selectMood,
+                    screen: ScreenName.createDream))
+            }
+        }
     }
 }
 
@@ -116,9 +127,9 @@ private extension CreateDreamView {
                 .font(.system(size: 17))
                 .focused($isInputActive)
                 .submitLabel(.done)
-                    .onSubmit {
-                        isInputActive = false
-                    }
+                .onSubmit {
+                    isInputActive = false
+                }
                 .scrollContentBackground(.hidden)
                 .foregroundStyle(Color.appWhite)
         }

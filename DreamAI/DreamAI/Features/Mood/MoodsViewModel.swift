@@ -23,7 +23,7 @@ final class MoodsViewModel: ObservableObject {
     
     private func addSubscriptions() {
         moodStore.$moods
-            .dropIfEmpty()
+//            .dropIfEmpty()
             .receive(on: DispatchQueue.main)
             .assign(to: &$moods)
     }
@@ -50,4 +50,8 @@ final class MoodsViewModel: ObservableObject {
         showMoodTitleAlert = false
     }
     
+    public func clearMoodViewModel() {
+        moods.removeAll()
+        moodStore.loadMoods()
+    }
 }

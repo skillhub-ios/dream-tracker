@@ -46,12 +46,10 @@ struct MainView: View {
                         Text("Good morning!")
                             .font(.largeTitle)
                             .fontWeight(.bold)
-                        
                         Text("Ready to log a dream?")
                             .font(.subheadline)
                             .foregroundStyle(.gray)
                             .padding(.top, 10)
-                        
                         VStack {
                             if let lastDream = viewModel.lastDream {
                                 lastDreamView(lastDream: lastDream)
@@ -61,7 +59,6 @@ struct MainView: View {
                         }
                     }
                     .frame(maxHeight: .infinity, alignment: .bottom)
-                    
                     Color.clear
                         .frame(height: SCREEN_HEIGHT * 0.7)
                 }
@@ -81,6 +78,12 @@ struct MainView: View {
                         if subscriptionViewModel.isSubscribed {
                             withAnimation {
                                 isBlured.toggle()
+                                if isBlured {
+                                    viewModel.analitics.log(
+                                        .premiumFeatureUsed(
+                                            feature: PremiumFeature.interpretDream,
+                                            screen: ScreenName.main))
+                                }
                             }
                         } else {
                             subscriptionViewModel.showPaywall()
@@ -110,6 +113,7 @@ struct MainView: View {
             }
         }
         .toolbarVisibility(.hidden, for: .navigationBar)
+        .logScreenView(ScreenName.main)
     }
 }
 
@@ -270,6 +274,7 @@ extension Date {
 #Preview {
     NavigationStack{
         MainView()
+            .environmentObject(SubscriptionViewModel())
     }
     .colorScheme(.dark)
 }

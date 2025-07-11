@@ -26,7 +26,7 @@ struct ProfileSubscriptionSection: View {
                         )
                     Spacer()
                     if subsriptionVeiwModel.isSubscribed {
-                        Text(subsriptionVeiwModel.subscriptionType.title())
+                        Text(subsriptionVeiwModel.subscriptionExpiry?.dayMonthYear ?? "")
                             .font(.callout)
                             .foregroundColor(.secondary)
                     }
@@ -40,13 +40,14 @@ struct ProfileSubscriptionSection: View {
                             Text("Your Plan")
                                 .font(.headline)
                                 .foregroundColor(.secondary)
-                            Text(subsriptionVeiwModel.subscriptionExpiry?.dayMonthYear ?? "")
+                            Text(subsriptionVeiwModel.subscriptionType.title())
                                 .font(.title2)
                                 .bold()
                                 .foregroundColor(.primary)
                         } else {
                             Text("Upgrade")
-                                .font(.title2).bold()
+                                .font(.title2)
+                                .bold()
                                 .foregroundColor(.primary)
                         }
                     }

@@ -12,4 +12,6 @@ enum DIContainer {
     static let dreamInterpreter = DreamInterpreter()
     static let interpretationLoadingStore = InterpretationLoadingStore()
     static let moodStore = MoodStore()
+    static let analyticsManager = FirebaseAnalyticsManager()
+    static let appDataResetManager = AppDataResetManager()
 }

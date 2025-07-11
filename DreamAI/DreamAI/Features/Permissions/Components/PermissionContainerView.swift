@@ -55,6 +55,7 @@ struct PermissionContainerView: View {
                     PermissionsSettingsUI()
                 }
             }
+            .logScreenView(ScreenName.onboarding)
         }
     }
 }

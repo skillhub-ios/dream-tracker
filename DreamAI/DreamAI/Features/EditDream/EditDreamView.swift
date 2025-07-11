@@ -50,6 +50,10 @@ struct EditDreamView: View {
                             if subscriptionViewModel.isSubscribed {
                                 editDreamViewModel.saveDream()
                                 isShowingInterpretation = true
+                                editDreamViewModel.analitics.log(
+                                    .premiumFeatureUsed(
+                                        feature: PremiumFeature.interpretDream,
+                                        screen: ScreenName.editDream))
                             } else {
                                 subscriptionViewModel.showPaywall()
                             }
@@ -84,6 +88,14 @@ struct EditDreamView: View {
                         }
                     }
             )
+        }
+        .logScreenView(ScreenName.editDream)
+        .onChange(of: editDreamViewModel.mood) { oldValue, newValue in
+            if oldValue == nil && newValue != nil {
+                editDreamViewModel.analitics.log(.premiumFeatureUsed(
+                    feature: PremiumFeature.selectMood,
+                    screen: ScreenName.editDream))
+            }
         }
     }
 }
