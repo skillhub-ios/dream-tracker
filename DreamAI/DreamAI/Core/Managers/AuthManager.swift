@@ -183,14 +183,6 @@ final class AuthManager: ObservableObject, AuthManaging {
             UserManager.shared.clearUserData()
             await BiometricManager.shared.clearUserData()
             LanguageManager.shared.clearUserData()
-        
-        // Clear storage data
-        DIContainer.coreDataStore.resetAppData()
-    }
-    
-    func clearStoredData() {
-        DIContainer.coreDataStore.resetAppData()
-        DIContainer.moodStore.moods.removeAll()
     }
     
     func markPermissionsCompleted() {
@@ -241,8 +233,10 @@ final class AuthManager: ObservableObject, AuthManaging {
     }
     
     func clearUserDefaults() {
-            // Clear all stored authentication data
-            storedIsAuthenticated = false
-            storedHasCompletedPermissions = false
+        // Clear all stored authentication data
+        DispatchQueue.main.async { [weak self] in
+            self?.storedIsAuthenticated = false
+            self?.storedHasCompletedPermissions = false
         }
+    }
 }
