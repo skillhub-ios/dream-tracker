@@ -97,10 +97,6 @@ final class DreamsDataManager: ObservableObject, AppDataResettable {
                 container.viewContext.delete(interpretation)
             }
             
-            for dream in dreamsToDelete {
-                container.viewContext.delete(dream)
-            }
-            
             saveData()
             
         } catch {
