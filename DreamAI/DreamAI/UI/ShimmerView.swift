@@ -10,6 +10,7 @@ import SwiftUI
 struct ShimmerView: ViewModifier {
     let state: ContentStateType
     let retryButtonUI: AnyView
+    @State private var shimmerOffset: CGFloat = -300
     
     @State private var toast: ToastData? = nil
     
@@ -21,6 +22,22 @@ struct ShimmerView: ViewModifier {
                     content
                         .redacted(reason: .placeholder)
                         .disabled(true)
+                        .overlay(
+                            Rectangle()
+                                .fill(Color.white.opacity(0.2))
+                                .frame(width: 60)
+                                .blur(radius: 15)
+                                .offset(x: shimmerOffset)
+                                .animation(
+                                    Animation.linear(duration: 2)
+                                        .repeatForever(autoreverses: false),
+                                    value: shimmerOffset
+                                )
+                        )
+                        .clipped()
+                        .onAppear {
+                            shimmerOffset = 300
+                        }
                 )
             case .success:
                 return AnyView(content)
@@ -51,8 +68,7 @@ extension View {
         self.modifier(ShimmerView(state: state, retryButtonUI: retryButtonUI))
     }
 }
-    
-    
+
 #Preview {
     ScrollView {
         VStack(spacing: 20) {
