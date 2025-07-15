@@ -93,6 +93,10 @@ final class DreamsDataManager: ObservableObject, AppDataResettable {
             let dreamsToDelete = try container.viewContext.fetch(dreamsRemovalRequest)
             let interpretationsToDelete = try container.viewContext.fetch(interpretationsRemovalRequest)
             
+            for dream in dreamsToDelete {
+                container.viewContext.delete(dream)
+            }
+            
             for interpretation in interpretationsToDelete {
                 container.viewContext.delete(interpretation)
             }

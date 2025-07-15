@@ -14,6 +14,7 @@ struct ProfileFeedbackSection: View {
     @State private var bedtime: Date = Date()
     @State private var wakeupTime: Date = Date()
     @Environment(\.openURL) private var openURL
+    @Environment(\.languageManager) private var languageManager
 
     var body: some View {
         Section {
@@ -22,8 +23,12 @@ struct ProfileFeedbackSection: View {
                     .foregroundColor(.appPurple)
                 Text("Language")
                 Spacer()
-                Text(language)
+                Text(languageManager.currentLanguageDisplayName)
                     .foregroundColor(.secondary)
+            }
+            .contentShape(Rectangle())
+            .onTapGesture {
+                languageManager.openSystemLanguageSettings()
             }
             
             Toggle(isOn: Binding(

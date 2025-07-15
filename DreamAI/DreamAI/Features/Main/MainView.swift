@@ -45,7 +45,7 @@ struct MainView: View {
                         Text(getGreetingText())
                             .font(.largeTitle)
                             .fontWeight(.bold)
-                        Text("Ready to log a dream?")
+                        Text("readyToLog?")
                             .font(.subheadline)
                             .foregroundStyle(.gray)
                             .padding(.top, 10)
@@ -120,13 +120,13 @@ struct MainView: View {
         
         switch hour {
         case 6..<12:
-            return "Good morning!"
+            return String(localized: "goodMorning")
         case 12..<17:
-            return "Good afternoon!"
+            return String(localized: "goodAfternoon")
         case 17..<22:
-            return "Good evening!"
+            return String(localized: "goodEvening")
         default:
-            return "Good night!"
+            return String(localized: "goodNight")
         }
     }
 }
@@ -182,15 +182,6 @@ private extension MainView {
         .background(Color.appPurpleDark.opacity(0.5))
         .clipShape(Capsule())
         .padding(.top)
-    }
-}
-
-extension Date {
-    /// from Date  to -> 2.07.2023 • 05:20
-    func formatted() -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yyyy • HH:mm"
-        return dateFormatter.string(from: self)
     }
 }
 
