@@ -57,6 +57,34 @@
     "Add" : {
 
     },
+    "aIChat" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI Chat"
+          }
+        }
+      }
+    },
+    "aiChatMessagePlaceholder" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Message"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Введите сообщение..."
+          }
+        }
+      }
+    },
     "Are you sure you want to delete this dream?" : {
 
     },
@@ -96,6 +124,28 @@
     },
     "Cancel" : {
 
+    },
+    "chatFirstMessage" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hi, here you can ask clarifying questions about your dream, or choose a quick question from above"
+          }
+        }
+      }
+    },
+    "chatWithAI" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chat with AI"
+          }
+        }
+      }
     },
     "Clear All" : {
 
@@ -610,6 +660,9 @@
     "Log in" : {
 
     },
+    "Log In" : {
+
+    },
     "Log your first dream 🌙" : {
 
     },
@@ -752,6 +805,17 @@
     "Wake-up" : {
 
     },
+    "wantToGoDeeper" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Want to Go Deeper?"
+          }
+        }
+      }
+    },
     "What's currently top of mind for you?" : {
 
     },
@@ -760,6 +824,17 @@
     },
     "Your Plan" : {
 
+    },
+    "сancel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

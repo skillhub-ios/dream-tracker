@@ -153,7 +153,6 @@ private extension MainView {
                 .padding(5)
                 .background(Color.appPurpleDarkBackground)
                 .clipShape(Circle())
-            
             Text(dream.date.dateTimeWithSeparator)
                 .font(.caption)
                 .foregroundStyle(.gray)

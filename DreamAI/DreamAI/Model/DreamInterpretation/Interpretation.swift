@@ -6,7 +6,7 @@
 //
 import Foundation
 
-struct Interpretation: Codable {
+struct Interpretation: Codable, Hashable {
     let dreamTitle: String
     let dreamSummary: String
     let fullInterpretation: String
@@ -22,18 +22,18 @@ struct Interpretation: Codable {
     }
 }
 
-struct MoodInsight: Codable {
+struct MoodInsight: Codable, Hashable {
     let emoji: String
     let label: String
     let score: Double
 }
 
-struct SymbolMeaning: Codable {
+struct SymbolMeaning: Codable, Hashable {
     let icon: String
     let meaning: String
 }
 
-struct Quote: Codable {
+struct Quote: Codable, Hashable {
     let text: String
     let author: String
 }

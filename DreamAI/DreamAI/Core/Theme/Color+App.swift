@@ -64,9 +64,13 @@ extension Color {
     /// #36273C - appPurpleGrayBackground
     static let appPurpleGrayBackground = Color(hex: "36273C")
     /// #4B3256 - appPurpleDark1
-    static let appPurpleGradient1 = Color(hex: "#4B3256")
+    static let appPurpleGradient1 = Color(hex: "4B3256")
     /// #1F1524 - appPurpleDark2
-    static let appPurpleGradient2 = Color(hex: "#1F1524")
+    static let appPurpleGradient2 = Color(hex: "1F1524")
+    /// #DA8FFF - appPurpleDark3
+    static let appPurpleGradient3 = Color(hex: "DA8FFF")
+    /// #DA8FFF - appPurpleDark4
+    static let appPurpleGradient4 = Color(hex: "BF5AF2")
     
     // MARK: - Hex Initializer
     init(hex: String) {
