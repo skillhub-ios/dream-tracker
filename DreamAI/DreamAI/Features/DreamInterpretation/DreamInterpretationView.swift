@@ -69,10 +69,10 @@ struct DreamInterpretationView: View {
                     quoteUI(quote: model.quote)
                     
                     // Go to chat
-                    StartChatView(action: segueToChat)
-                        .navigationDestination(item: $interpretation) { interpretation in
-                            ChatView(with: interpretation)
-                        }
+//                    StartChatView(action: segueToChat)
+//                        .navigationDestination(item: $interpretation) { interpretation in
+//                            ChatView(with: interpretation)
+//                        }
                     
                     // Resonance
                     resonanceUI($viewModel.selectedResonance)

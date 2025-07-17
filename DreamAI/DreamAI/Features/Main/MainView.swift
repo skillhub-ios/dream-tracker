@@ -15,6 +15,7 @@ struct MainView: View {
     @State private var showBiometricAlert = false
     @State private var isBlured: Bool = false
     @State private var isAuthenticating = false
+    @State private var showFloatingPanel = false
     
     var body: some View {
         Group {
@@ -95,7 +96,7 @@ struct MainView: View {
                     }
                 }
             }
-            .sheet(isPresented: .constant(true)) {
+            .sheet(isPresented: $showFloatingPanel) {
                 MainFloatingPanelView(isBlured: $isBlured)
                     .presentationDetents([.fraction(0.7), .large])
                     .presentationDragIndicator(.visible)
@@ -109,6 +110,9 @@ struct MainView: View {
                                 .presentationDetents([.large])
                         }
                     }
+            }
+            .onAppear {
+                showFloatingPanelWithDelay()
             }
         }
         .toolbarVisibility(.hidden, for: .navigationBar)
@@ -127,6 +131,12 @@ struct MainView: View {
             return String(localized: "goodEvening")
         default:
             return String(localized: "goodNight")
+        }
+    }
+    
+    private func showFloatingPanelWithDelay() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            showFloatingPanel = true
         }
     }
 }

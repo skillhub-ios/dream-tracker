@@ -13,6 +13,7 @@ struct IntroView: View {
     @State private var showAuthSheet = false
     @State private var authMode: AuthSheetMode = .login
     @Environment(\.deviceFamily) var deviceFamily
+    @Environment(\.languageManager) private var languageManager
     
     var body: some View {
         NavigationStack {
@@ -25,6 +26,17 @@ struct IntroView: View {
                 AuthSheetView(mode: authMode)
                     .presentationDetents([.fraction(sheetHeight())])
                     .presentationDragIndicator(.visible)
+            }
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        languageManager.openSystemLanguageSettings()
+                    } label: {
+                        Image(systemName: "globe")
+                            .foregroundStyle(Color.white)
+                    }
+
+                }
             }
         }
     }

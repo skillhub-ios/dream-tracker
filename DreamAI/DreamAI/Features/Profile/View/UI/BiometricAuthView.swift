@@ -29,7 +29,7 @@ struct BiometricAuthView: View {
                 HStack {
                     Spacer()
                     Button {
-                        
+                        biometricManager.toggleFaceID(false)
                     } label: {
                         Image(.xMarkCircled)
                             .resizable()
