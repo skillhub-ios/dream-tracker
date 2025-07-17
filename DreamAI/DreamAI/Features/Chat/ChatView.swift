@@ -24,8 +24,13 @@ struct ChatView: View {
                     quickQuestionsView
                     MessageCellView(text: String(localized: "chatFirstMessage"), isResponse: true)
                         .messageAlignment(isResponse: true)
-                    MessageCellView(text: String(localized: "chatFirstMessage"), isResponse: false)
-                        .messageAlignment(isResponse: false)
+                    ForEach(chatViewModel.messages) { message in
+                        let isResponse = message.role == "assistant"
+                        MessageCellView(
+                            text: message.text,
+                            isResponse: isResponse)
+                        .messageAlignment(isResponse: isResponse)
+                    }
                 }
                 .padding(.horizontal, 16)
             }
@@ -56,8 +61,13 @@ private extension ChatView {
     var quickQuestionsView: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 10) {
-                ForEach(chatViewModel.interpretation.chatQuestions, id: \.self) {
-                    questionView($0)
+                ForEach(chatViewModel.interpretation.chatQuestions, id: \.self) { question in
+                    questionView(question)
+                        .onTapGesture {
+                            Task {
+                                await chatViewModel.sendMessage(question)
+                            }
+                        }
                 }
             }
         }

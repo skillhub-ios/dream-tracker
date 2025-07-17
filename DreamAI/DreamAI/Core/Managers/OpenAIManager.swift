@@ -12,11 +12,67 @@ class OpenAIManager {
     private let apiKey = OpenAISecrets.apiKey
     private let session = URLSession.shared
     private let decoder = JSONDecoder()
-
+    
     private init() {
         decoder.keyDecodingStrategy = .convertFromSnakeCase
     }
-
+    
+    func sendChat(
+        messages: [Message],
+        interpretation: Interpretation
+    ) async throws -> Message {
+        guard !apiKey.isEmpty else {
+            throw NSError(domain: "OpenAIManager", code: -1, userInfo: [NSLocalizedDescriptionKey: "OpenAI API key is missing."])
+        }
+        
+        guard let url = URL(string: "https://api.openai.com/v1/chat/completions") else {
+            throw NSError(domain: "OpenAIManager", code: -1, userInfo: [NSLocalizedDescriptionKey: "OpenAI URL is invalid."])
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        addHeaders(to: &request)
+        
+        let systemPrompt = """
+            You are an assistant helping the user explore the meaning and possible causes of their dream. Your goal is to discuss details of the dream, ask clarifying questions, and encourage self-reflection — without making definitive interpretations. Keep responses brief and focused.
+            """
+        
+        let systemMessage: [String: String] = ["role": "system", "content": systemPrompt]
+        let messageDictionaries: [[String: String]] = messages.map {
+            ["role": $0.role, "content": $0.text]
+        }
+        
+        let allMessages = [systemMessage] + messageDictionaries
+        
+        let body: [String: Any] = [
+            "model": "gpt-4",
+            "messages": allMessages,
+            "temperature": 0.7,
+            "max_tokens": 250
+        ]
+        
+        request.httpBody = try JSONSerialization.data(withJSONObject: body)
+        
+        let (data, response) = try await session.data(for: request)
+        
+        try handleResponseError(response)
+        
+        do {
+            let result = try JSONDecoder().decode(OpenAIChatResponse.self, from: data)
+            
+            if let openAIMessage = result.choices.first?.message {
+                let message = Message(sender: openAIMessage.role, text: openAIMessage.content)
+                print(message)
+                return message
+            } else {
+                print("❌ No message found in choices")
+                throw NSError(domain: "OpenAIManagerError", code: 6, userInfo: [NSLocalizedDescriptionKey: "No message found in choices"])
+            }
+        } catch {
+            print("❌ Pretty printed JSON: \(error)")
+            throw NSError(domain: "OpenAIManagerError", code: 8, userInfo: [NSLocalizedDescriptionKey: "Failed to decode message: \(error.localizedDescription)"])
+        }
+    }
+    
     func getDreamInterpretation(dreamText: String, mood: String?) async throws -> Interpretation {
         guard !apiKey.isEmpty else {
             throw NSError(domain: "OpenAIManager", code: -1, userInfo: [NSLocalizedDescriptionKey: "OpenAI API key is missing."])
@@ -251,11 +307,11 @@ class OpenAIManager {
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
     }
-
+    
     private func handleResponseError(_ response: URLResponse) throws {
         guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
             let statusCode = (response as? HTTPURLResponse)?.statusCode ?? -1
             throw NSError(domain: "NetworkError", code: statusCode, userInfo: [NSLocalizedDescriptionKey: "Invalid server response (Status: \(statusCode))"])
         }
     }
-} 
+}
