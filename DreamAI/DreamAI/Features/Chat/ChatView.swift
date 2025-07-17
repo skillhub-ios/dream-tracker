@@ -9,11 +9,12 @@ import SwiftUI
 
 struct ChatView: View {
     
-    private let interpretation: Interpretation
+    @StateObject private var chatViewModel: ChatViewModel
     @Environment(\.dismiss) private var dismiss
     
+    
     init(with interpretation: Interpretation) {
-        self.interpretation = interpretation
+        self._chatViewModel = StateObject(wrappedValue: ChatViewModel(interpretation: interpretation))
     }
     
     var body: some View {
@@ -55,9 +56,9 @@ private extension ChatView {
     var quickQuestionsView: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 10) {
-                questionView("About the forest")
-                questionView("About losing direction")
-                questionView("About the voice")
+                ForEach(chatViewModel.interpretation.chatQuestions, id: \.self) {
+                    questionView($0)
+                }
             }
         }
     }

@@ -9,12 +9,20 @@ import Foundation
 
 final class ChatViewModel: ObservableObject {
     
+    var interpretation: Interpretation
+    
+    
+    init(
+        interpretation: Interpretation
+    ) {
+        self.interpretation = interpretation
+    }
+    
 }
 
 
 
-/// To Do:
-/// В запрос к OpenAI добавить тематики для начала беседы. Получить и распарсить эти данные
+/// В запрос к OpenAI добавить тематики для начала беседы. Получить и распарсить эти данные - done
 /// Создать для модель сообщений
 /// Настроить отправку и получение сообщений от OpenAI
 /// Сохранение чатов

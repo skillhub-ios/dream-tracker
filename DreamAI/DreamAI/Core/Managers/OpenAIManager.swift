@@ -47,7 +47,7 @@ class OpenAIManager {
                 5. dreamEmoji should be a single emoji that best represents the overall theme of the dream
                 6. ALL emoji fields (dreamEmoji, moodInsights.emoji, symbolism.icon) must be actual emoji characters (🐶, 😊, 🌲) NOT text names ("Dog", "Happy", "Tree")
                 7. dreamEmojiBackgroundColor must be a hex color code (e.g., "#FF6B6B", "#4ECDC4", "#45B7D1") that complements the emoji and creates a visually appealing background
-                8. tags must be an array of strings with maximum 2 items, selected from these exact values: "Daydream", "Epic Dream", "Continuous Dream", "Prophetic Dream", "Nightmare", "Night Terror", "Lucid Dream", "False Awakening", "Supernatural Dream", "Telepathic Dream", "Creative Dream", "Healing Dream", "Sleep Paralysis". Choose the most logically fitting tags based on the dream content.
+                8. tags must be an array of strings with maximum 2 items, selected from these exact values: "Daydream", "Epic Dream", "Continuous Dream", "Prophetic Dream", "Nightmare", "Night Terror", "Lucid Dream", "False Awakening", "Supernatural Dream", "Telepathic Dream", "Creative Dream", "Healing Dream", "Sleep Paralysis". Choose the most logically fitting tags based on the dream content
                 """
         
         let userMessage = "Please interpret this dream: \(dreamText). Mood: \(mood ?? "not specified")."
@@ -140,6 +140,15 @@ class OpenAIManager {
                                     "minItems": 3,
                                     "maxItems": 3
                                 ],
+                                "chatQuestions": [
+                                    "type": "array",
+                                    "items": [
+                                        "type": "string"
+                                    ],
+                                    "description": "An array of maximum 3 short questions or topics that help continue the conversation. The questions must be directly related to the dream and should encourage further discussion or self-reflection. Not full questions. Must relate to specific elements of the dream. Avoid vague topics like 'About unknown'. Example: ['About the forest', 'About losing direction', 'About the voice']",
+                                    "minItems": 2,
+                                    "maxItems": 3
+                                ],
                                 "tags": [
                                     "type": "array",
                                     "items": [
@@ -165,7 +174,7 @@ class OpenAIManager {
                                     "description": "An inspirational quote related to dreams or psychology"
                                 ]
                             ],
-                            "required": ["dreamEmoji", "dreamEmojiBackgroundColor", "dreamTitle", "dreamSummary", "fullInterpretation", "moodInsights", "symbolism", "reflectionPrompts", "tags", "quote"]
+                            "required": ["dreamEmoji", "dreamEmojiBackgroundColor", "dreamTitle", "dreamSummary", "fullInterpretation", "moodInsights", "symbolism", "reflectionPrompts", "tags", "quote", "chatQuestions"]
                         ]
                     ]
                 ]

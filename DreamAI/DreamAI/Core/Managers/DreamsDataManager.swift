@@ -120,6 +120,7 @@ final class DreamsDataManager: ObservableObject, AppDataResettable {
         newInterpretation.reflectionPrompts = interpretation.reflectionPrompts.joined(separator: ", ")
         newInterpretation.quote = try? encoder.encode(interpretation.quote)
         newInterpretation.dreamParentId = interpretation.dreamParentId
+        newInterpretation.chatQuestions = interpretation.chatQuestions.joined(separator: ", ")
         
         saveData()
     }

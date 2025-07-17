@@ -61,7 +61,8 @@ class DreamInterpreter {
                 symbolism: enhancedInterpretation.symbolism,
                 reflectionPrompts: enhancedInterpretation.reflectionPrompts,
                 quote: enhancedInterpretation.quote,
-                tags: enhancedInterpretation.tags
+                tags: enhancedInterpretation.tags,
+                chatQuestions: enhancedInterpretation.chatQuestions
             )
         }
         
@@ -75,7 +76,8 @@ class DreamInterpreter {
                 symbolism: enhancedInterpretation.symbolism,
                 reflectionPrompts: enhancedInterpretation.reflectionPrompts,
                 quote: enhancedInterpretation.quote,
-                tags: enhancedInterpretation.tags
+                tags: enhancedInterpretation.tags,
+                chatQuestions: enhancedInterpretation.chatQuestions
             )
         }
         
@@ -89,7 +91,8 @@ class DreamInterpreter {
                 symbolism: generateDefaultSymbolism(),
                 reflectionPrompts: enhancedInterpretation.reflectionPrompts,
                 quote: enhancedInterpretation.quote,
-                tags: enhancedInterpretation.tags
+                tags: enhancedInterpretation.tags,
+                chatQuestions: enhancedInterpretation.chatQuestions
             )
         }
         
@@ -103,7 +106,8 @@ class DreamInterpreter {
                 symbolism: enhancedInterpretation.symbolism,
                 reflectionPrompts: generateDefaultReflectionPrompts(),
                 quote: enhancedInterpretation.quote,
-                tags: enhancedInterpretation.tags
+                tags: enhancedInterpretation.tags,
+                chatQuestions: enhancedInterpretation.chatQuestions
             )
         }
         

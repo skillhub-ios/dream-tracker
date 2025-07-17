@@ -10,6 +10,7 @@
         <attribute name="title" optional="YES" attributeType="String"/>
     </entity>
     <entity name="InterpretationEntity" representedClassName="InterpretationEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="chatQuestions" optional="YES" attributeType="String"/>
         <attribute name="dreamParentId" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="dreamSummary" optional="YES" attributeType="String"/>
         <attribute name="dreamTitle" optional="YES" attributeType="String"/>
