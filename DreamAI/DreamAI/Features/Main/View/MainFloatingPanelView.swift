@@ -17,6 +17,7 @@ struct MainFloatingPanelView: View {
     @State private var showDreamInterpretation = false
     @State private var selectedDream: Dream?
     @Binding var isBlured: Bool
+    @State private var isDeletionAlertPresented: Bool = false
     
     var filteredDreams: [Dream] {
         viewModel.filterDreams()
@@ -26,7 +27,6 @@ struct MainFloatingPanelView: View {
         ZStack(alignment: .bottom) {
             Color(Color.appGray4)
                 .ignoresSafeArea()
-            
             VStack(spacing: 16) {
                 SearchBarView(text: $viewModel.searchText, filter: $viewModel.searchBarFilter)
                     .padding(.top, 12)
@@ -36,36 +36,39 @@ struct MainFloatingPanelView: View {
                     }
                     Spacer()
                 } else {
-                    List(filteredDreams) { dream in
-                        dreamRow(for: dream)
+                    List {
+                        ForEach(filteredDreams) { dream in
+                            dreamRow(for: dream)
+                                .listRowSeparator(.hidden)
+                                .blur(radius: isBlured ? 12 : 0)
+                                .applyIf(dreamlistmode == .view) {
+                                    $0.swipeActions(edge: .trailing) {
+                                        Button(role: .destructive) {
+                                            isDeletionAlertPresented = true
+                                            viewModel.deletionDreamId = dream.id
+                                        } label: {
+                                            Label("Delete", systemImage: "trash")
+                                        }
+                                    }
+                                    .swipeActions(edge: .leading) {
+                                        Button() {
+                                            showCreateDreamView = true
+                                        } label: {
+                                            Label("Add", systemImage: "plus")
+                                                .tint(.appPurple)
+                                        }
+                                    }
+                                }
+                        }
+                        Rectangle()
+                            .frame(height: 100)
+                            .opacity(0)
                             .listRowSeparator(.hidden)
-                            .blur(radius: isBlured ? 12 : 0)
-                            .applyIf(dreamlistmode == .view) {
-                                $0.swipeActions(edge: .trailing) {
-                                    Button(role: .destructive) {
-                                        viewModel.deleteDreamBy(id: dream.id)
-                                    } label: {
-                                        Label("Delete", systemImage: "trash")
-                                    }
-                                }
-                                .swipeActions(edge: .leading) {
-                                    Button() {
-                                        showCreateDreamView = true
-                                    } label: {
-                                        Label("Add", systemImage: "plus")
-                                            .tint(.appPurple)
-                                    }
-                                }
-                            }
-                            .applyIf(dream.id == filteredDreams.last?.id) {
-                                $0.padding(.bottom, 100)
-                            }
                     }
                     .listStyle(.plain)
                 }
             }
             .padding(.top, 24)
-            
             FloatingActionButton(mode: dreamlistmode) {
                 withAnimation {
                     if dreamlistmode == .edit {
@@ -92,6 +95,24 @@ struct MainFloatingPanelView: View {
                     EditDreamView(dream: dream)
                 }
                 .presentationDetents([.large])
+            }
+        }
+        .alert(
+            "Are you sure you want to delete this dream?",
+            isPresented: $isDeletionAlertPresented
+        ) {
+            Button("Delete", role: .destructive) {
+                guard let id = viewModel.deletionDreamId else {
+                    isDeletionAlertPresented = false
+                    return }
+                isDeletionAlertPresented = false
+                withAnimation {
+                    viewModel.deleteDreamBy(id: id)
+                }
+            }
+            Button("Cancel", role: .cancel) {
+                isDeletionAlertPresented = false
+                viewModel.deletionDreamId = nil
             }
         }
     }

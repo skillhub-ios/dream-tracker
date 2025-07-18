@@ -91,20 +91,6 @@ class DreamInterpretationViewModel: ObservableObject {
         } catch {
             contentState = .error(error)
         }
-        
-        //        do {
-        //            var fetchedModel = try await dreamInterpreter.interpretDream(
-        //                dreamText: dream.description,
-        //                mood: dream.emoji
-        //            )
-        //            fetchedModel.setDreamParentId(dream.id)
-        //            self.interpretation = fetchedModel
-        //            contentState = .success
-        //            coreDataStore.saveInterpretation(fetchedModel)
-        //            tagSubscriber()
-        //        } catch {
-        //            contentState = .error(error)
-        //        }
     }
     
     private func updateTags(_ tags: [UUID: [String]]) {

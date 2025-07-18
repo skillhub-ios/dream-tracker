@@ -69,12 +69,10 @@ struct DreamListItemView: View {
     }
 }
 
-// Mark: - Privew UI
-
 private extension DreamListItemView {
     var dateUI: some View {
         HStack(spacing: 4) {
-            Text(dream.date.formatted())
+            Text(dream.date.dateTimeWithSeparator)
                 .font(.footnote)
                 .foregroundColor(.gray)
                 .multilineTextAlignment(.leading)
@@ -107,14 +105,6 @@ private extension DreamListItemView {
             case .success, .idle: EmptyView()
             }
         }
-    }
-}
-
-extension Date {
-    func formattedWithSpace() -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yyyy\n HH:mm"
-        return dateFormatter.string(from: self)
     }
 }
 

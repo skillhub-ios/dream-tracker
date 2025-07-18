@@ -15,6 +15,7 @@ enum PublisherKey: String {
     case hasSubscription
 }
 
+@inlinable
 func extractValue<T>(from notification: Notification, as type: T.Type) -> T? {
     notification.userInfo?["value"] as? T
 }

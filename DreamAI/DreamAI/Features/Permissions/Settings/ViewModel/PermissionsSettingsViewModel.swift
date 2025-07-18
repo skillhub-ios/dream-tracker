@@ -18,7 +18,7 @@ final class PermissionsSettingsViewModel: ObservableObject {
     
     // MARK: - Published Properties
     @Published var remindersEnabled: Bool = false
-    @Published var bedtime: Date = DateComponents(calendar: .current, hour: 8, minute: 0).date ?? Date()
+    @Published var bedtime: Date = DateComponents(calendar: .current, hour: 20, minute: 0).date ?? Date()
     @Published var wakeup: Date = DateComponents(calendar: .current, hour: 8, minute: 0).date ?? Date()
     @Published var faceIDEnabled: Bool = false
     @Published var selectedLanguage: Language? = .english

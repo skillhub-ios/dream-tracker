@@ -35,11 +35,7 @@ struct PermissionsLifeFocusUI: View {
                     .font(.headline)
                     .foregroundColor(.white)
             }
-            Text("1–3")
-                .font(.caption)
-                .foregroundColor(.white.opacity(0.5))
-                .padding(.bottom, 2)
-            VStack(spacing:0) {
+            VStack(spacing: .zero) {
                 ForEach(viewModel.allAreas) { area in
                     VStack(spacing: 10) {
                         Button(action: {
@@ -64,7 +60,6 @@ struct PermissionsLifeFocusUI: View {
                             }
                             .frame(height: 44)
                         }
-                        .disabled(!viewModel.selectedAreas.contains(area) && viewModel.selectedAreas.count >= 3)
                     }
                     if viewModel.allAreas.last != area {
                         Divider()

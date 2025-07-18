@@ -93,12 +93,12 @@ final class DreamsDataManager: ObservableObject, AppDataResettable {
             let dreamsToDelete = try container.viewContext.fetch(dreamsRemovalRequest)
             let interpretationsToDelete = try container.viewContext.fetch(interpretationsRemovalRequest)
             
-            for interpretation in interpretationsToDelete {
-                container.viewContext.delete(interpretation)
-            }
-            
             for dream in dreamsToDelete {
                 container.viewContext.delete(dream)
+            }
+            
+            for interpretation in interpretationsToDelete {
+                container.viewContext.delete(interpretation)
             }
             
             saveData()
@@ -120,6 +120,7 @@ final class DreamsDataManager: ObservableObject, AppDataResettable {
         newInterpretation.reflectionPrompts = interpretation.reflectionPrompts.joined(separator: ", ")
         newInterpretation.quote = try? encoder.encode(interpretation.quote)
         newInterpretation.dreamParentId = interpretation.dreamParentId
+        newInterpretation.chatQuestions = interpretation.chatQuestions.joined(separator: ", ")
         
         saveData()
     }

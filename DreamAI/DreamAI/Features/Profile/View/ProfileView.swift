@@ -94,5 +94,6 @@ struct ProfileView: View {
     }
     .sheet(isPresented: .constant(true)) {
         ProfileView()
+            .environmentObject(SubscriptionViewModel())
     }
 }

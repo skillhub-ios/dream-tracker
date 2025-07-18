@@ -14,14 +14,14 @@ struct MainView: View {
     @State private var showProfileView = false
     @State private var showBiometricAlert = false
     @State private var isBlured: Bool = false
+    @State private var isAuthenticating = false
+    @State private var showFloatingPanel = false
     
     var body: some View {
         Group {
             if biometricManager.isFaceIDEnabled && !biometricManager.isAuthenticated {
-                // Show authentication screen
-                BiometricAuthView()
+                BiometricAuthView(isPresented: $biometricManager.isFaceIDEnabled)
             } else {
-                // Show main content
                 mainContentView
             }
         }
@@ -43,10 +43,10 @@ struct MainView: View {
                 lineGradient
                 VStack {
                     VStack(spacing: 0) {
-                        Text("Good morning!")
+                        Text(getGreetingText())
                             .font(.largeTitle)
                             .fontWeight(.bold)
-                        Text("Ready to log a dream?")
+                        Text("readyToLog?")
                             .font(.subheadline)
                             .foregroundStyle(.gray)
                             .padding(.top, 10)
@@ -96,7 +96,7 @@ struct MainView: View {
                     }
                 }
             }
-            .sheet(isPresented: .constant(true)) {
+            .sheet(isPresented: $showFloatingPanel) {
                 MainFloatingPanelView(isBlured: $isBlured)
                     .presentationDetents([.fraction(0.7), .large])
                     .presentationDragIndicator(.visible)
@@ -111,102 +111,35 @@ struct MainView: View {
                         }
                     }
             }
+            .onAppear {
+                showFloatingPanelWithDelay()
+            }
         }
         .toolbarVisibility(.hidden, for: .navigationBar)
         .logScreenView(ScreenName.main)
     }
-}
-
-// MARK: - Biometric Authentication View
-struct BiometricAuthView: View {
-    @StateObject private var biometricManager = BiometricManager.shared
-    @State private var isAuthenticating = false
     
-    var body: some View {
-        ZStack {
-            // Background gradient
-            LinearGradient(
-                gradient: Gradient(
-                    colors: [
-                        Color(.sRGB, red: 38/255, green: 18/255, blue: 44/255, opacity: 1),
-                        Color.black
-                    ]
-                ),
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .ignoresSafeArea()
-            
-            VStack(spacing: 30) {
-                Spacer()
-                
-                // Icon
-                Image(systemName: biometricManager.biometricType == .faceID ? "faceid" : "touchid")
-                    .font(.system(size: 80))
-                    .foregroundColor(.white)
-                
-                // Title
-                Text("Authentication Required")
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .foregroundColor(.white)
-                
-                // Description
-                Text("Please authenticate to access your dreams")
-                    .font(.body)
-                    .foregroundColor(.gray)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 40)
-                
-                // Authenticate button
-                Button(action: {
-                    authenticate()
-                }) {
-                    HStack {
-                        if isAuthenticating {
-                            ProgressView()
-                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                                .scaleEffect(0.8)
-                        } else {
-                            Image(systemName: biometricManager.biometricType == .faceID ? "faceid" : "touchid")
-                        }
-                        Text("Authenticate")
-                    }
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 30)
-                    .padding(.vertical, 15)
-                    .background(Color.appPurple)
-                    .cornerRadius(25)
-                }
-                .disabled(isAuthenticating)
-                
-                Spacer()
-            }
-        }
-        .onAppear {
-            // Auto-authenticate when view appears
-            authenticate()
-        }
-    }
-    
-    private func authenticate() {
-        isAuthenticating = true
+    private func getGreetingText() -> String {
+        let hour = Calendar.current.component(.hour, from: Date())
         
-        Task {
-            let success = await biometricManager.authenticate()
-            
-            await MainActor.run {
-                isAuthenticating = false
-                if !success {
-                    // Error will be shown via alert in MainView
-                }
-            }
+        switch hour {
+        case 6..<12:
+            return String(localized: "goodMorning")
+        case 12..<17:
+            return String(localized: "goodAfternoon")
+        case 17..<22:
+            return String(localized: "goodEvening")
+        default:
+            return String(localized: "goodNight")
+        }
+    }
+    
+    private func showFloatingPanelWithDelay() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            showFloatingPanel = true
         }
     }
 }
-
-// Mark: private UI
 
 private extension MainView {
     var lineGradient: some View {
@@ -230,8 +163,7 @@ private extension MainView {
                 .padding(5)
                 .background(Color.appPurpleDarkBackground)
                 .clipShape(Circle())
-            
-            Text(dream.date.formatted())
+            Text(dream.date.dateTimeWithSeparator)
                 .font(.caption)
                 .foregroundStyle(.gray)
         }
@@ -259,15 +191,6 @@ private extension MainView {
         .background(Color.appPurpleDark.opacity(0.5))
         .clipShape(Capsule())
         .padding(.top)
-    }
-}
-
-extension Date {
-    /// from Date  to -> 2.07.2023 • 05:20
-    func formatted() -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yyyy • HH:mm"
-        return dateFormatter.string(from: self)
     }
 }
 

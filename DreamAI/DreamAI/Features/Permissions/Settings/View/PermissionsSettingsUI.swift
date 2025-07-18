@@ -34,7 +34,9 @@ struct PermissionsSettingsUI: View {
                 Spacer()
                 DButton(title: "Done") {
                     authManager.markPermissionsCompleted()
-                    showMainView = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        showMainView = true
+                    }
                 }
             }
             .padding(.horizontal, 16)

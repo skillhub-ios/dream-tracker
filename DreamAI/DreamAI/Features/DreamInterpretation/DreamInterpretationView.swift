@@ -11,6 +11,7 @@ struct DreamInterpretationView: View {
     
     @StateObject private var viewModel: DreamInterpretationViewModel
     @Environment(\.dismiss) private var dismiss
+    @State private var interpretation: Interpretation?
     
     init(dream: Dream) {
         self._viewModel = StateObject(wrappedValue: DreamInterpretationViewModel(dream: dream))
@@ -23,7 +24,6 @@ struct DreamInterpretationView: View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 20) {
-                    
                     // Title
                     Text(model.dreamTitle)
                         .font(.title)
@@ -67,6 +67,12 @@ struct DreamInterpretationView: View {
                     
                     // Quote
                     quoteUI(quote: model.quote)
+                    
+                    // Go to chat
+//                    StartChatView(action: segueToChat)
+//                        .navigationDestination(item: $interpretation) { interpretation in
+//                            ChatView(with: interpretation)
+//                        }
                     
                     // Resonance
                     resonanceUI($viewModel.selectedResonance)
@@ -199,6 +205,12 @@ private extension DreamInterpretationView {
             }
         )
     }
+    
+    func segueToChat() {
+        if let interpretation = viewModel.interpretation {
+            self.interpretation = interpretation
+        }
+    }
 }
 
 //MARK: - MoodProgressUI
@@ -206,8 +218,8 @@ struct MoodProgressUI: View {
     var progress: Double
     
     private var clampedProgress: Double {
-           min(progress, 1.0)
-       }
+        min(progress, 1.0)
+    }
     
     var body: some View {
         GeometryReader { geometry in

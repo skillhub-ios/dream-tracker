@@ -19,6 +19,7 @@ final class MainViewModel: ObservableObject {
     @Published var dreamInterpretations: [Interpretation] = []
     @Published var selectedDreamIds: [UUID] = []
     @Published var loadingStatesByDreamId: [UUID: ContentStateType] = [:]
+    @Published var deletionDreamId: UUID?
     
     // MARK: - Private Properties
     
@@ -45,7 +46,8 @@ final class MainViewModel: ObservableObject {
     
     func deleteDreamBy(id: UUID) {
         dreams.removeAll { $0.id == id }
-        coreDataStore.deleteDreamsAndItsInterpretations(dreamsIds: selectedDreamIds)
+        coreDataStore.deleteDreamsAndItsInterpretations(dreamsIds: [id])
+        deletionDreamId = nil
     }
     
     func toggleDreamSelection(dreamId: UUID) {

@@ -6,7 +6,7 @@
 //
 import Foundation
 
-struct Interpretation: Codable {
+struct Interpretation: Codable, Hashable {
     let dreamTitle: String
     let dreamSummary: String
     let fullInterpretation: String
@@ -16,24 +16,25 @@ struct Interpretation: Codable {
     let quote: Quote
     var dreamParentId: UUID?
     let tags: [String]
+    let chatQuestions: [String]
     
     mutating func setDreamParentId(_ id: UUID) {
         self.dreamParentId = id
     }
 }
 
-struct MoodInsight: Codable {
+struct MoodInsight: Codable, Hashable {
     let emoji: String
     let label: String
     let score: Double
 }
 
-struct SymbolMeaning: Codable {
+struct SymbolMeaning: Codable, Hashable {
     let icon: String
     let meaning: String
 }
 
-struct Quote: Codable {
+struct Quote: Codable, Hashable {
     let text: String
     let author: String
 }
@@ -59,7 +60,8 @@ let dreamInterpretationFullModel = Interpretation(
         "What did you hear in the dream?"
     ],
     quote: Quote(text: "The interpretation of dreams is the royal road to the unconscious.", author: "Sigmund Freud"),
-    tags: ["Sometag", "Anothertag"]
+    tags: ["Sometag", "Anothertag"],
+    chatQuestions: ["About the forest", "About losing direction", "About the voice"]
 )
 
 // MARK: Core Data Support
@@ -89,7 +91,8 @@ extension Interpretation {
             reflectionPrompts: entity.reflectionPrompts?.split(separator: ",").compactMap { String($0) } ?? [],
             quote: quote,
             dreamParentId: entity.dreamParentId,
-            tags: []
+            tags: [],
+            chatQuestions: entity.chatQuestions?.split(separator: ",").compactMap { String($0) } ?? []
         )
     }
 }

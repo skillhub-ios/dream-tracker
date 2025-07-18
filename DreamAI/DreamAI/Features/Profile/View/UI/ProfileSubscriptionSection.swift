@@ -69,6 +69,7 @@ struct ProfileSubscriptionSection: View {
                 }
             }
         }
+        .contentShape(Rectangle())
         .onTapGesture {
             subsriptionVeiwModel.showPaywall()
         }

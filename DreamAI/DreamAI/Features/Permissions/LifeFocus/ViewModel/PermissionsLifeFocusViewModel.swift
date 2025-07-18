@@ -15,7 +15,7 @@ final class PermissionsLifeFocusViewModel: ObservableObject {
     func toggleArea(_ area: LifeFocusArea) {
         if selectedAreas.contains(area) {
             selectedAreas.remove(area)
-        } else if selectedAreas.count < 3 {
+        } else {
             selectedAreas.insert(area)
         }
     }
