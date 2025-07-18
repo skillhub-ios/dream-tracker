@@ -20,7 +20,7 @@ struct MainView: View {
     var body: some View {
         Group {
             if biometricManager.isFaceIDEnabled && !biometricManager.isAuthenticated {
-                BiometricAuthView()
+                BiometricAuthView(isPresented: $biometricManager.isFaceIDEnabled)
             } else {
                 mainContentView
             }

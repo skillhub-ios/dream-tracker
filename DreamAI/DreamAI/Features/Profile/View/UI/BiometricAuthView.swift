@@ -10,6 +10,7 @@ struct BiometricAuthView: View {
     @StateObject private var biometricManager = BiometricManager.shared
     @State private var isAuthenticating = false
     @Environment(\.dismiss) var dismiss
+    @Binding var isPresented: Bool
     
     var body: some View {
         ZStack {
@@ -29,11 +30,11 @@ struct BiometricAuthView: View {
                 HStack {
                     Spacer()
                     Button {
-                        biometricManager.toggleFaceID(false)
+                        isPresented = false
                     } label: {
                         Image(.xMarkCircled)
                             .resizable()
-                            .frame(width: 24 ,height: 24)
+                            .frame(width: 28 ,height: 28)
                     }
                     .padding()
                 }
