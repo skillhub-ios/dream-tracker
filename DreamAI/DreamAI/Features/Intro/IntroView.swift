@@ -27,17 +27,18 @@ struct IntroView: View {
                     .presentationDetents([.fraction(sheetHeight())])
                     .presentationDragIndicator(.visible)
             }
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        languageManager.openSystemLanguageSettings()
-                    } label: {
-                        Image(systemName: "globe")
-                            .foregroundStyle(Color.white)
-                    }
-
-                }
-            }
+#warning("Hided")
+//            .toolbar {
+//                ToolbarItem(placement: .topBarTrailing) {
+//                    Button {
+//                        languageManager.openSystemLanguageSettings()
+//                    } label: {
+//                        Image(systemName: "globe")
+//                            .foregroundStyle(Color.white)
+//                    }
+//
+//                }
+//            }
         }
     }
     
