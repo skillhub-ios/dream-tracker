@@ -12,7 +12,7 @@ struct IntroView: View {
     @State private var animateGradient = false
     @State private var showAuthSheet = false
     @State private var authMode: AuthSheetMode = .login
-    @Environment(\.deviceFamily) var deviceFamily
+    @Environment(\.deviceFamily) private var deviceFamily
     @Environment(\.languageManager) private var languageManager
     
     var body: some View {
