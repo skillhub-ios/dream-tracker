@@ -201,7 +201,7 @@ class OpenAIManager {
                                     "items": [
                                         "type": "string"
                                     ],
-                                    "description": "An array of maximum 3 short questions or topics that help continue the conversation. The questions must be directly related to the dream and should encourage further discussion or self-reflection. Not full questions. Must relate to specific elements of the dream. Avoid vague topics like 'About unknown'. Example: ['About the forest', 'About losing direction', 'About the voice']",
+                                    "description": "Return an array of up to 3 strings. Each string must be a short topic label in the format 'About X', where X is a concrete, specific element mentioned in the dream (e.g., 'the forest', 'losing direction'). Do not return full questions or explanations. Only short labels are allowed. Example: ['About the train', 'About falling', 'About the door']",
                                     "minItems": 2,
                                     "maxItems": 3
                                 ],

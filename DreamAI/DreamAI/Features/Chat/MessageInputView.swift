@@ -7,11 +7,13 @@
 import SwiftUI
 
 struct MessageInputView: View {
-    @State private var messageText = ""
-    @State private var textHeight: CGFloat = 48
+    
+    @Binding var messageText: String
+    @Binding var textHeight: CGFloat
+    var onSendAction: (String) -> Void
     
     private let minHeight: CGFloat = 48
-    private let maxHeight: CGFloat = 120
+    private let maxHeight: CGFloat = 96
     private let cornerRadius: CGFloat = 50
     
     var body: some View {
@@ -79,15 +81,25 @@ struct MessageInputView: View {
     }
     
     private func sendMessage() {
-        guard !messageText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
-        
-        print("Отправка: \(messageText)")
-        
+        let textToSend = messageText.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !textToSend.isEmpty else { return }
+
+        onSendAction(textToSend)
         messageText = ""
         textHeight = minHeight
     }
 }
 
 #Preview {
-    MessageInputView()
+    VStack {
+        MessageInputView(
+            messageText: .constant(""),
+            textHeight: .constant(48),
+            onSendAction: {_ in })
+        MessageInputView(
+            messageText: .constant("Chat message"),
+            textHeight: .constant(48),
+            onSendAction: {_ in })
+    }
+    .padding()
 }

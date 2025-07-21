@@ -19,13 +19,12 @@ struct PrimaryButtonStyle: ButtonStyle {
                 RoundedRectangle(cornerRadius: 13)
                     .stroke(Color.appGray9.opacity(0.65), lineWidth: 1.5)
             }
-#warning("Hided")
-//            .onChange(of: configuration.isPressed) {
-//                if configuration.isPressed {
-//                    UIImpactFeedbackGenerator(style: .light)
-//                        .impactOccurred()
-//                }
-//            }
+            .onChange(of: configuration.isPressed) {
+                if configuration.isPressed {
+                    UIImpactFeedbackGenerator(style: .light)
+                        .impactOccurred()
+                }
+            }
     }
 }
 

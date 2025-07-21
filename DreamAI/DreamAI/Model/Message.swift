@@ -7,10 +7,11 @@
 
 import Foundation
 
-struct Message: Identifiable, Codable {
+struct Message: Identifiable, Codable, Equatable, Hashable {
     let id: UUID
     let role: String
     let text: String
+    let timeStamp: Date
     
     init(
         sender: String,
@@ -19,6 +20,7 @@ struct Message: Identifiable, Codable {
         self.id = UUID()
         self.role = sender
         self.text = text
+        self.timeStamp = .now
     }
 }
 

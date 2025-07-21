@@ -11,17 +11,20 @@ final class ChatViewModel: ObservableObject {
     
     var interpretation: Interpretation
     @Published var messages: [Message] = []
+    @Published var messageText = ""
     
     private let openAIManager = OpenAIManager.shared
     
-    func sendMessage(_ text: String) async {
+    func sendMessageToAIChat(_ text: String) async {
         let message = Message(sender: "user", text: text)
         await MainActor.run {
             messages.append(message)
+            print("New message appened: \(message)")
         }
         
         do {
-            let response = try await openAIManager.sendChat(messages: messages, interpretation: interpretation)
+            let lastMessages = messages.suffix(10) // send only last 10 messages
+            let response = try await openAIManager.sendChat(messages: Array(lastMessages), interpretation: interpretation)
             
             await MainActor.run {
                 messages.append(response)
