@@ -14,12 +14,22 @@ final class ChatViewModel: ObservableObject {
     @Published var messageText = ""
     
     private let openAIManager = OpenAIManager.shared
+    private let messageDataStore = DIContainer.messageDataStore
+    
+    init(
+        interpretation: Interpretation
+    ) {
+        self.interpretation = interpretation
+        loadChatHistory()
+    }
     
     func sendMessageToAIChat(_ text: String) async {
         let message = Message(sender: "user", text: text)
         await MainActor.run {
             messages.append(message)
-            print("New message appened: \(message)")
+            if let dreamId = interpretation.dreamParentId {
+                messageDataStore.saveMessage(message, dremId: dreamId)
+            }
         }
         
         do {
@@ -28,16 +38,18 @@ final class ChatViewModel: ObservableObject {
             
             await MainActor.run {
                 messages.append(response)
+                if let dreamId = interpretation.dreamParentId {
+                    messageDataStore.saveMessage(response, dremId: dreamId)
+                }
             }
         } catch {
             print("❌ Ошибка при отправке сообщения: \(error.localizedDescription)")
         }
     }
     
-    init(
-        interpretation: Interpretation
-    ) {
-        self.interpretation = interpretation
+    private func loadChatHistory() {
+        guard let dreamId = interpretation.dreamParentId else { return }
+        self.messages = messageDataStore.loadMessagesFor(dreamId: dreamId)
     }
     
 }

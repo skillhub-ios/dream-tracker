@@ -47,13 +47,14 @@ struct MessageInputView: View {
                 }
                 // Кнопка
                 Button(action: sendMessage) {
-                    Image(systemName: messageText.isEmpty ? "microphone.fill" : "arrow.up.circle.fill")
+                    Image(systemName: "arrow.up.circle.fill")
                         .resizable()
                         .frame(
-                            width: messageText.isEmpty ? 20 : 28,
-                            height: messageText.isEmpty ? 26 : 28)
+                            width: 28,
+                            height: 28)
                         .foregroundStyle(LinearGradient.appPurpleHorizontal)
                 }
+                .disabled(messageText.isEmpty)
                 .frame(width: 32, height: 32)
             }
             .padding(.horizontal, 16)
