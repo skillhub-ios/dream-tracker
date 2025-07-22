@@ -161,6 +161,17 @@
     "Clear All" : {
 
     },
+    "continue" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue"
+          }
+        }
+      }
+    },
     "Create Dream" : {
 
     },
@@ -235,6 +246,28 @@
     },
     "Filter" : {
 
+    },
+    "flying" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flying"
+          }
+        }
+      }
+    },
+    "freedom" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Freedom"
+          }
+        }
+      }
     },
     "getStarted" : {
       "extractionState" : "manual",
@@ -660,6 +693,17 @@
     "Interpret Dream" : {
 
     },
+    "interpretation" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Interpretation"
+          }
+        }
+      }
+    },
     "Intro" : {
 
     },
@@ -759,6 +803,39 @@
     "OK" : {
 
     },
+    "onboardingDreamFly" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flying over the city"
+          }
+        }
+      }
+    },
+    "onboardingDreamForgot" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forgot an important exam"
+          }
+        }
+      }
+    },
+    "onboardingDreamTalk" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Talking to a deceased relative"
+          }
+        }
+      }
+    },
     "onboardingFirstStageSubtitle" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -788,6 +865,83 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Your Dreams Are Never Random"
+          }
+        }
+      }
+    },
+    "onboardingSecondStageInfo" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I was walking through a dark, abandoned train station, searching for someone. Whispers echoed around me. A train with no lights or driver arrived. I stepped in, the doors closed—and I woke up"
+          }
+        }
+      }
+    },
+    "onboardingSecondStageInterpretation" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The dream suggests you're facing uncertainty or emotional disconnection. The empty station reflects feeling stuck or isolated. The driverless train points to being pulled into decisions without clear direction. Your mind urges you to slow down and regain clarity before moving forward"
+          }
+        }
+      }
+    },
+    "onboardingSecondStageSubtitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log your dreams with voice or text."
+          }
+        }
+      }
+    },
+    "onboardingSecondStageSubtitle2" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Our AI reads emotions, symbols, and hidden patterns — just for you."
+          }
+        }
+      }
+    },
+    "onboardingSecondStageTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI That Understands the Unspoken"
+          }
+        }
+      }
+    },
+    "onboardingThirdStageSubtitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start a habit of self-discovery. Your private dream journal — always evolving with you."
+          }
+        }
+      }
+    },
+    "onboardingThirdStageTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Track, Reflect, Transform"
           }
         }
       }
@@ -848,14 +1002,58 @@
     "Search" : {
 
     },
+    "seeMagic" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See the Magic"
+          }
+        }
+      }
+    },
     "Share Export" : {
 
+    },
+    "showMeHow" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show Me How"
+          }
+        }
+      }
     },
     "Sign In" : {
 
     },
     "Skip" : {
 
+    },
+    "sleepParalysis" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sleep Paralysis"
+          }
+        }
+      }
+    },
+    "startDreamJourney" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start My Dream Journey"
+          }
+        }
+      }
     },
     "Stop Recording" : {
 
@@ -865,6 +1063,17 @@
     },
     "Success" : {
 
+    },
+    "supernaturalDream" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supernatural Dream"
+          }
+        }
+      }
     },
     "Terms" : {
 

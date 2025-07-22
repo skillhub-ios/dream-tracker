@@ -49,9 +49,7 @@ struct MessageInputView: View {
                 Button(action: sendMessage) {
                     Image(systemName: "arrow.up.circle.fill")
                         .resizable()
-                        .frame(
-                            width: 28,
-                            height: 28)
+                        .frame(width: 28, height: 28)
                         .foregroundStyle(LinearGradient.appPurpleHorizontal)
                 }
                 .disabled(messageText.isEmpty)

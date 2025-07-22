@@ -2,7 +2,7 @@
 // OnboardingPhaseView.swift
 //
 // Created by Cesare on 21.07.2025 on Earth.
-// 
+//
 
 
 import SwiftUI
@@ -10,7 +10,7 @@ import SwiftUI
 struct OnboardingPhaseView: View {
     
     @EnvironmentObject private var onboardingViewModel: OnboardingFlowViewModel
-    @State private var state: OnboardingPhase = .first
+    @State private var state: OnboardingPhase = .third
     
     var body: some View {
         ZStack {
@@ -25,7 +25,7 @@ struct OnboardingPhaseView: View {
                         swithState()
                     }
                 } label: {
-                    Text("Action")
+                    Text(actionButtonTitle)
                 }
                 .buttonStyle(PrimaryButtonStyle())
             }
@@ -55,6 +55,15 @@ private extension OnboardingPhaseView {
             state = .fourth
         case .fourth:
             onboardingViewModel.path.append(.permissions)
+        }
+    }
+    
+    var actionButtonTitle: LocalizedStringKey {
+        switch state {
+        case .first: "showMeHow"
+        case .second: "seeMagic"
+        case .third: "continue"
+        case .fourth: "startDreamJourney"
         }
     }
 }
