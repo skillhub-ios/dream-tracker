@@ -71,7 +71,7 @@ extension Color {
     static let appPurpleGradient2 = Color(hex: "1F1524")
     /// #DA8FFF - appPurpleDark3
     static let appPurpleGradient3 = Color(hex: "DA8FFF")
-    /// #DA8FFF - appPurpleDark4
+    /// #BF5AF2 - appPurpleDark4
     static let appPurpleGradient4 = Color(hex: "BF5AF2")
     /// #993781 - darkPurple
     static let darkPurple = Color(hex: "993781")

@@ -23,18 +23,16 @@ struct PermissionsLifeFocusUI: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             card
         }
-        .padding(.horizontal, 16)
     }
     
     private var card: some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack(spacing: 8) {
-                Text("🪐")
-                    .font(.title2)
+                Text("💫")
                 Text("What's currently top of mind for you?")
-                    .font(.headline)
                     .foregroundColor(.white)
             }
+            .font(.body)
             VStack(spacing: .zero) {
                 ForEach(viewModel.allAreas) { area in
                     VStack(spacing: 10) {
@@ -58,6 +56,7 @@ struct PermissionsLifeFocusUI: View {
                                         .frame(width: 24, height: 24)
                                 }
                             }
+                            .padding(.horizontal, 16)
                             .frame(height: 44)
                         }
                     }

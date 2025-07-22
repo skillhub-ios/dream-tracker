@@ -10,7 +10,7 @@ import SwiftUI
 struct OnboardingPhaseView: View {
     
     @EnvironmentObject private var onboardingViewModel: OnboardingFlowViewModel
-    @State private var state: OnboardingPhase = .third
+    @State private var state: OnboardingPhase = .first
     
     var body: some View {
         ZStack {
@@ -32,6 +32,7 @@ struct OnboardingPhaseView: View {
             .frame(maxHeight: .infinity, alignment: .bottom)
             .padding(.horizontal, 16)
         }
+        .navigationBarHidden(true)
     }
 }
 

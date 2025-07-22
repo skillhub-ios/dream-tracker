@@ -9,35 +9,14 @@ import SwiftUI
 
 struct ReferralSourceUI: View {
     @StateObject private var viewModel = ReferralSourceViewModel()
-    var onNext: (() -> Void)?
-    var onSkip: (() -> Void)?
     
     var body: some View {
-        ZStack{
-            LinearGradient(
-                gradient: Gradient(
-                    colors: [
-                        Color.appPurpleDark,
-                        Color.black
-                    ]
-                ),
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .ignoresSafeArea()
-            
-            VStack(spacing: 10) {
-                Text("How did you hear about us?")
-                    .font(.title.bold())
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                
-                card
-                Spacer()
-                nextButton
-                skipButton
-            }
-            .padding([.horizontal, .top], 16)
+        VStack(spacing: 10) {
+            Text("How did you hear about us?")
+                .font(.title2.bold())
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            card
         }
     }
     
@@ -72,7 +51,7 @@ struct ReferralSourceUI: View {
                     }
                 }
             }
-            .padding(10)
+            .padding(.horizontal, 16)
             .background(Color.appPurpleDark.mix(with: .white, by: 0.05).opacity(0.75))
             .clipShape(RoundedRectangle(cornerRadius: 10))
         }
@@ -80,28 +59,9 @@ struct ReferralSourceUI: View {
         .background(Color.appPurpleDark)
         .cornerRadius(16)
     }
-    
-    private var nextButton: some View {
-        DButton(title: "Next") {
-            onNext?()
-        }
-            .disabled(!viewModel.canProceed)
-            .padding(.bottom, 4)
-    }
-    
-    private var skipButton: some View {
-        Button(action: { onSkip?() }) {
-            Text("Skip")
-                .font(.subheadline)
-                .foregroundColor(.white.opacity(0.7))
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 8)
-        }
-        .accessibilityLabel("Skip")
-    }
 }
 
 #Preview {
     ReferralSourceUI()
         .background(Color.black)
-} 
+}

@@ -18,7 +18,7 @@ struct OnboardingThirdPhaseView: View {
                     dreamCartView(dream)
                 }
             }
-            
+            Image(.faces)
         }
     }
 }
@@ -34,7 +34,6 @@ private extension OnboardingThirdPhaseView {
                     Text(dream.image)
                         .font(.system(size: 24, weight: .semibold, design: .default))
                 }
-                
                 VStack(alignment: .leading, spacing: 4) {
                     Text(dream.title)
                         .font(.headline.bold())
@@ -53,6 +52,7 @@ private extension OnboardingThirdPhaseView {
                 .multilineTextAlignment(.trailing)
                 .font(.footnote)
                 .foregroundStyle(Color.appGray9.opacity(0.6))
+                .frame(maxHeight: 60)
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 18)

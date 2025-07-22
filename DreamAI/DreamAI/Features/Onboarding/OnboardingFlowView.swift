@@ -26,18 +26,8 @@ private extension OnboardingFlowView {
     @ViewBuilder
     private func stepView(for step: OnboardingStep) -> some View {
         switch step {
-        case .onboarding:
-            Text("onboarding")
-                .onTapGesture {
-                    onboardingViewModel.path.append(.permissions)
-                }
-                .navigationBarHidden(true)
-        case .permissions:
-            Text("permissions")
-                .onTapGesture {
-                    onboardingViewModel.path.append(.setup)
-                }
-                .navigationBarHidden(true)
+        case .onboarding: OnboardingPhaseView()
+        case .permissions: PermissionsView()
         case .setup:
             Text("setup")
                 .onTapGesture {

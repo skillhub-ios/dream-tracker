@@ -774,6 +774,17 @@
     "New Export" : {
 
     },
+    "next" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Next"
+          }
+        }
+      }
+    },
     "No backup files found" : {
 
     },
@@ -869,6 +880,17 @@
         }
       }
     },
+    "onboardingFouthStageTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ready to Unlock Your Dream’s Full Meaning?"
+          }
+        }
+      }
+    },
     "onboardingSecondStageInfo" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -920,6 +942,39 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "AI That Understands the Unspoken"
+          }
+        }
+      }
+    },
+    "onboardingSimbolAsk" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ask about ANY symbol"
+          }
+        }
+      }
+    },
+    "onboardingSimbolCreate" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сreate your dream diary"
+          }
+        }
+      }
+    },
+    "onboardingSimbolKeep" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep sensitive dreams private"
           }
         }
       }
@@ -1029,6 +1084,17 @@
     },
     "Sign In" : {
 
+    },
+    "skip" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skip"
+          }
+        }
+      }
     },
     "Skip" : {
 

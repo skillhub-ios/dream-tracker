@@ -20,11 +20,13 @@ enum OnboardingPhase {
     case fourth
 }
 
-enum PermissionsPhase {
-    case feel
-    case focus
-    case personalisation
-    case source
+enum PermissionsPhase: CaseIterable, Identifiable, Equatable {
+    case first
+    case second
+    case third
+    case fourth
+    
+    var id: Self { self }
 }
 
 enum SetupPhase {

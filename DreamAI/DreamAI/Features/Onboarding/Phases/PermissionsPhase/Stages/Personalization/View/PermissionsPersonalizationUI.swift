@@ -23,10 +23,7 @@ struct PermissionsPersonalizationUI: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             ageGenderCard
             beliefCard
-            
-            Spacer()
         }
-        .padding(.horizontal, 16)
     }
     
     private var ageGenderCard: some View {
@@ -66,7 +63,7 @@ struct PermissionsPersonalizationUI: View {
                 .foregroundColor(.white.opacity(0.5))
         }
         .frame(height: 44)
-        .padding(.horizontal, 8)
+        .padding(.horizontal, 16)
         .background(Color.white.opacity(0.05))
         .cornerRadius(10)
     }
@@ -74,7 +71,7 @@ struct PermissionsPersonalizationUI: View {
     private var beliefCard: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Do you believe dreams have meaning?")
-                .font(.headline)
+                .font(.body)
                 .foregroundColor(.white)
             VStack(spacing: 0) {
                 ForEach(viewModel.allBeliefs) { belief in
@@ -99,13 +96,13 @@ struct PermissionsPersonalizationUI: View {
                             }
                         }
                         .frame(height: 44)
+                        .padding(.horizontal, 16)
                     }
                     if viewModel.allBeliefs.last != belief {
                         Divider()
                     }
                 }
             }
-            .padding(10)
             .background(Color.appPurpleDark.mix(with: .white, by: 0.05).opacity(0.75))
             .clipShape(RoundedRectangle(cornerRadius: 10))
         }
