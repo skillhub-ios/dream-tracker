@@ -38,6 +38,8 @@ struct AuthSheetView: View {
     @State private var errorMessage = ""
     @Environment(\.dismiss) private var dismiss
     @State private var bridge = BridgeVCView()
+    var isSkipAllowed: Bool = false
+    var onSkipAction: (() -> Void)?
     
     var body: some View {
         VStack(spacing: 24) {
@@ -94,6 +96,13 @@ struct AuthSheetView: View {
                         await signInWithGoogle()
                     }
                 }
+                
+                Button {
+                    
+                } label: {
+                    Text("skip")
+                }
+                .buttonStyle(SkipStyle())
             }
             .padding(.horizontal, 16)
             Spacer()

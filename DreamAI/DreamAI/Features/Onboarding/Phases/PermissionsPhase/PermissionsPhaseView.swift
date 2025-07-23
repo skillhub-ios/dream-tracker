@@ -1,5 +1,5 @@
 //
-// PermissionsView.swift
+// PermissionsPhaseView.swift
 //
 // Created by Cesare on 22.07.2025 on Earth.
 //
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct PermissionsView: View {
+struct PermissionsPhaseView: View {
     
     @EnvironmentObject private var onboardingViewModel: OnboardingFlowViewModel
     @State private var state: PermissionsPhase = .first
@@ -29,7 +29,7 @@ struct PermissionsView: View {
     }
 }
 
-private extension PermissionsView {
+private extension PermissionsPhaseView {
     var paginationIndicator: some View {
         HStack(spacing: 8) {
             ForEach(PermissionsPhase.allCases) { phase in
@@ -86,7 +86,7 @@ private extension PermissionsView {
 
 #Preview {
     NavigationStack {
-        PermissionsView()
+        PermissionsPhaseView()
             .environmentObject(OnboardingFlowViewModel())
     }
 }

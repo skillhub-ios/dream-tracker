@@ -86,7 +86,7 @@ struct PermissionsPersonalizationUI: View {
                             if viewModel.selectedBelief == belief {
                                 Image(systemName: "checkmark.circle.fill")
                                     .resizable()
-                                    .foregroundColor(.purple)
+                                    .foregroundStyle(LinearGradient.appPurpleHorizontal)
                                     .frame(width: 24, height: 24)
                             } else {
                                 Image(systemName: "circle")

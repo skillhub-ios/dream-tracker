@@ -48,11 +48,12 @@ private extension OnboardingThirdPhaseView {
                 }
             }
             Spacer(minLength: 8)
-            Text(dream.date.formattedWithSpace())
-                .multilineTextAlignment(.trailing)
-                .font(.footnote)
-                .foregroundStyle(Color.appGray9.opacity(0.6))
-                .frame(maxHeight: 60)
+            VStack(alignment: .trailing) {
+                Text(dream.date.asShortDateString())
+                Text(dream.date.asShortTimeString())
+            }
+            .font(.footnote)
+            .foregroundStyle(Color.appGray9.opacity(0.6))
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 18)
@@ -78,6 +79,7 @@ private extension OnboardingThirdPhaseView {
 
 #Preview {
     OnboardingThirdPhaseView()
+        .padding(.horizontal, 16)
 }
 
 fileprivate enum OnboardingDream: Identifiable, CaseIterable {

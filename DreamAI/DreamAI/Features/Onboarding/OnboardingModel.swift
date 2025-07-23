@@ -30,9 +30,9 @@ enum PermissionsPhase: CaseIterable, Identifiable, Equatable {
 }
 
 enum SetupPhase {
-    case notifications
-    case allDone
-    case building
-    case dreamWorld
-    case save
+    case first
+    case second
+    case third
+    case fourth
+    case finish
 }

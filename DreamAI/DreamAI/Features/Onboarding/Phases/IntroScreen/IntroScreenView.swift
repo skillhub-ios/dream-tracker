@@ -49,6 +49,8 @@ private extension IntroScreenView {
                 .font(.body)
                 .foregroundStyle(Color.appPurpleLight.opacity(0.6))
         }
+        .multilineTextAlignment(.leading)
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
     
     var bottonSection: some View {
@@ -78,9 +80,8 @@ private extension IntroScreenView {
             languageManager.openSystemLanguageSettings()
         } label: {
             HStack(spacing: 12) {
-                Circle()
-                    .frame(width: 26, height: 26)
-                    .foregroundStyle(.gray)
+                Text(languageManager.currentLanguageFlag)
+                    .font(.title2)
                 Text(languageManager.currentLanguageCode.uppercased())
                     .font(.body)
                     .foregroundStyle(.white)
@@ -101,8 +102,8 @@ private extension IntroScreenView {
     
     func sheetHeight() -> CGFloat {
         switch deviceFamily {
-        case .pad: 0.35
-        case .phone: 0.28
+        case .pad: 0.4
+        case .phone: 0.3
         }
     }
 }

@@ -47,7 +47,7 @@ struct PermissionsLifeFocusUI: View {
                                 if viewModel.selectedAreas.contains(area) {
                                     Image(systemName: "checkmark.circle.fill")
                                         .resizable()
-                                        .foregroundColor(.purple)
+                                        .foregroundStyle(LinearGradient.appPurpleHorizontal)
                                         .frame(width: 24, height: 24)
                                 } else {
                                     Image(systemName: "circle")

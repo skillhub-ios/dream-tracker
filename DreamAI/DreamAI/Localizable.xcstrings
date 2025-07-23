@@ -14,6 +14,9 @@
         }
       }
     },
+    "%lld%%" : {
+
+    },
     "✨ '%@'\n— %@" : {
       "localizations" : {
         "en" : {
@@ -24,16 +27,22 @@
         }
       }
     },
+    "🌙" : {
+
+    },
+    "💫" : {
+
+    },
     "🔍  Real reflections" : {
 
     },
-    "🧚‍♀️" : {
+    "🔮" : {
+
+    },
+    "🧠" : {
 
     },
     "🧠  Interpretation" : {
-
-    },
-    "🪐" : {
 
     },
     "😞" : {
@@ -85,6 +94,17 @@
         }
       }
     },
+    "allDone" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All Done"
+          }
+        }
+      }
+    },
     "alreadyHaveAccount?" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -92,6 +112,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Do you already have an account?"
+          }
+        }
+      }
+    },
+    "analyzingYourDream" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analyzing your dream types..."
           }
         }
       }
@@ -129,6 +160,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "취침 시간"
+          }
+        }
+      }
+    },
+    "beginsNowUppercase" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "BEGINS NOW"
+          }
+        }
+      }
+    },
+    "buildingDreamProfile" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Building Your Dream Profile"
           }
         }
       }
@@ -199,6 +252,17 @@
     "Do you believe dreams have meaning?" : {
 
     },
+    "done" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
+          }
+        }
+      }
+    },
     "Done" : {
 
     },
@@ -213,6 +277,28 @@
     },
     "DreamAI" : {
 
+    },
+    "dreamStyles" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your dream styles"
+          }
+        }
+      }
+    },
+    "dreamWorldisReady" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your dream world is ready"
+          }
+        }
+      }
     },
     "Emoji" : {
 
@@ -236,7 +322,14 @@
 
     },
     "Face ID" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
+          }
+        }
+      }
     },
     "File Debug Info" : {
 
@@ -254,6 +347,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Flying"
+          }
+        }
+      }
+    },
+    "focusAreas" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Life focus areas"
           }
         }
       }
@@ -704,9 +808,6 @@
         }
       }
     },
-    "Intro" : {
-
-    },
     "introScreenSubtitle" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -743,6 +844,9 @@
       }
     },
     "Life Focus" : {
+
+    },
+    "List of Settings" : {
 
     },
     "Loading" : {
@@ -801,9 +905,6 @@
           }
         }
       }
-    },
-    "Not implemented" : {
-
     },
     "Notification Settings" : {
 
@@ -1007,6 +1108,17 @@
     "Permission Required" : {
 
     },
+    "personalBeliefs" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personal beliefs"
+          }
+        }
+      }
+    },
     "placeholder" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1053,6 +1165,17 @@
     },
     "Reminders" : {
 
+    },
+    "saveProgress" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save your progress"
+          }
+        }
+      }
     },
     "Search" : {
 
@@ -1121,6 +1244,17 @@
         }
       }
     },
+    "startJourney" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start Your Journey"
+          }
+        }
+      }
+    },
     "Stop Recording" : {
 
     },
@@ -1162,6 +1296,17 @@
     "Uncover Your Dreams with AI" : {
 
     },
+    "understandHowYouDream" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " Let’s Understand How You Dream"
+          }
+        }
+      }
+    },
     "Upgrade" : {
 
     },
@@ -1178,6 +1323,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Want to Go Deeper?"
+          }
+        }
+      }
+    },
+    "weCombining" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We’re combining:"
+          }
+        }
+      }
+    },
+    "weMappedSleepHabits" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We’ve mapped your sleep habits, moods, and dream style. \nWhat you'll gain: Your personalized journey into the subconscious"
           }
         }
       }
