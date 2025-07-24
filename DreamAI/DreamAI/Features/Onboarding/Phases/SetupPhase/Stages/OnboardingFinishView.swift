@@ -10,6 +10,7 @@ import SwiftUI
 struct OnboardingFinishView: View {
     
     @Environment(\.deviceFamily) private var deviceFamily
+    @EnvironmentObject private var onboardingViewModel: OnboardingFlowViewModel
     
     var body: some View {
         VStack {
@@ -23,7 +24,7 @@ struct OnboardingFinishView: View {
         .frame(maxHeight: .infinity, alignment: .center)
         .sheet(isPresented: .constant(true)) {
             AuthSheetView(mode: .signup, isSkipAllowed: true) {
-                
+                onboardingViewModel.finishOnboarding()
             }
             .presentationDetents([.fraction(sheetHeight())])
             .interactiveDismissDisabled(true)
@@ -40,4 +41,5 @@ struct OnboardingFinishView: View {
 
 #Preview {
     OnboardingFinishView()
+        .environmentObject(OnboardingFlowViewModel())
 }

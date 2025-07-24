@@ -60,7 +60,7 @@ fileprivate enum OnboardingSimbol {
     
     var image: String {
         switch self {
-        case .ask: "star.fill"
+        case .ask: "moon.stars.fill"
         case .keep: "lock.fill"
         case .create: "book.fill"
         }

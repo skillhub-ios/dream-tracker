@@ -13,6 +13,7 @@ enum PublisherKey: String {
     case updateTags
     case interpretationLoadingStatus
     case hasSubscription
+    case onboardingFinished
 }
 
 @inlinable

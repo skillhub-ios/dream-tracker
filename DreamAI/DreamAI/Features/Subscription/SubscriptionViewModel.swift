@@ -18,10 +18,13 @@ final class SubscriptionViewModel: ObservableObject {
     @Published var isSubscribed: Bool = false
     @Published var subscriptionType: SubscriptionType = .other
     @Published var subscriptionExpiry: Date?
+    @Published var onboardingComplete: Bool = false
     
     private var cancellables: Set<AnyCancellable> = []
+    private let onboardingCompleteKey = "onboardingComplete"
     
     init() {
+        self.onboardingComplete = UserDefaults.standard.bool(forKey: "onboardingComplete")
         Superwall.configure(apiKey: "pk_8beac5fd94b375e0e1e2df7bb99af2bf66f9fae6e806eca1")
         loadProducts()
         addSubscriptions()
@@ -39,6 +42,18 @@ final class SubscriptionViewModel: ObservableObject {
                 self?.isSubscribed = isSubscribed
                 self?.informAboutSubscriptionStatus(isSubscribed)
                 self?.getSubscriptionExpirationDate()
+            }
+            .store(in: &cancellables)
+        
+        NotificationCenter.default.publisher(for: Notification.Name(PublisherKey.onboardingFinished.rawValue))
+            .compactMap { extractValue(from: $0, as: Bool.self) }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isFinished in
+                self?.onboardingComplete = isFinished
+                UserDefaults.standard.set(isFinished, forKey: "onboardingComplete")
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self?.showPaywall()
+                }
             }
             .store(in: &cancellables)
     }

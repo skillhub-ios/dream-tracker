@@ -10,6 +10,8 @@ import SwiftUI
 struct SetupPhaseView: View {
     
     @State private var state: SetupPhase = .first
+    @EnvironmentObject private var authManager: AuthManager
+    @EnvironmentObject private var viewModel: OnboardingFlowViewModel
     
     var body: some View {
         ZStack {
@@ -68,7 +70,11 @@ private extension SetupPhaseView {
         case .second:
             state = .third
         case .fourth:
-            state = .finish
+            if authManager.isAuthenticated {
+                viewModel.finishOnboarding()
+            } else {
+                state = .finish
+            }
         default: break
         }
     }
@@ -79,4 +85,5 @@ private extension SetupPhaseView {
         SetupPhaseView()
     }
     .environmentObject(OnboardingFlowViewModel())
+    .environmentObject(AuthManager.shared)
 }

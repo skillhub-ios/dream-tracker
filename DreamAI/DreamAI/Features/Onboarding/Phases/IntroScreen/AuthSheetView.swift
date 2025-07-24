@@ -96,13 +96,14 @@ struct AuthSheetView: View {
                         await signInWithGoogle()
                     }
                 }
-                
-                Button {
-                    
-                } label: {
-                    Text("skip")
+                if isSkipAllowed {
+                    Button {
+                        onSkipAction?()
+                    } label: {
+                        Text("skip")
+                    }
+                    .buttonStyle(SkipStyle())
                 }
-                .buttonStyle(SkipStyle())
             }
             .padding(.horizontal, 16)
             Spacer()

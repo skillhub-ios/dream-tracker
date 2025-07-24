@@ -32,7 +32,7 @@ struct IntroScreenView: View {
             }
         }
         .sheet(isPresented: $showAuthSheet) {
-            AuthSheetView(mode: .login)
+            AuthSheetView(mode: .login, isSkipAllowed: false)
                 .presentationDetents([.fraction(sheetHeight())])
                 .presentationDragIndicator(.visible)
         }

@@ -19,11 +19,7 @@ struct MainView: View {
     
     var body: some View {
         Group {
-            if biometricManager.isFaceIDEnabled && !biometricManager.isAuthenticated {
-                BiometricAuthView(isPresented: $biometricManager.isFaceIDEnabled)
-            } else {
-                mainContentView
-            }
+            mainContentView
         }
         .alert("Authentication Error", isPresented: $showBiometricAlert) {
             Button("OK", role: .cancel) { }
