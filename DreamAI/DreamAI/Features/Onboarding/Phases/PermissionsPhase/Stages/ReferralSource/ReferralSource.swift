@@ -5,20 +5,31 @@
 //  Created by Shaxzod on 19/04/25
 //
 
-import Foundation
+import SwiftUI
 
-struct ReferralSource: Identifiable, Hashable {
-    let id: UUID = UUID()
-    let title: String
-    
-    static let all: [ReferralSource] = [
-        ReferralSource(title: "Instagram"),
-        ReferralSource(title: "Facebook"),
-        ReferralSource(title: "TikTok"),
-        ReferralSource(title: "YouTube"),
-        ReferralSource(title: "Google"),
-        ReferralSource(title: "Friend or family"),
-        ReferralSource(title: "Telegram"),
-        ReferralSource(title: "Other")
-    ]
-} 
+enum ReferralSource: CaseIterable, Identifiable, Hashable {
+    case instagram
+    case facebook
+    case tiktok
+    case youtube
+    case google
+    case friendOrFamily
+    case telegram
+    case other
+
+    var id: Self { self }
+
+    var displayName: LocalizedStringKey {
+        switch self {
+        case .instagram: return "Instagram"
+        case .facebook: return "Facebook"
+        case .tiktok: return "TikTok"
+        case .youtube: return "YouTube"
+        case .google: return "Google"
+        case .friendOrFamily: return "friend_or_family"
+        case .telegram: return "Telegram"
+        case .other: return "other"
+        }
+    }
+}
+

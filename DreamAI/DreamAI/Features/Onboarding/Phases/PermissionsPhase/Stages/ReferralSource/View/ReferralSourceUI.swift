@@ -12,7 +12,7 @@ struct ReferralSourceUI: View {
     
     var body: some View {
         VStack(spacing: 10) {
-            Text("How did you hear about us?")
+            Text("howDidHear")
                 .font(.title2.bold())
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -23,12 +23,12 @@ struct ReferralSourceUI: View {
     private var card: some View {
         VStack(spacing: 0) {
             VStack(spacing: 0) {
-                ForEach(viewModel.allSources) { source in
+                ForEach(ReferralSource.allCases) { source in
                     Button(action: {
                         viewModel.toggleSource(source)
                     }) {
                         HStack {
-                            Text(source.title)
+                            Text(source.displayName)
                                 .font(.system(size: 19))
                                 .foregroundColor(.white)
                             Spacer()
@@ -46,7 +46,7 @@ struct ReferralSourceUI: View {
                         }
                         .frame(height: 44)
                     }
-                    if viewModel.allSources.last != source {
+                    if source != .other {
                         Divider()
                     }
                 }

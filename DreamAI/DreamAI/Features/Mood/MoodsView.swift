@@ -63,7 +63,7 @@ struct MoodsView: View {
 
 private extension MoodsView {
     var headerView: some View {
-        Text("Mood before sleep")
+        Text("moodBeforeSleep")
             .font(.system(size: 17, weight: .semibold))
             .foregroundStyle(Color.appWhite)
     }
@@ -85,10 +85,10 @@ private extension MoodsView {
                                     .font(.system(size: 28))
                                     .padding(10)
                                     .frame(width: 46, height: 46)
-                                    .background(selectedMood == mood ?  Color.appPurple : Color.appGray7.opacity(0.35))
+                                    .background(selectedMood == mood ? Color.appPurple : Color.appGray7.opacity(0.35))
                                     .clipShape(.circle)
                                 
-                                Text(mood.title)
+                                Text(mood.displayName)
                                     .font(.caption2)
                                     .foregroundStyle(Color.appWhite)
                             }
@@ -114,7 +114,7 @@ private extension MoodsView {
     var creationView: some View {
         HStack(spacing: 12) {
             HStack(spacing: 12) {
-                TextField("Emoji", text: limitedEmojiBinding)
+                TextField("emoji", text: limitedEmojiBinding)
                     .frame(width: 60)
                     .padding(.leading, 4)
                     .padding(.vertical, 12)
@@ -124,7 +124,7 @@ private extension MoodsView {
                     )
                     .focused($focused, equals: .emoji)
                     .submitLabel(.done)
-                TextField("Mood", text: $viewModel.creatingMoodTitle)
+                TextField("mood", text: $viewModel.creatingMoodTitle)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.leading, 4)
                     .padding(.vertical, 12)
@@ -151,7 +151,7 @@ private extension MoodsView {
                 Button {
                     onSubmitAction()
                 } label: {
-                    Text("Add")
+                    Text("add")
                         .font(.subheadline.bold())
                         .foregroundStyle(viewModel.creatingMoodTitle.isEmpty
                                          ? Color.appGray1
@@ -183,7 +183,7 @@ private extension MoodsView {
                     .background(Color.appGray7.opacity(0.35))
                     .clipShape(.circle)
                 
-                Text("Custom")
+                Text("custom")
                     .font(.caption2)
                     .foregroundStyle(Color.appWhite)
             }

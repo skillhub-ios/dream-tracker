@@ -48,7 +48,7 @@ struct CreateDreamView: View {
                             }
                         )
                         Spacer()
-                        DButton(title: "Interpret Dream", isDisabled: $viewModel.isButtonDisabled) {
+                        DButton(title: "interpretDream", isDisabled: $viewModel.isButtonDisabled) {
                             if subscriptionViewModel.isSubscribed {
                                 viewModel.createDream()
                                 isShowingInterpretation = true
@@ -66,7 +66,7 @@ struct CreateDreamView: View {
                 }
             }
         }
-        .navigationTitle("Create Dream")
+        .navigationTitle("createDream")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
@@ -76,7 +76,7 @@ struct CreateDreamView: View {
                 doneNavigationButton()
             }
         }
-        .alert("Permission Required", isPresented: $viewModel.showPermissionAlert) {
+        .alert("permissionRequired", isPresented: $viewModel.showPermissionAlert) {
             Button("OK", role: .cancel) { }
         } message: {
             Text(viewModel.permissionAlertMessage)
@@ -116,13 +116,12 @@ private extension CreateDreamView {
     func dreamTextEditor(_ dreamText: Binding<String>) -> some View {
         ZStack(alignment: .topLeading) {
             if dreamText.wrappedValue.isEmpty {
-                Text("I dreamed...")
+                Text("dreamTextPlaceholder")
                     .font(.system(size: 17))
                     .foregroundStyle(Color.gray)
                     .padding(.top, 10)
                     .padding(.leading, 5)
             }
-            
             TextEditor(text: dreamText)
                 .font(.system(size: 17))
                 .focused($isInputActive)
@@ -142,7 +141,7 @@ private extension CreateDreamView {
     
     func microphoneButton(_ action: @escaping () -> Void) -> some View {
         Button(action: action) {
-            Label(viewModel.isRecording ? "Stop Recording" : "Use Microphone", systemImage: viewModel.isRecording ? "stop.circle.fill" : "microphone.fill")
+            Label(viewModel.isRecording ? "stopRecording" : "useMicrophone", systemImage: viewModel.isRecording ? "stop.circle.fill" : "microphone.fill")
                 .labelStyle(LeftImageLabel())
                 .font(.system(size: 17))
                 .foregroundStyle(Color.appWhite)
@@ -159,7 +158,7 @@ private extension CreateDreamView {
         Button(action: {
             dismiss()
         }) {
-            Text("Cancel")
+            Text("cancel")
                 .foregroundColor(.appPurple)
         }
     }
@@ -171,7 +170,7 @@ private extension CreateDreamView {
             }
             dismiss()
         }) {
-            Text("Done")
+            Text("done")
                 .foregroundColor(.appPurple)
         }
     }

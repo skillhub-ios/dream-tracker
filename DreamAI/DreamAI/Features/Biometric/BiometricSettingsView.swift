@@ -15,7 +15,7 @@ struct BiometricSettingsView: View {
     
     var body: some View {
             biometricToggleRow
-            .alert("Error", isPresented: $showingError) {
+            .alert("error", isPresented: $showingError) {
                 Button("OK") { }
             } message: {
                 Text(errorMessage)

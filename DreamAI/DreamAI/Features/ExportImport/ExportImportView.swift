@@ -74,7 +74,7 @@ struct ExportImportView: View {
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                Button("Cancel") {
+                Button("cancel") {
                     dismiss()
                 }
                 .foregroundColor(.appPurple)
@@ -259,7 +259,7 @@ private extension ExportImportView {
             HStack {
                 Image(systemName: "exclamationmark.triangle.fill")
                     .foregroundColor(.appRed)
-                Text("Error")
+                Text("error")
                     .font(.headline)
                     .foregroundColor(.appRed)
             }
@@ -278,7 +278,7 @@ private extension ExportImportView {
             HStack {
                 Image(systemName: "checkmark.circle.fill")
                     .foregroundColor(.appGreen)
-                Text("Success")
+                Text("success")
                     .font(.headline)
                     .foregroundColor(.appGreen)
             }
@@ -343,7 +343,7 @@ private extension ExportImportView {
                 Button(action: {
                     viewModel.resetToInitial()
                 }) {
-                    Text("Done")
+                    Text("done")
                         .font(.body)
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
@@ -356,7 +356,7 @@ private extension ExportImportView {
             Button(action: {
                 viewModel.resetToInitial()
             }) {
-                Text("Try Again")
+                Text("tryAgain")
                     .font(.body)
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity)
@@ -385,7 +385,7 @@ struct BackupFilesListView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Done") {
+                    Button("done") {
                         dismiss()
                     }
                 }

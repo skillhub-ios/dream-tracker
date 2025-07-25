@@ -13,10 +13,10 @@ struct PermissionsLifeFocusUI: View {
     var body: some View {
         VStack(spacing: 24) {
             VStack(alignment: .leading) {
-                Text("Life Focus")
+                Text("lifeFocus")
                     .font(.title2.bold())
                     .foregroundColor(.white)
-                Text("To understand your dreams better")
+                Text("lifeFocusSubtitle")
                     .font(.subheadline)
                     .foregroundColor(.white.opacity(0.7))
             }
@@ -29,18 +29,18 @@ struct PermissionsLifeFocusUI: View {
         VStack(alignment: .leading, spacing: 16) {
             HStack(spacing: 8) {
                 Text("💫")
-                Text("What's currently top of mind for you?")
+                Text("whatCurrentlyTopMind")
                     .foregroundColor(.white)
             }
             .font(.body)
             VStack(spacing: .zero) {
-                ForEach(viewModel.allAreas) { area in
+                ForEach(LifeFocusArea.allCases) { area in
                     VStack(spacing: 10) {
                         Button(action: {
                             viewModel.toggleArea(area)
                         }) {
                             HStack {
-                                Text(area.title)
+                                Text(area.displayName)
                                     .font(.system(size: 19))
                                     .foregroundColor(.white)
                                 Spacer()
@@ -60,7 +60,7 @@ struct PermissionsLifeFocusUI: View {
                             .frame(height: 44)
                         }
                     }
-                    if viewModel.allAreas.last != area {
+                    if area != .personalGrowth {
                         Divider()
                     }
                 }

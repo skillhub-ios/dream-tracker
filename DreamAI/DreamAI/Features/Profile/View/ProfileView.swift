@@ -40,11 +40,11 @@ struct ProfileView: View {
                     .disabled(isSigningOut)
                 
             }
-            .navigationTitle("Profile")
+            .navigationTitle("profile")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
+                    Button("cancel") {
                         dismiss()
                     }
                     .tint(.appPurple)
@@ -90,7 +90,7 @@ struct ProfileView: View {
 
 #Preview {
     ZStack {
-        Text("Profile")
+        Text("profile")
     }
     .sheet(isPresented: .constant(true)) {
         ProfileView()

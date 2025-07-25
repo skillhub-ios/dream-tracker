@@ -10,22 +10,22 @@ import AuthenticationServices
 
 enum AuthSheetMode {
     case signup, login
-    var title: String {
+    var title: LocalizedStringKey {
         switch self {
-        case .signup: return "Sign up"
-        case .login: return "Log In"
+        case .signup: return "signUp"
+        case .login: return "logIn"
         }
     }
     var appleButtonText: String {
         switch self {
-        case .signup: return "Sign Up with Apple"
-        case .login: return "Log In with Apple"
+        case .signup: return "appleSignUp"
+        case .login: return "appleLogIn"
         }
     }
     var googleButtonText: String {
         switch self {
-        case .signup: return "Sign Up with Google"
-        case .login: return "Log In with Google"
+        case .signup: return "googleSignUp"
+        case .login: return "googleLogIn"
         }
     }
 }

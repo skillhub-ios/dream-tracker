@@ -11,7 +11,7 @@ struct ProfileExitButton: View {
     let action: () -> Void
     var body: some View {
         Section {
-            Button("Exit") {
+            Button("exit") {
                 action()
             }
             .tint(.red)

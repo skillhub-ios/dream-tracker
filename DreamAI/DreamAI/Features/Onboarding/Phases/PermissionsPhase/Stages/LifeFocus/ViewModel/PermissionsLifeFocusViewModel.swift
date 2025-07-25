@@ -10,7 +10,6 @@ import Combine
 
 final class PermissionsLifeFocusViewModel: ObservableObject {
     @Published var selectedAreas: Set<LifeFocusArea> = []
-    let allAreas: [LifeFocusArea] = LifeFocusArea.all
     
     func toggleArea(_ area: LifeFocusArea) {
         if selectedAreas.contains(area) {

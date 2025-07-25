@@ -13,10 +13,10 @@ struct PermissionsPersonalizationUI: View {
     var body: some View {
         VStack(spacing: 24) {
             VStack(alignment: .leading) {
-                Text("Quick Personalization")
+                Text("quickPersonalization")
                     .font(.title2.bold())
                     .foregroundColor(.white)
-                Text("A few quick details to personalize insights")
+                Text("personalizationSubtitle")
                     .font(.subheadline)
                     .foregroundColor(.white.opacity(0.7))
             }
@@ -35,7 +35,7 @@ struct PermissionsPersonalizationUI: View {
                     }
                 }
             } label: {
-                menuRow(title: "Age range", value: viewModel.selectedAge.displayTitle)
+                menuRow(title: "ageRange", value: viewModel.selectedAge.displayTitle)
             }
             Menu {
                 ForEach(viewModel.allGenders) { gender in
@@ -44,7 +44,7 @@ struct PermissionsPersonalizationUI: View {
                     }
                 }
             } label: {
-                menuRow(title: "Gender", value: viewModel.selectedGender.displayTitle)
+                menuRow(title: "gender", value: viewModel.selectedGender.displayTitle)
             }
         }
         .padding(16)
@@ -52,7 +52,7 @@ struct PermissionsPersonalizationUI: View {
         .cornerRadius(16)
     }
     
-    private func menuRow(title: String, value: String) -> some View {
+    private func menuRow(title: LocalizedStringKey, value: LocalizedStringKey) -> some View {
         HStack {
             Text(title)
                 .foregroundColor(.white)
@@ -70,7 +70,7 @@ struct PermissionsPersonalizationUI: View {
     
     private var beliefCard: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Do you believe dreams have meaning?")
+            Text("believeDreamsHaveMeaning")
                 .font(.body)
                 .foregroundColor(.white)
             VStack(spacing: 0) {

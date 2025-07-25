@@ -10,7 +10,6 @@ import Combine
 
 final class ReferralSourceViewModel: ObservableObject {
     @Published var selectedSources: Set<ReferralSource> = []
-    let allSources: [ReferralSource] = ReferralSource.all
     
     func toggleSource(_ source: ReferralSource) {
         if selectedSources.contains(source) {

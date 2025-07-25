@@ -17,7 +17,7 @@ enum DButtonState {
 }
 
 struct DButton: View {
-    let title: String
+    let title: LocalizedStringKey
     @Binding var state: DButtonState
     let action: () -> Void
     let asyncAction: (() async -> Void)?
@@ -32,7 +32,7 @@ struct DButton: View {
     }
     
     init(
-        title: String,
+        title: LocalizedStringKey,
         state: Binding<DButtonState> = .constant(.normal),
         isDisabled: Binding<Bool> = .constant(false),
         action: @escaping () -> Void
@@ -45,7 +45,7 @@ struct DButton: View {
     }
     
     init(
-        title: String,
+        title: LocalizedStringKey,
         state: Binding<DButtonState> = .constant(.normal),
         isDisabled: Binding<Bool> = .constant(false),
         asyncAction: @escaping () async -> Void
@@ -65,19 +65,19 @@ struct DButton: View {
                     Text(title)
                         .font(.title3.bold())
                 case .loading:
-                    Text("Loading")
+                    Text("loading")
                         .font(.title3.bold())
                     MagicLoadingUI(lineWidth: 2)
                         .frame(width: 25, height: 25)
                 case .tryAgain:
-                    Text("Try again")
+                    Text("tryAgain")
                         .font(.title3.bold())
                     Image(.magic)
                         .resizable()
                         .scaledToFit()
                         .frame(width: 23, height: 23)
                 case .locked:
-                    Text("Interpret Dream")
+                    Text("interpretDream")
                         .font(.title3.bold())
                     Image(systemName: "lock.fill")
                         .font(.title3)

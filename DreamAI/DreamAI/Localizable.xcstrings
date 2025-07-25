@@ -12,10 +12,11 @@
             "value" : "%1$@ %2$@"
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "%lld%%" : {
-
+      "shouldTranslate" : false
     },
     "✨ '%@'\n— %@" : {
       "localizations" : {
@@ -25,46 +26,98 @@
             "value" : "✨ '%1$@'\n— %2$@"
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "🌙" : {
-
+      "shouldTranslate" : false
+    },
+    "👋" : {
+      "shouldTranslate" : false
     },
     "💫" : {
-
+      "shouldTranslate" : false
     },
-    "🔍  Real reflections" : {
-
+    "🔍" : {
+      "shouldTranslate" : false
     },
     "🔮" : {
-
+      "shouldTranslate" : false
     },
     "🧠" : {
-
-    },
-    "🧠  Interpretation" : {
-
+      "shouldTranslate" : false
     },
     "😞" : {
-
+      "shouldTranslate" : false
     },
     "1. Open the Files app on your iPhone" : {
-
+      "shouldTranslate" : false
     },
     "2. Tap 'On My iPhone' or 'On My iPad'" : {
-
+      "shouldTranslate" : false
     },
     "3. Look for a folder with your app name" : {
-
+      "shouldTranslate" : false
     },
     "4. Your backup files will be there" : {
-
+      "shouldTranslate" : false
     },
-    "A few quick details to personalize insights" : {
-
+    "18–24" : {
+      "extractionState" : "manual",
+      "shouldTranslate" : false
     },
-    "Add" : {
-
+    "25–34" : {
+      "extractionState" : "manual",
+      "shouldTranslate" : false
+    },
+    "35–44" : {
+      "extractionState" : "manual",
+      "shouldTranslate" : false
+    },
+    "45–54" : {
+      "extractionState" : "manual",
+      "shouldTranslate" : false
+    },
+    "55–64" : {
+      "extractionState" : "manual",
+      "shouldTranslate" : false
+    },
+    "65+" : {
+      "extractionState" : "manual",
+      "shouldTranslate" : false
+    },
+    "a_bit" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A bit"
+          }
+        }
+      }
+    },
+    "add" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add"
+          }
+        }
+      }
+    },
+    "ageRange" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Age range"
+          }
+        }
+      }
     },
     "aIChat" : {
       "extractionState" : "manual",
@@ -127,8 +180,49 @@
         }
       }
     },
-    "Are you sure you want to delete this dream?" : {
-
+    "angry" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Angry"
+          }
+        }
+      }
+    },
+    "anxious" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anxious"
+          }
+        }
+      }
+    },
+    "appleLogIn" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log In with Apple"
+          }
+        }
+      }
+    },
+    "appleSignUp" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign Up with Apple"
+          }
+        }
+      }
     },
     "Authenticate" : {
 
@@ -148,18 +242,13 @@
     "Backup Files (%lld)" : {
 
     },
-    "Bedtime" : {
+    "bedtime" : {
+      "extractionState" : "manual",
       "localizations" : {
-        "kk" : {
+        "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ұйқы уақыты"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "취침 시간"
+            "value" : "Bedtime"
           }
         }
       }
@@ -175,6 +264,28 @@
         }
       }
     },
+    "believeDreamsHaveMeaning" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Do you believe dreams have meaning?"
+          }
+        }
+      }
+    },
+    "blurDreams" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blur Dreams"
+          }
+        }
+      }
+    },
     "buildingDreamProfile" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -186,8 +297,38 @@
         }
       }
     },
-    "Cancel" : {
-
+    "calm" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calm"
+          }
+        }
+      }
+    },
+    "cancel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        }
+      }
+    },
+    "career_growth" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Career Growth"
+          }
+        }
+      }
     },
     "chatFirstMessage" : {
       "extractionState" : "manual",
@@ -225,32 +366,107 @@
         }
       }
     },
-    "Create Dream" : {
-
+    "createDream" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create Dream"
+          }
+        }
+      }
     },
-    "Custom" : {
-
+    "creativity" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Creativity"
+          }
+        }
+      }
     },
-    "Data Deletion" : {
-
+    "custom" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom"
+          }
+        }
+      }
+    },
+    "dark" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dark"
+          }
+        }
+      }
+    },
+    "dataDeletion" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data Deletion"
+          }
+        }
+      }
     },
     "Debug Info" : {
-
+      "shouldTranslate" : false
     },
-    "Delete" : {
-
+    "delete" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
+          }
+        }
+      }
     },
-    "Delete All Data?" : {
-
+    "deleteAll" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete All Data?"
+          }
+        }
+      }
     },
-    "Describe the dream" : {
-
+    "deleteDreamAlert" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to delete this dream?"
+          }
+        }
+      }
     },
-    "Do you already have an account?" : {
-
-    },
-    "Do you believe dreams have meaning?" : {
-
+    "describeDream" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Describe the dream"
+          }
+        }
+      }
     },
     "done" : {
       "extractionState" : "manual",
@@ -266,17 +482,41 @@
     "Done" : {
 
     },
-    "Dream description" : {
-
-    },
-    "Dream Details" : {
-
-    },
-    "Dream Interpretation" : {
-
-    },
     "DreamAI" : {
-
+      "shouldTranslate" : false
+    },
+    "dreamDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dream description"
+          }
+        }
+      }
+    },
+    "dreamDetails" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dream Details"
+          }
+        }
+      }
+    },
+    "dreamInterpretation" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dream Interpretation"
+          }
+        }
+      }
     },
     "dreamStyles" : {
       "extractionState" : "manual",
@@ -285,6 +525,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Your dream styles"
+          }
+        }
+      }
+    },
+    "dreamTextPlaceholder" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I dreamed..."
           }
         }
       }
@@ -300,17 +551,74 @@
         }
       }
     },
-    "Emoji" : {
-
+    "emoji" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Emoji"
+          }
+        }
+      }
+    },
+    "emotional" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Emotional"
+          }
+        }
+      }
+    },
+    "enableToSync" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To enable sync, you need to sign in to your Apple account"
+          }
+        }
+      }
+    },
+    "error" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error"
+          }
+        }
+      }
     },
     "Error" : {
 
     },
-    "Exit" : {
-
+    "exit" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exit"
+          }
+        }
+      }
     },
-    "Explore your subconscious, one dream at a time." : {
-
+    "export" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Export"
+          }
+        }
+      }
     },
     "Export Dreams" : {
 
@@ -318,24 +626,47 @@
     "Export or import a file from your phone to backup and restore your dreams" : {
 
     },
-    "Export/Import" : {
-
-    },
     "Face ID" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Done"
+            "value" : "Face ID"
+          }
+        }
+      },
+      "shouldTranslate" : false
+    },
+    "Facebook" : {
+      "shouldTranslate" : false
+    },
+    "female" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Female"
           }
         }
       }
     },
     "File Debug Info" : {
-
+      "shouldTranslate" : false
     },
     "File Path Information" : {
-
+      "shouldTranslate" : false
+    },
+    "filter" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filter"
+          }
+        }
+      }
     },
     "Filter" : {
 
@@ -369,6 +700,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Freedom"
+          }
+        }
+      }
+    },
+    "friend_or_family" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Friend or family"
+          }
+        }
+      }
+    },
+    "gender" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gender"
           }
         }
       }
@@ -764,38 +1117,140 @@
         }
       }
     },
+    "Google" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Google"
+          }
+        }
+      },
+      "shouldTranslate" : false
+    },
+    "googleLogIn" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log In with Google"
+          }
+        }
+      }
+    },
+    "googleSignUp" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign Up with Google"
+          }
+        }
+      }
+    },
+    "happy" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Happy"
+          }
+        }
+      }
+    },
     "Hello, world!" : {
 
     },
-    "Hi there 👋" : {
-
-    },
-    "How did you hear about us?" : {
-
-    },
-    "How do your dreams usually feel?" : {
-
+    "hiThere" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hi there"
+          }
+        }
+      }
     },
     "How to Find Your Files" : {
 
     },
-    "I dreamed..." : {
-
+    "howDidHear" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How did you hear about us?"
+          }
+        }
+      }
+    },
+    "howDreamsUsuallyFeel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How do your dreams usually feel?"
+          }
+        }
+      }
     },
     "iCloud" : {
-
+      "shouldTranslate" : false
     },
-    "iCloud Status" : {
-
+    "iCloudStatus" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iCloud Status"
+          }
+        }
+      }
     },
-    "iCloud Sync" : {
-
+    "iCloudSync" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iCloud Sync"
+          }
+        }
+      }
     },
     "Import Dreams" : {
 
     },
-    "Interpret Dream" : {
-
+    "inLove" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In Love"
+          }
+        }
+      }
+    },
+    "Instagram" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Instagram"
+          }
+        }
+      },
+      "shouldTranslate" : false
     },
     "interpretation" : {
       "extractionState" : "manual",
@@ -804,6 +1259,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Interpretation"
+          }
+        }
+      }
+    },
+    "interpretDream" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Interpret Dream"
           }
         }
       }
@@ -830,30 +1296,62 @@
         }
       }
     },
-    "Language" : {
-
-    },
-    "Let's help you get more accurate dream insights" : {
+    "language" : {
+      "extractionState" : "manual",
       "localizations" : {
-        "ar" : {
+        "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "arabic"
+            "value" : "Language"
           }
         }
       }
     },
-    "Life Focus" : {
-
+    "lifeFocus" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Life Focus"
+          }
+        }
+      }
     },
-    "Loading" : {
-
+    "lifeFocusSubtitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To understand your dreams better"
+          }
+        }
+      }
     },
-    "Log in" : {
-
+    "loading" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loading"
+          }
+        }
+      }
     },
     "Log your first dream 🌙" : {
 
+    },
+    "logDream" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log your first dream"
+          }
+        }
+      }
     },
     "logIn" : {
       "extractionState" : "manual",
@@ -866,11 +1364,71 @@
         }
       }
     },
-    "Mood" : {
-
+    "love_and_relationships" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Love & Relationships"
+          }
+        }
+      }
     },
-    "Mood before sleep" : {
-
+    "lucid" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lucid"
+          }
+        }
+      }
+    },
+    "male" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Male"
+          }
+        }
+      }
+    },
+    "mental_health" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mental Health"
+          }
+        }
+      }
+    },
+    "mood" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mood"
+          }
+        }
+      }
+    },
+    "moodBeforeSleep" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mood before sleep"
+          }
+        }
+      }
     },
     "New Export" : {
 
@@ -903,14 +1461,85 @@
         }
       }
     },
-    "Notification Settings" : {
-
+    "nonBinary" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non-binary"
+          }
+        }
+      }
+    },
+    "not_really" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not really"
+          }
+        }
+      }
+    },
+    "notifications" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notifications"
+          }
+        }
+      }
     },
     "Notifications" : {
 
     },
+    "notificationSettings" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notification Settings"
+          }
+        }
+      }
+    },
+    "notReally" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not really"
+          }
+        }
+      }
+    },
+    "notToSay" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not to Say"
+          }
+        }
+      }
+    },
     "OK" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        }
+      },
+      "shouldTranslate" : false
     },
     "onboardingDreamFly" : {
       "extractionState" : "manual",
@@ -1099,11 +1728,74 @@
         }
       }
     },
+    "other" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Other"
+          }
+        }
+      }
+    },
+    "past_trauma" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Past Trauma"
+          }
+        }
+      }
+    },
     "Path: %@" : {
 
     },
-    "Permission Required" : {
-
+    "permanentlyDeleteAlert" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This action will permanently delete all data and cannot be undone."
+          }
+        }
+      }
+    },
+    "permissionFeelingSubtitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Let’s help you get more accurate dream insights"
+          }
+        }
+      }
+    },
+    "permissionRequired" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permission Required"
+          }
+        }
+      }
+    },
+    "personal_growth" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personal Growth"
+          }
+        }
+      }
     },
     "personalBeliefs" : {
       "extractionState" : "manual",
@@ -1112,6 +1804,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Personal beliefs"
+          }
+        }
+      }
+    },
+    "personalizationSubtitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A few quick details to personalize insights"
           }
         }
       }
@@ -1131,11 +1834,30 @@
     "Please authenticate to access your dreams" : {
 
     },
+    "preferNotToSay" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prefer not to say"
+          }
+        }
+      }
+    },
     "Privacy" : {
 
     },
-    "Privacy Policy" : {
-
+    "privacyPolicy" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy Policy"
+          }
+        }
+      }
     },
     "Processing..." : {
 
@@ -1143,11 +1865,27 @@
     "Processing... %lld%%" : {
 
     },
-    "Profile" : {
-
+    "profile" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profile"
+          }
+        }
+      }
     },
-    "Quick Personalization" : {
-
+    "quickPersonalization" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quick Personalization"
+          }
+        }
+      }
     },
     "readyToLog?" : {
       "extractionState" : "manual",
@@ -1160,8 +1898,41 @@
         }
       }
     },
+    "realistic" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Realistic"
+          }
+        }
+      }
+    },
+    "realReflections" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Real Reflections"
+          }
+        }
+      }
+    },
     "Reminders" : {
 
+    },
+    "sad" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sad"
+          }
+        }
+      }
     },
     "saveProgress" : {
       "extractionState" : "manual",
@@ -1202,8 +1973,27 @@
         }
       }
     },
-    "Sign In" : {
-
+    "signIn" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign In"
+          }
+        }
+      }
+    },
+    "signUp" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign up"
+          }
+        }
+      }
     },
     "skip" : {
       "extractionState" : "manual",
@@ -1216,9 +2006,6 @@
         }
       }
     },
-    "Skip" : {
-
-    },
     "sleepParalysis" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1226,6 +2013,39 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sleep Paralysis"
+          }
+        }
+      }
+    },
+    "somewhat" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Somewhat"
+          }
+        }
+      }
+    },
+    "spiritual" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spiritual"
+          }
+        }
+      }
+    },
+    "spirituality" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spirituality"
           }
         }
       }
@@ -1252,14 +2072,49 @@
         }
       }
     },
-    "Stop Recording" : {
-
+    "stopRecording" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stop Recording"
+          }
+        }
+      }
     },
-    "Subscription" : {
-
+    "stressed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stressed"
+          }
+        }
+      }
     },
-    "Success" : {
-
+    "subscription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subscription"
+          }
+        }
+      }
+    },
+    "success" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Success"
+          }
+        }
+      }
     },
     "supernaturalDream" : {
       "extractionState" : "manual",
@@ -1272,26 +2127,98 @@
         }
       }
     },
-    "Terms" : {
-
+    "symbolic" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbolic"
+          }
+        }
+      }
     },
-    "This action will permanently delete all data and cannot be undone." : {
-
+    "Telegram" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Telegram"
+          }
+        }
+      },
+      "shouldTranslate" : false
     },
-    "To enable sync, you need to sign in to your Apple account" : {
-
+    "terms" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terms"
+          }
+        }
+      }
     },
-    "To understand your dreams better" : {
-
+    "TikTok" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TikTok"
+          }
+        }
+      },
+      "shouldTranslate" : false
+    },
+    "transMan" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trans man"
+          }
+        }
+      }
+    },
+    "transWoman" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trans woman"
+          }
+        }
+      }
     },
     "Try again" : {
 
     },
-    "Try Again" : {
-
+    "tryAgain" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try Again"
+          }
+        }
+      }
     },
-    "Uncover Your Dreams with AI" : {
-
+    "under18" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Under 18"
+          }
+        }
+      }
     },
     "understandHowYouDream" : {
       "extractionState" : "manual",
@@ -1304,14 +2231,52 @@
         }
       }
     },
-    "Upgrade" : {
-
+    "upgrade" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upgrade"
+          }
+        }
+      }
     },
-    "Use Microphone" : {
-
+    "useMicrophone" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use Microphone"
+          }
+        }
+      }
+    },
+    "vivid" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vivid"
+          }
+        }
+      }
     },
     "Wake-up" : {
 
+    },
+    "wakeup" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wake-up"
+          }
+        }
+      }
     },
     "wantToGoDeeper" : {
       "extractionState" : "manual",
@@ -1335,6 +2300,17 @@
         }
       }
     },
+    "weird" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weird"
+          }
+        }
+      }
+    },
     "weMappedSleepHabits" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1346,14 +2322,61 @@
         }
       }
     },
-    "What's currently top of mind for you?" : {
-
+    "whatCurrentlyTopMind" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What’s currently top of mind for you?"
+          }
+        }
+      }
     },
-    "Write feedback" : {
-
+    "writeFeedback" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Write feedback"
+          }
+        }
+      }
     },
-    "Your Plan" : {
-
+    "yes" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yes"
+          }
+        }
+      }
+    },
+    "yourPlan" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your Plan"
+          }
+        }
+      }
+    },
+    "YouTube" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "YouTube"
+          }
+        }
+      },
+      "shouldTranslate" : false
     },
     "сancel" : {
       "extractionState" : "manual",

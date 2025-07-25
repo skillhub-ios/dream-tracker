@@ -5,8 +5,7 @@
 //  Created by Shaxzod on 19/04/25
 //
 
-import Foundation
-import Combine
+import SwiftUI
 
 final class PermissionsPersonalizationViewModel: ObservableObject {
     @Published var selectedAge: AgeRange = .notToSay
@@ -28,5 +27,11 @@ enum DreamBelief: String, CaseIterable, Identifiable, Hashable {
     case notReally = "Not really"
     
     var id: String { rawValue }
-    var displayTitle: String { rawValue }
-} 
+    var displayTitle: LocalizedStringKey {
+        switch self {
+        case .yes: "yes"
+        case .somewhat: "somewhat"
+        case .notReally: "notReally"
+        }
+    }
+}

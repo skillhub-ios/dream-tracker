@@ -43,7 +43,7 @@ struct SearchBarView: View {
                     }
                 }
             } label: {
-                Label("Filter", systemImage: "line.3.horizontal.decrease")
+                Label("filter", systemImage: "line.3.horizontal.decrease")
                     .labelStyle(.iconOnly)
                     .foregroundStyle(Color.gray)
                     .padding(10)

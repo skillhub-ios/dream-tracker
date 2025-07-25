@@ -39,26 +39,26 @@ struct ProfileSettingsSection: View {
             exportImportRow(action: exportImportAction)
                 .frame(height: 40)
         }
-        .alert("iCloud Sync", isPresented: $viewModel.showiCloudSignInAlert) {
-            Button("Sign In") {
+        .alert("iCloudSync", isPresented: $viewModel.showiCloudSignInAlert) {
+            Button("signIn") {
                 if let url = URL(string: UIApplication.openSettingsURLString) {
                     UIApplication.shared.open(url)
                 }
             }
-            Button("Cancel", role: .cancel) {
+            Button("cancel", role: .cancel) {
                 viewModel.isICloudEnabled = false
             }
         } message: {
-            Text("To enable sync, you need to sign in to your Apple account")
+            Text("enableToSync")
         }
-        .alert("iCloud Status", isPresented: $viewModel.showiCloudStatusAlert) {
+        .alert("iCloudStatus", isPresented: $viewModel.showiCloudStatusAlert) {
             Button("OK", role: .cancel) {
                 viewModel.resetSyncStatusAlert()
             }
         } message: {
             Text(viewModel.iCloudStatusMessage)
         }
-        .alert("Notification Settings", isPresented: $showAlert) {
+        .alert("notificationSettings", isPresented: $showAlert) {
             Button("OK") { }
         } message: {
             Text(alertMessage)
@@ -97,7 +97,7 @@ private extension ProfileSettingsSection {
             Image(systemName: "bell.fill")
                 .font(.title3)
                 .foregroundStyle(Color.appPurple)
-            Text("Notifications")
+            Text("notifications")
             Spacer()
             if subscriptionViewModel.isSubscribed {
                 Toggle("", isOn: notificationBinding)
@@ -116,7 +116,7 @@ private extension ProfileSettingsSection {
                 Image(systemName: "square.and.arrow.down")
                     .font(.title3)
                     .foregroundStyle(Color.appPurple)
-                Text("Export/Import")
+                Text("export")
                     .foregroundStyle(.white)
                 Spacer()
                 if subscriptionViewModel.isSubscribed {

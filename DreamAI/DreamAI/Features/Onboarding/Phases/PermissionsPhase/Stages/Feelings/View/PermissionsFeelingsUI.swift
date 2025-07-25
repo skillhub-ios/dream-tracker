@@ -13,10 +13,13 @@ struct PermissionsFeelingsUI: View {
     var body: some View {
         VStack(spacing: 24) {
             VStack(alignment: .leading) {
-                Text("Hi there 👋")
-                    .font(.title2.bold())
-                    .foregroundColor(.white)
-                Text("Let's help you get more accurate dream insights")
+                HStack {
+                    Text("hiThere")
+                    Text("👋")
+                }
+                .font(.title2.bold())
+                .foregroundColor(.white)
+                Text("permissionFeelingSubtitle")
                     .font(.subheadline)
                     .foregroundColor(.white.opacity(0.7))
             }
@@ -29,17 +32,17 @@ struct PermissionsFeelingsUI: View {
         VStack(alignment: .leading, spacing: 16) {
             HStack(spacing: 8) {
                 Text("🔮")
-                Text("How do your dreams usually feel?")
+                Text("howDreamsUsuallyFeel")
                     .foregroundColor(.white)
             }
             .font(.body)
-            VStack(spacing:0) {
-                ForEach(viewModel.allFeelings) { feeling in
+            VStack(spacing: .zero) {
+                ForEach(DreamFeeling.allCases) { feeling in
                     Button(action: {
                         viewModel.toggleFeeling(feeling)
                     }) {
                         HStack {
-                            Text(feeling.title)
+                            Text(feeling.displayName)
                                 .font(.system(size: 19))
                                 .foregroundColor(.white)
                             Spacer()
@@ -58,8 +61,7 @@ struct PermissionsFeelingsUI: View {
                         .padding(.horizontal, 16)
                         .frame(height: 44)
                     }
-                    
-                    if viewModel.allFeelings.last != feeling {
+                    if feeling != .realistic {
                         Divider()
                     }
                 }

@@ -47,10 +47,6 @@ struct ChatView: View {
                 .navigationTitle("aIChat")
                 .navigationBarTitleDisplayMode(.inline)
                 .navigationBarBackButtonHidden()
-                .background {
-                    Color.appPurpleDark.opacity(0.75)
-                        .edgesIgnoringSafeArea(.all)
-                }
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
                         Button(action: {
@@ -72,6 +68,10 @@ struct ChatView: View {
                 .frame(height: textHeight)
                 .padding(.horizontal, 16)
             }
+        }
+        .background {
+            Color.appPurpleDark.opacity(0.75)
+                .edgesIgnoringSafeArea(.all)
         }
     }
 }

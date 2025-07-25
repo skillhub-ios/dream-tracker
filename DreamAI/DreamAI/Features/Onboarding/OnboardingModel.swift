@@ -30,7 +30,7 @@ enum PermissionsPhase: CaseIterable, Identifiable, Equatable {
 }
 
 enum SetupPhase {
-    case first
+//    case first
     case second
     case third
     case fourth

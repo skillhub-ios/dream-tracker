@@ -11,12 +11,12 @@ struct ProfileHeaderView: View {
     var isPremium: Bool
     var body: some View {
         HStack {
-            Button("Cancel") {
+            Button("cancel") {
                 // Dismiss action
             }
             .foregroundColor(Color.purple)
             Spacer()
-            Text("Profile")
+            Text("profile")
                 .font(.headline)
                 .foregroundColor(.primary)
             Spacer()

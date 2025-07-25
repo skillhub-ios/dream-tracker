@@ -25,7 +25,7 @@ struct PermissionSettingsView: View {
 private extension PermissionSettingsView {
     var notificationsSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Notifications")
+            Text("notifications")
                 .font(.title2.bold())
                 .foregroundStyle(.white)
             VStack(spacing: 0) {
@@ -46,10 +46,10 @@ private extension PermissionSettingsView {
                 .padding(.vertical, 8)
                 Divider()
                 HStack {
-                    Text("Bedtime")
+                    Text("bedtime")
                         .foregroundColor(.white)
                     Spacer()
-                    DatePicker("Bedtime", selection: $viewModel.bedtime, displayedComponents: .hourAndMinute)
+                    DatePicker("bedtime", selection: $viewModel.bedtime, displayedComponents: .hourAndMinute)
                         .datePickerStyle(.compact)
                         .labelsHidden()
                         .disabled(!viewModel.remindersEnabled)

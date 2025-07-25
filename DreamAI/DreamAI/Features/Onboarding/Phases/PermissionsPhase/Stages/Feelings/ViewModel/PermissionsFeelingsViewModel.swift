@@ -10,7 +10,6 @@ import Combine
 
 final class PermissionsFeelingsViewModel: ObservableObject {
     @Published var selectedFeelings: Set<DreamFeeling> = []
-    let allFeelings: [DreamFeeling] = DreamFeeling.all
     
     func toggleFeeling(_ feeling: DreamFeeling) {
         if selectedFeelings.contains(feeling) {

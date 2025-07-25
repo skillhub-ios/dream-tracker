@@ -21,7 +21,7 @@ struct ProfileFeedbackSection: View {
             HStack {
                 Image(systemName: "globe")
                     .foregroundColor(.appPurple)
-                Text("Language")
+                Text("language")
                 Spacer()
                 Text(languageManager.currentLanguageDisplayName)
                     .foregroundColor(.secondary)
@@ -47,14 +47,14 @@ struct ProfileFeedbackSection: View {
                 HStack {
                     Image(systemName: "bell.fill")
                         .foregroundColor(.appPurple)
-                    Text("Notifications")
+                    Text("notifications")
                 }
             }
             .tint(.appPurple)
             
             if areNotificationsEnabled {
                 HStack {
-                    Text("Bedtime")
+                    Text("bedtime")
                     Spacer()
                     DatePicker("", selection: $bedtime, displayedComponents: .hourAndMinute)
                         .labelsHidden()
@@ -63,7 +63,7 @@ struct ProfileFeedbackSection: View {
                 }
                 
                 HStack {
-                    Text("Wake-up")
+                    Text("wakeup")
                     Spacer()
                     DatePicker("", selection: $wakeupTime, displayedComponents: .hourAndMinute)
                         .labelsHidden()
@@ -78,7 +78,7 @@ struct ProfileFeedbackSection: View {
                 HStack {
                     Image(systemName: "envelope.fill")
                         .foregroundColor(.appPurple)
-                    Text("Write feedback")
+                    Text("writeFeedback")
                     .foregroundColor(.white)
 
                     Spacer()

@@ -47,14 +47,14 @@ struct MainFloatingPanelView: View {
                                             isDeletionAlertPresented = true
                                             viewModel.deletionDreamId = dream.id
                                         } label: {
-                                            Label("Delete", systemImage: "trash")
+                                            Label("delete", systemImage: "trash")
                                         }
                                     }
                                     .swipeActions(edge: .leading) {
                                         Button() {
                                             showCreateDreamView = true
                                         } label: {
-                                            Label("Add", systemImage: "plus")
+                                            Label("add", systemImage: "plus")
                                                 .tint(.appPurple)
                                         }
                                     }
@@ -98,10 +98,10 @@ struct MainFloatingPanelView: View {
             }
         }
         .alert(
-            "Are you sure you want to delete this dream?",
+            "deleteDreamAlert",
             isPresented: $isDeletionAlertPresented
         ) {
-            Button("Delete", role: .destructive) {
+            Button("delete", role: .destructive) {
                 guard let id = viewModel.deletionDreamId else {
                     isDeletionAlertPresented = false
                     return }
@@ -110,7 +110,7 @@ struct MainFloatingPanelView: View {
                     viewModel.deleteDreamBy(id: id)
                 }
             }
-            Button("Cancel", role: .cancel) {
+            Button("cancel", role: .cancel) {
                 isDeletionAlertPresented = false
                 viewModel.deletionDreamId = nil
             }

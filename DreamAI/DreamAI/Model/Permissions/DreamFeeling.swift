@@ -5,21 +5,30 @@
 //  Created by Shaxzod on 19/04/25
 //
 
-import Foundation
+import SwiftUI
 
-struct DreamFeeling: Identifiable, Hashable {
-    let id: UUID = UUID()
-    let title: String
-    let systemImage: String?
+enum DreamFeeling: String, CaseIterable, Identifiable, Hashable {
+    case vivid
+    case weird
+    case emotional
+    case spiritual
+    case dark
+    case symbolic
+    case lucid
+    case realistic
     
-    static let all: [DreamFeeling] = [
-        DreamFeeling(title: "Vivid", systemImage: nil),
-        DreamFeeling(title: "Weird", systemImage: nil),
-        DreamFeeling(title: "Emotional", systemImage: nil),
-        DreamFeeling(title: "Spiritual", systemImage: nil),
-        DreamFeeling(title: "Dark", systemImage: nil),
-        DreamFeeling(title: "Symbolic", systemImage: nil),
-        DreamFeeling(title: "Lucid", systemImage: nil),
-        DreamFeeling(title: "Realistic", systemImage: nil)
-    ]
-} 
+    var id: Self { self }
+    
+    var displayName: LocalizedStringKey {
+        switch self {
+        case .vivid:      return "vivid"
+        case .weird:      return "weird"
+        case .emotional:  return "emotional"
+        case .spiritual:  return "spiritual"
+        case .dark:       return "dark"
+        case .symbolic:   return "symbolic"
+        case .lucid:      return "lucid"
+        case .realistic:  return "realistic"
+        }
+    }
+}
