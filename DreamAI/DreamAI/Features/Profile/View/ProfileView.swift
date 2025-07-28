@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ProfileView: View {
     @StateObject private var viewModel = ProfileViewModel()
+    @EnvironmentObject private var subscriptionViewModel: SubscriptionViewModel
     @Environment(\.dismiss) private var dismiss
     @State private var showExportImport = false
     @State private var isSigningOut = false
@@ -29,7 +30,10 @@ struct ProfileView: View {
                         ProfileFeedbackSection()
                         ProfileExitButton {
                             Task {
-                                await signOut()
+                               try await authManager.signOut()
+                            }
+                            withAnimation {
+                                subscriptionViewModel.onboardingComplete = false
                             }
                         }
                         ProfileFooterLinks()
@@ -95,5 +99,6 @@ struct ProfileView: View {
     .sheet(isPresented: .constant(true)) {
         ProfileView()
             .environmentObject(SubscriptionViewModel())
+            .environmentObject(OnboardingFlowViewModel())
     }
 }

@@ -10,6 +10,7 @@ import SwiftUI
 struct IntroScreenView: View {
     
     @EnvironmentObject private var onboardingViewModel: OnboardingFlowViewModel
+    @EnvironmentObject private var authManager: AuthManager
     @State private var showAuthSheet = false
     @Environment(\.deviceFamily) private var deviceFamily
     @Environment(\.languageManager) private var languageManager
@@ -18,6 +19,7 @@ struct IntroScreenView: View {
         VStack(spacing: 24) {
             titleView
             bottonSection
+           
         }
         .frame(maxHeight: .infinity, alignment: .bottom)
         .padding(.horizontal, 16)
@@ -25,7 +27,7 @@ struct IntroScreenView: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
-                   
+                    languageManager.openSystemLanguageSettings()
                 } label: {
                     changeLanguageButton
                 }
@@ -61,16 +63,18 @@ private extension IntroScreenView {
                 Text("getStarted")
             }
             .buttonStyle(IntroStyle())
-            HStack {
-                Text("alreadyHaveAccount?")
-                    .font(.footnote)
-                    .foregroundStyle(.white)
-                Button {
-                    showAuthSheet = true
-                } label: {
-                    Text("logIn")
+            if !authManager.isAuthenticated {
+                HStack {
+                    Text("alreadyHaveAccount?")
+                        .font(.footnote)
+                        .foregroundStyle(.white)
+                    Button {
+                        showAuthSheet = true
+                    } label: {
+                        Text("logIn")
+                    }
+                    .buttonStyle(UnderlineWhiteStyle())
                 }
-                .buttonStyle(UnderlineWhiteStyle())
             }
         }
     }
@@ -112,5 +116,6 @@ private extension IntroScreenView {
     NavigationStack {
         IntroScreenView()
             .environmentObject(OnboardingFlowViewModel())
+            .environmentObject(AuthManager.shared)
     }
 }
