@@ -16,7 +16,7 @@ enum AuthSheetMode {
         case .login: return "logIn"
         }
     }
-    var appleButtonText: String {
+    var appleButtonText: LocalizedStringKey {
         switch self {
         case .signup: return "appleSignUp"
         case .login: return "appleLogIn"
@@ -24,8 +24,8 @@ enum AuthSheetMode {
     }
     var googleButtonText: String {
         switch self {
-        case .signup: return "googleSignUp"
-        case .login: return "googleLogIn"
+        case .signup: return NSLocalizedString("googleSignUp", comment: "")
+        case .login: return NSLocalizedString("googleLogIn", comment: "")
         }
     }
 }
