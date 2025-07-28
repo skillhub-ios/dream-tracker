@@ -34,8 +34,8 @@ struct ProfileSettingsSection: View {
         Section {
             iCloudRow(toggle: iCloudBinding)
                 .frame(height: 40)
-            notificationRow()
-                .frame(height: 40)
+//            notificationRow()
+//                .frame(height: 40)
             exportImportRow(action: exportImportAction)
                 .frame(height: 40)
         }

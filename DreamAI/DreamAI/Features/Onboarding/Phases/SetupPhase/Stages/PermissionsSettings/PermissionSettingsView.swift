@@ -13,6 +13,13 @@ struct PermissionSettingsView: View {
     @StateObject private var viewModel = PermissionsSettingsViewModel()
     @State private var isUpdatingNotificationStatus = false
     
+    private var notificationBinding: Binding<Bool> {
+        Binding<Bool>(
+            get: { pushNotificationManager.authorizationStatus == .authorized },
+            set: { handleNotificationToggle($0) }
+        )
+    }
+    
     var body: some View {
         VStack(spacing: 24) {
             notificationsSection
@@ -33,7 +40,7 @@ private extension PermissionSettingsView {
                     Text("Reminders")
                         .foregroundColor(.white)
                     Spacer()
-                    Toggle("", isOn: $viewModel.remindersEnabled)
+                    Toggle("", isOn: notificationBinding)
                         .toggleStyle(SwitchToggleStyle(tint: .purple))
                         .labelsHidden()
                         .onChange(of: viewModel.remindersEnabled) { oldValue, newValue in
@@ -133,6 +140,7 @@ private extension PermissionSettingsView {
 
 #Preview {
     PermissionSettingsView()
+        .padding()
         .environmentObject(BiometricManagerNew())
         .environmentObject(PushNotificationManager.shared)
 }

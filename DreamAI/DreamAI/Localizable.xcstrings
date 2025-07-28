@@ -479,9 +479,6 @@
         }
       }
     },
-    "Done" : {
-
-    },
     "DreamAI" : {
       "shouldTranslate" : false
     },
@@ -595,9 +592,6 @@
         }
       }
     },
-    "Error" : {
-
-    },
     "exit" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -667,9 +661,6 @@
           }
         }
       }
-    },
-    "Filter" : {
-
     },
     "flying" : {
       "extractionState" : "manual",
@@ -1339,9 +1330,6 @@
         }
       }
     },
-    "Log your first dream 🌙" : {
-
-    },
     "logDream" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1493,9 +1481,6 @@
           }
         }
       }
-    },
-    "Notifications" : {
-
     },
     "notificationSettings" : {
       "extractionState" : "manual",

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SetupPhaseView: View {
     
-    @State private var state: SetupPhase = .second
+    @State private var state: SetupPhase = .first
     @EnvironmentObject private var authManager: AuthManager
     @EnvironmentObject private var viewModel: OnboardingFlowViewModel
     
@@ -39,7 +39,7 @@ struct SetupPhaseView: View {
 private extension SetupPhaseView {
     @ViewBuilder var content: some View {
         switch state {
-//        case .first: PermissionSettingsView()
+        case .first: PermissionSettingsView()
         case .second: SetupSecondStageView()
         case .third: SetupThirdView(stage: $state)
         case .fourth: SetupFourthStageView()
@@ -49,7 +49,7 @@ private extension SetupPhaseView {
     
     var actionButtonLabel: LocalizedStringKey {
         switch state {
-//        case .first: "done"
+        case .first: "done"
         case .second: "continue"
         case .fourth: "startJourney"
         case .third, .finish: ""
@@ -65,8 +65,8 @@ private extension SetupPhaseView {
     
     func swithState() {
         switch state {
-//        case .first:
-//            state = .second
+        case .first:
+            state = .second
         case .second:
             state = .third
         case .fourth:
