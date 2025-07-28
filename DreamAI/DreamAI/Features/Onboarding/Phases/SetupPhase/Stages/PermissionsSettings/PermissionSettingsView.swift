@@ -24,6 +24,11 @@ struct PermissionSettingsView: View {
             biometricSection
         }
         .frame(maxWidth: .infinity, alignment: .top)
+        .onAppear {
+            Task {
+                await PushNotificationManager.shared.requestPermissions()
+            }
+        }
     }
 }
 
