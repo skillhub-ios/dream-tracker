@@ -10,8 +10,6 @@ import SwiftUI
 struct PermissionSettingsView: View {
     
     @EnvironmentObject private var pushNotificationManager: PushNotificationManager
-    @StateObject private var viewModel = PermissionsSettingsViewModel()
-    @State private var isUpdatingNotificationStatus = false
     
     private var notificationBinding: Binding<Bool> {
         Binding<Bool>(
@@ -26,11 +24,6 @@ struct PermissionSettingsView: View {
             biometricSection
         }
         .frame(maxWidth: .infinity, alignment: .top)
-        .onAppear {
-            Task {
-                await PushNotificationManager.shared.requestPermissions()
-            }
-        }
     }
 }
 
@@ -61,17 +54,14 @@ private extension PermissionSettingsView {
                             .foregroundColor(.white)
                         Spacer()
                         DatePicker("bedtime", selection: Binding(
-                            get: { viewModel.bedtime },
-                            set: { viewModel.bedtime = $0 }
+                            get: { pushNotificationManager.bedtime },
+                            set: { pushNotificationManager.bedtime = $0; scheduleNotifications() }
                         ), displayedComponents: .hourAndMinute)
                             .datePickerStyle(.compact)
                             .labelsHidden()
                             .colorMultiply(.purple)
                             .accentColor(.white)
                             .colorScheme(.dark)
-                            .onChange(of: viewModel.bedtime) { oldValue, newValue in
-                                scheduleNotifications()
-                            }
                     }
                     .padding(.vertical, 8)
                     Divider()
@@ -80,17 +70,14 @@ private extension PermissionSettingsView {
                             .foregroundColor(.white)
                         Spacer()
                         DatePicker("Wake-up", selection: Binding(
-                            get: { viewModel.wakeup },
-                            set: { viewModel.wakeup = $0 }
+                            get: { pushNotificationManager.wakeup },
+                            set: { pushNotificationManager.wakeup = $0; scheduleNotifications() }
                         ), displayedComponents: .hourAndMinute)
                             .datePickerStyle(.compact)
                             .labelsHidden()
                             .colorMultiply(.purple)
                             .accentColor(.white)
                             .colorScheme(.dark)
-                            .onChange(of: viewModel.wakeup) { oldValue, newValue in
-                                scheduleNotifications()
-                            }
                     }
                     .padding(.vertical, 8)
                 }
@@ -127,8 +114,8 @@ private extension PermissionSettingsView {
                 // Если разрешение получено, включаем нотификации
                 if pushNotificationManager.authorizationStatus == .authorized {
                     await pushNotificationManager.scheduleDreamReminders(
-                        bedtime: viewModel.bedtime,
-                        wakeup: viewModel.wakeup
+                        bedtime: pushNotificationManager.bedtime,
+                        wakeup: pushNotificationManager.wakeup
                     )
                 }
             } else {
@@ -141,8 +128,8 @@ private extension PermissionSettingsView {
         Task {
             if pushNotificationManager.isRegistered {
                 await pushNotificationManager.scheduleDreamReminders(
-                    bedtime: viewModel.bedtime,
-                    wakeup: viewModel.wakeup
+                    bedtime: pushNotificationManager.bedtime,
+                    wakeup: pushNotificationManager.wakeup
                 )
             }
         }
