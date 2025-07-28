@@ -13,7 +13,6 @@ struct MainView: View {
     @EnvironmentObject private var subscriptionViewModel: SubscriptionViewModel
     @State private var showProfileView = false
     @State private var showBiometricAlert = false
-    @State private var isBlured: Bool = false
     @State private var isAuthenticating = false
     @State private var showFloatingPanel = false
     
@@ -73,8 +72,8 @@ struct MainView: View {
                     Button {
                         if subscriptionViewModel.isSubscribed {
                             withAnimation {
-                                isBlured.toggle()
-                                if isBlured {
+                                subscriptionViewModel.isBlured.toggle()
+                                if subscriptionViewModel.isBlured {
                                     viewModel.analitics.log(
                                         .premiumFeatureUsed(
                                             feature: PremiumFeature.interpretDream,
@@ -85,7 +84,7 @@ struct MainView: View {
                             subscriptionViewModel.showPaywall()
                         }
                     } label: {
-                        Image(systemName: isBlured ? "eye" : "eye.slash")
+                        Image(systemName: subscriptionViewModel.isBlured ? "eye" : "eye.slash")
                             .resizable()
                             .frame(width: 28, height: 24)
                             .foregroundStyle(.white)
@@ -93,7 +92,7 @@ struct MainView: View {
                 }
             }
             .sheet(isPresented: $showFloatingPanel) {
-                MainFloatingPanelView(isBlured: $isBlured)
+                MainFloatingPanelView(isBlured: $subscriptionViewModel.isBlured)
                     .presentationDetents([.fraction(0.7), .large])
                     .presentationDragIndicator(.visible)
                     .presentationBackground(.ultraThickMaterial)

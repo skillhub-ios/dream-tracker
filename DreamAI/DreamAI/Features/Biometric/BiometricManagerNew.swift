@@ -180,9 +180,15 @@ final class BiometricManagerNew: ObservableObject {
     
     /// Обновляет статус биометрии
     func updateBiometricStatus() {
-        DispatchQueue.main.async {
-            self.isBiometricEnabled = self.isBiometricAvailable()
+        let available = self.isBiometricAvailable()
+        if !available && self.isBiometricEnabled {
+            // Если биометрия стала недоступна, отключаем её
+            DispatchQueue.main.async {
+                self.isBiometricEnabled = false
+                UserDefaults.standard.set(false, forKey: self.UDKey)
+            }
         }
+        // Если биометрия доступна, не трогаем пользовательский выбор
     }
     
     /// Получает детальную информацию о состоянии биометрии

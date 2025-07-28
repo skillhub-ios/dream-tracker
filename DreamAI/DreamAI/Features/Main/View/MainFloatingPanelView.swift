@@ -41,7 +41,7 @@ struct MainFloatingPanelView: View {
                             dreamRow(for: dream)
                                 .listRowSeparator(.hidden)
                                 .blur(radius: isBlured ? 12 : 0)
-                                .applyIf(dreamlistmode == .view) {
+                                .applyIf(dreamlistmode == .view && !isBlured) {
                                     $0.swipeActions(edge: .trailing) {
                                         Button(role: .destructive) {
                                             isDeletionAlertPresented = true
@@ -133,7 +133,7 @@ private extension MainFloatingPanelView {
                 withAnimation {
                     viewModel.toggleDreamSelection(dreamId: dream.id)
                 }
-            } else {
+            } else if !isBlured {
                 // Show dream interpretation
                 selectedDream = dream
                 showDreamInterpretation = true

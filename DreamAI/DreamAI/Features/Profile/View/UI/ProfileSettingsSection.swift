@@ -36,6 +36,8 @@ struct ProfileSettingsSection: View {
                 .frame(height: 40)
 //            notificationRow()
 //                .frame(height: 40)
+            blurContentRow()
+                .frame(height: 40)
             exportImportRow(action: exportImportAction)
                 .frame(height: 40)
         }
@@ -101,6 +103,24 @@ private extension ProfileSettingsSection {
             Spacer()
             if subscriptionViewModel.isSubscribed {
                 Toggle("", isOn: notificationBinding)
+                    .tint(.appPurple)
+            } else {
+                Image(systemName: "lock.fill")
+                    .font(.title3)
+                    .tint(.secondary)
+            }
+        }
+    }
+    
+    func blurContentRow() -> some View {
+        HStack {
+            Image(systemName: "eye.slash")
+                .font(.title3)
+                .foregroundStyle(Color.appPurple)
+            Text("Blur Content")
+            Spacer()
+            if subscriptionViewModel.isSubscribed {
+                Toggle("", isOn: $subscriptionViewModel.isBlured)
                     .tint(.appPurple)
             } else {
                 Image(systemName: "lock.fill")

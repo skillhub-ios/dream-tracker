@@ -19,11 +19,17 @@ final class SubscriptionViewModel: ObservableObject {
     @Published var subscriptionType: SubscriptionType = .other
     @Published var subscriptionExpiry: Date?
     @Published var onboardingComplete: Bool = false
+    @Published var isBlured: Bool {
+        didSet {
+            UserDefaults.standard.set(isBlured, forKey: "isBlured")
+        }
+    }
     
     private var cancellables: Set<AnyCancellable> = []
     private let onboardingCompleteKey = "onboardingComplete"
     
     init() {
+        self.isBlured = UserDefaults.standard.bool(forKey: "isBlured")
         self.onboardingComplete = UserDefaults.standard.bool(forKey: "onboardingComplete")
         Superwall.configure(apiKey: "pk_8beac5fd94b375e0e1e2df7bb99af2bf66f9fae6e806eca1")
         loadProducts()

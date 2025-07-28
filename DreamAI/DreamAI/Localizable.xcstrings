@@ -275,6 +275,9 @@
         }
       }
     },
+    "Blur Content" : {
+
+    },
     "blurDreams" : {
       "extractionState" : "manual",
       "localizations" : {
