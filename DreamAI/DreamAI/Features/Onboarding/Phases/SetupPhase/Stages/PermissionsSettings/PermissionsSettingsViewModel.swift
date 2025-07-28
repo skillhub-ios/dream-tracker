@@ -2,7 +2,7 @@
 //  PermissionsSettingsViewModel.swift
 //  DreamAI
 //
-//  Created by Shaxzod on 19/04/25
+// Created by Shaxzod on 19/04/25
 //
 
 import Foundation
@@ -13,24 +13,19 @@ import Combine
 final class PermissionsSettingsViewModel: ObservableObject {
     
     // MARK: - Dependencies
-    private let pushNotificationManager: PushNotificationManager = PushNotificationManager.shared
+    let pushNotificationManager: PushNotificationManager = PushNotificationManager.shared
     
     // MARK: - Published Properties
-    @Published var remindersEnabled: Bool = false
-    @Published var bedtime: Date = DateComponents(calendar: .current, hour: 20, minute: 0).date ?? Date()
-    @Published var wakeup: Date = DateComponents(calendar: .current, hour: 8, minute: 0).date ?? Date()
+    // Время теперь берём из pushNotificationManager
+    var bedtime: Date {
+        get { pushNotificationManager.bedtime }
+        set { pushNotificationManager.bedtime = newValue }
+    }
+    var wakeup: Date {
+        get { pushNotificationManager.wakeup }
+        set { pushNotificationManager.wakeup = newValue }
+    }
     
     // MARK: - Initialization
-    init() {
-        initializeNotificationStatus()
-    }
-    
-    private func initializeNotificationStatus() {
-        Task {
-            let isEnabled = await pushNotificationManager.areNotificationsEnabled()
-            await MainActor.run {
-                self.remindersEnabled = isEnabled
-            }
-        }
-    }
+    init() {}
 }

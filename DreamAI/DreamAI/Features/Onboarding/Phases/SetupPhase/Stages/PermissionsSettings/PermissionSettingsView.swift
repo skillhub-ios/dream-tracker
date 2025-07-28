@@ -15,7 +15,7 @@ struct PermissionSettingsView: View {
     
     private var notificationBinding: Binding<Bool> {
         Binding<Bool>(
-            get: { pushNotificationManager.authorizationStatus == .authorized },
+            get: { pushNotificationManager.isRegistered },
             set: { handleNotificationToggle($0) }
         )
     }
@@ -26,6 +26,11 @@ struct PermissionSettingsView: View {
             biometricSection
         }
         .frame(maxWidth: .infinity, alignment: .top)
+        .onAppear {
+            Task {
+                await PushNotificationManager.shared.requestPermissions()
+            }
+        }
     }
 }
 
@@ -43,54 +48,52 @@ private extension PermissionSettingsView {
                     Toggle("", isOn: notificationBinding)
                         .toggleStyle(SwitchToggleStyle(tint: .purple))
                         .labelsHidden()
-                        .onChange(of: viewModel.remindersEnabled) { oldValue, newValue in
-                            // Only handle user-initiated changes, not programmatic updates
-                            if !isUpdatingNotificationStatus {
-                                handleNotificationToggle(newValue)
-                            }
-                        }
+                        .disabled(pushNotificationManager.authorizationStatus == .denied)
+                        .opacity(pushNotificationManager.authorizationStatus == .denied ? 0.5 : 1.0)
                 }
                 .padding(.vertical, 8)
-                Divider()
-                HStack {
-                    Text("bedtime")
-                        .foregroundColor(.white)
-                    Spacer()
-                    DatePicker("bedtime", selection: $viewModel.bedtime, displayedComponents: .hourAndMinute)
-                        .datePickerStyle(.compact)
-                        .labelsHidden()
-                        .disabled(!viewModel.remindersEnabled)
-                        .colorMultiply(viewModel.remindersEnabled ? .purple : .gray)
-                        .opacity(viewModel.remindersEnabled ? 1 : 0.5)
-                        .accentColor(.white)
-                        .colorScheme(.dark)
-                        .onChange(of: viewModel.bedtime) { oldValue, newValue in
-                            if viewModel.remindersEnabled {
+                
+                // Показываем время только если нотификации включены
+                if pushNotificationManager.isRegistered {
+                    Divider()
+                    HStack {
+                        Text("bedtime")
+                            .foregroundColor(.white)
+                        Spacer()
+                        DatePicker("bedtime", selection: Binding(
+                            get: { viewModel.bedtime },
+                            set: { viewModel.bedtime = $0 }
+                        ), displayedComponents: .hourAndMinute)
+                            .datePickerStyle(.compact)
+                            .labelsHidden()
+                            .colorMultiply(.purple)
+                            .accentColor(.white)
+                            .colorScheme(.dark)
+                            .onChange(of: viewModel.bedtime) { oldValue, newValue in
                                 scheduleNotifications()
                             }
-                        }
-                }
-                .padding(.vertical, 8)
-                Divider()
-                HStack {
-                    Text("Wake-up")
-                        .foregroundColor(.white)
-                    Spacer()
-                    DatePicker("Wake-up", selection: $viewModel.wakeup, displayedComponents: .hourAndMinute)
-                        .datePickerStyle(.compact)
-                        .labelsHidden()
-                        .disabled(!viewModel.remindersEnabled)
-                        .colorMultiply(viewModel.remindersEnabled ? .purple : .gray)
-                        .opacity(viewModel.remindersEnabled ? 1 : 0.5)
-                        .accentColor(.white)
-                        .colorScheme(.dark)
-                        .onChange(of: viewModel.wakeup) { oldValue, newValue in
-                            if viewModel.remindersEnabled {
+                    }
+                    .padding(.vertical, 8)
+                    Divider()
+                    HStack {
+                        Text("Wake-up")
+                            .foregroundColor(.white)
+                        Spacer()
+                        DatePicker("Wake-up", selection: Binding(
+                            get: { viewModel.wakeup },
+                            set: { viewModel.wakeup = $0 }
+                        ), displayedComponents: .hourAndMinute)
+                            .datePickerStyle(.compact)
+                            .labelsHidden()
+                            .colorMultiply(.purple)
+                            .accentColor(.white)
+                            .colorScheme(.dark)
+                            .onChange(of: viewModel.wakeup) { oldValue, newValue in
                                 scheduleNotifications()
                             }
-                        }
+                    }
+                    .padding(.vertical, 8)
                 }
-                .padding(.vertical, 8)
             }
             .padding(.vertical, 12)
             .padding(.horizontal, 16)
@@ -116,12 +119,18 @@ private extension PermissionSettingsView {
     private func handleNotificationToggle(_ enabled: Bool) {
         Task {
             if enabled {
-                await pushNotificationManager.requestPermissions()
-                // Schedule notifications with current bedtime/wakeup times
-                await pushNotificationManager.scheduleDreamReminders(
-                    bedtime: viewModel.bedtime,
-                    wakeup: viewModel.wakeup
-                )
+                // Если разрешение не получено, запрашиваем его
+                if pushNotificationManager.authorizationStatus != .authorized {
+                    await pushNotificationManager.requestPermissions()
+                }
+                
+                // Если разрешение получено, включаем нотификации
+                if pushNotificationManager.authorizationStatus == .authorized {
+                    await pushNotificationManager.scheduleDreamReminders(
+                        bedtime: viewModel.bedtime,
+                        wakeup: viewModel.wakeup
+                    )
+                }
             } else {
                 pushNotificationManager.disableNotifications()
             }
@@ -130,10 +139,12 @@ private extension PermissionSettingsView {
     
     private func scheduleNotifications() {
         Task {
-            await pushNotificationManager.scheduleDreamReminders(
-                bedtime: viewModel.bedtime,
-                wakeup: viewModel.wakeup
-            )
+            if pushNotificationManager.isRegistered {
+                await pushNotificationManager.scheduleDreamReminders(
+                    bedtime: viewModel.bedtime,
+                    wakeup: viewModel.wakeup
+                )
+            }
         }
     }
 }

@@ -13,15 +13,55 @@ import UIKit
 class PushNotificationManager: NSObject, ObservableObject {
     static let shared = PushNotificationManager()
     
-    @Published var isRegistered = false
-    @Published var authorizationStatus: UNAuthorizationStatus = .notDetermined
+    @Published var userWantsNotifications = UserDefaults.standard.bool(forKey: "PushNotificationManager.userWantsNotifications") {
+        didSet {
+            UserDefaults.standard.set(userWantsNotifications, forKey: "PushNotificationManager.userWantsNotifications")
+            updateIsRegistered()
+        }
+    }
+    @Published private(set) var isRegistered = false
+    @Published var authorizationStatus: UNAuthorizationStatus = .notDetermined {
+        didSet {
+            updateIsRegistered()
+        }
+    }
+
+    // Глобальные значения времени для напоминаний
+    @Published var bedtime: Date = {
+        if let time = UserDefaults.standard.object(forKey: "PushNotificationManager.bedtime") as? Date {
+            return time
+        } else {
+            return DateComponents(calendar: .current, hour: 20, minute: 0).date ?? Date()
+        }
+    }() {
+        didSet {
+            UserDefaults.standard.set(bedtime, forKey: "PushNotificationManager.bedtime")
+        }
+    }
+    @Published var wakeup: Date = {
+        if let time = UserDefaults.standard.object(forKey: "PushNotificationManager.wakeup") as? Date {
+            return time
+        } else {
+            return DateComponents(calendar: .current, hour: 8, minute: 0).date ?? Date()
+        }
+    }() {
+        didSet {
+            UserDefaults.standard.set(wakeup, forKey: "PushNotificationManager.wakeup")
+        }
+    }
     
+    private func updateIsRegistered() {
+        isRegistered = userWantsNotifications && authorizationStatus == .authorized
+    }
+
     private override init() {
         super.init()
         UNUserNotificationCenter.current().delegate = self
         Task {
             await updateAuthorizationStatus()
         }
+        updateIsRegistered()
+        // Значения уже загружаются из UserDefaults при инициализации свойств
     }
     
     // MARK: - Public Methods
@@ -35,7 +75,7 @@ class PushNotificationManager: NSObject, ObservableObject {
             
             await MainActor.run {
                 self.authorizationStatus = granted ? .authorized : .denied
-                self.isRegistered = granted
+                self.userWantsNotifications = granted
             }
             
             if granted {
@@ -122,12 +162,8 @@ class PushNotificationManager: NSObject, ObservableObject {
     func disableNotifications() {
         clearAllPendingNotifications()
         clearAllDeliveredNotifications()
-        
-        Task {
-            await updateAuthorizationStatus(.denied)
-        }
-        
-        isRegistered = false
+        // Не меняем authorizationStatus, только сбрасываем isRegistered
+        userWantsNotifications = false
     }
     
     /// Get current notification settings
@@ -149,6 +185,7 @@ class PushNotificationManager: NSObject, ObservableObject {
         
         await MainActor.run {
             self.authorizationStatus = currentStatus
+            // Не трогаем userWantsNotifications!
         }
     }
     
