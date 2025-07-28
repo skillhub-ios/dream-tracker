@@ -149,10 +149,10 @@ final class SpeechRecognizerManager: ObservableObject, SpeechRecognizing {
         let inputNode = audioEngine.inputNode
         
         // Use a standard audio format that's compatible with speech recognition
-        let recordingFormat = AVAudioFormat(standardFormatWithSampleRate: 44100, channels: 1)
+        let recordingFormat = inputNode.outputFormat(forBus: 0)
         
-        guard let recordingFormat = recordingFormat else {
-            errorMessage = "Failed to create audio format"
+        guard recordingFormat.sampleRate > 0 else {
+            errorMessage = "Invalid input format"
             stopRecording()
             return
         }

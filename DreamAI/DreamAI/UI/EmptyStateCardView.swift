@@ -21,9 +21,12 @@ struct EmptyStateCardView: View {
                         .font(.system(size: 28))
                         .foregroundColor(Color.appPurple)
                 }
-                Text("Log your first dream 🌙")
-                    .font(.headline)
-                    .foregroundColor(.white)
+                HStack {
+                    Text("logDream")
+                    Text("🌙")
+                }
+                .font(.headline)
+                .foregroundColor(.white)
                 Spacer()
                 
                 Image(systemName: "chevron.right")

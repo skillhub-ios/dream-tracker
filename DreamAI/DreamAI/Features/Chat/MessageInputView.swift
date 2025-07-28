@@ -7,11 +7,13 @@
 import SwiftUI
 
 struct MessageInputView: View {
-    @State private var messageText = ""
-    @State private var textHeight: CGFloat = 48
+    
+    @Binding var messageText: String
+    @Binding var textHeight: CGFloat
+    var onSendAction: (String) -> Void
     
     private let minHeight: CGFloat = 48
-    private let maxHeight: CGFloat = 120
+    private let maxHeight: CGFloat = 96
     private let cornerRadius: CGFloat = 50
     
     var body: some View {
@@ -45,13 +47,12 @@ struct MessageInputView: View {
                 }
                 // Кнопка
                 Button(action: sendMessage) {
-                    Image(systemName: messageText.isEmpty ? "microphone.fill" : "arrow.up.circle.fill")
+                    Image(systemName: "arrow.up.circle.fill")
                         .resizable()
-                        .frame(
-                            width: messageText.isEmpty ? 20 : 28,
-                            height: messageText.isEmpty ? 26 : 28)
+                        .frame(width: 28, height: 28)
                         .foregroundStyle(LinearGradient.appPurpleHorizontal)
                 }
+                .disabled(messageText.isEmpty)
                 .frame(width: 32, height: 32)
             }
             .padding(.horizontal, 16)
@@ -79,15 +80,25 @@ struct MessageInputView: View {
     }
     
     private func sendMessage() {
-        guard !messageText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
-        
-        print("Отправка: \(messageText)")
-        
+        let textToSend = messageText.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !textToSend.isEmpty else { return }
+
+        onSendAction(textToSend)
         messageText = ""
         textHeight = minHeight
     }
 }
 
 #Preview {
-    MessageInputView()
+    VStack {
+        MessageInputView(
+            messageText: .constant(""),
+            textHeight: .constant(48),
+            onSendAction: {_ in })
+        MessageInputView(
+            messageText: .constant("Chat message"),
+            textHeight: .constant(48),
+            onSendAction: {_ in })
+    }
+    .padding()
 }

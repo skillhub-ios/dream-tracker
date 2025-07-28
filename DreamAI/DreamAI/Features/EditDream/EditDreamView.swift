@@ -46,7 +46,7 @@ struct EditDreamView: View {
                             editDreamViewModel.mood = mood
                         }
                         Spacer()
-                        DButton(title: "Interpret Dream") {
+                        DButton(title: "interpretDream") {
                             if subscriptionViewModel.isSubscribed {
                                 editDreamViewModel.saveDream()
                                 isShowingInterpretation = true
@@ -62,7 +62,7 @@ struct EditDreamView: View {
                     .padding([.horizontal, .bottom], 16)
                 }
             }
-            .navigationTitle("Dream Details")
+            .navigationTitle("dreamDetails")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -104,7 +104,7 @@ private extension EditDreamView {
     func dreamTextEditor(_ dreamText: Binding<String>) -> some View {
         ZStack(alignment: .topLeading) {
             if dreamText.wrappedValue.isEmpty {
-                Text("I dreamed...")
+                Text("dreamTextPlaceholder")
                     .font(.system(size: 17))
                     .foregroundStyle(Color.gray)
                     .padding(.top, 10)
@@ -118,7 +118,7 @@ private extension EditDreamView {
                     ToolbarItemGroup(placement: .keyboard) {
                         Spacer()
                         
-                        Button("Done") {
+                        Button("done") {
                             isInputActive = false
                         }
                     }
@@ -135,7 +135,7 @@ private extension EditDreamView {
     
     func moodPicker(_ selectedMood: Binding<Mood?>) -> some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Mood before sleep")
+            Text("moodBeforeSleep")
                 .font(.system(size: 17, weight: .semibold))
                 .foregroundStyle(Color.appWhite)
             ScrollView(.horizontal, showsIndicators: false) {
@@ -171,7 +171,7 @@ private extension EditDreamView {
         Button(action: {
             dismiss()
         }) {
-            Text("Cancel")
+            Text("cancel")
                 .foregroundColor(.appPurple)
         }
     }
@@ -181,7 +181,7 @@ private extension EditDreamView {
             editDreamViewModel.saveDream()
             dismiss()
         }) {
-            Text("Done")
+            Text("done")
                 .foregroundColor(.appPurple)
         }
     }

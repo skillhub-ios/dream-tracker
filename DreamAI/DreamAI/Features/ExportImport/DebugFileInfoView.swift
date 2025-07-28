@@ -92,7 +92,7 @@ struct DebugFileInfoView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Done") {
+                    Button("done") {
                         dismiss()
                     }
                 }

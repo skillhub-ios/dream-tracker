@@ -13,7 +13,7 @@ struct DreamDateView: View {
     var body: some View {
         HStack(spacing: 8) {
             DatePicker(selection: $date) {
-                Text(isCreating ? "Describe the dream" : "Dream description")
+                Text(isCreating ? "describeDream" : "dreamDescription")
                     .font(.subheadline.bold())
                     .lineLimit(1)
                     .minimumScaleFactor(0.1)

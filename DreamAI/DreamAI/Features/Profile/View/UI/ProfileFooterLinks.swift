@@ -17,34 +17,34 @@ struct ProfileFooterLinks: View {
             Button(action: {
                 openURL(Constants.privacyPolicyURL)
             }) {
-                Text("Privacy Policy")
+                Text("privacyPolicy")
             }
             Button(action: {
                 openURL(Constants.termsURL)
             }) {
-                Text("Terms")
+                Text("terms")
             }
             Button(action: {
                 showDeleteAlert = true
             }) {
-                Text("Data Deletion")
+                Text("dataDeletion")
             }
         }
         .buttonStyle(UnderlineButtonStyle())
         .frame(maxWidth: .infinity, alignment: .center)
-        .alert("Delete All Data?",
+        .alert("deleteAll",
                isPresented: $showDeleteAlert
         ) {
-            Button("Cancel", role: .cancel) {
+            Button("cancel", role: .cancel) {
                 showDeleteAlert = false
             }
             
-            Button("Delete", role: .destructive) {
+            Button("delete", role: .destructive) {
                 DIContainer.appDataResetManager.resetAll()
                 showDeleteAlert = false
             }
         } message: {
-            Text("This action will permanently delete all data and cannot be undone.")
+            Text("permanentlyDeleteAlert")
         }
     }
 }

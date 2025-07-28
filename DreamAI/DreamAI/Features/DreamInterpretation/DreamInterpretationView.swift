@@ -56,7 +56,10 @@ struct DreamInterpretationView: View {
                             .font(.body)
                             .foregroundColor(.appWhite)
                     } label: {
-                        Text("🔍  Real reflections")
+                        HStack {
+                            Text("🔍")
+                            Text("realReflections")
+                        }
                             .font(.headline)
                             .foregroundColor(.appWhite)
                     }
@@ -69,28 +72,28 @@ struct DreamInterpretationView: View {
                     quoteUI(quote: model.quote)
                     
                     // Go to chat
-//                    StartChatView(action: segueToChat)
-//                        .navigationDestination(item: $interpretation) { interpretation in
-//                            ChatView(with: interpretation)
-//                        }
+                    StartChatView(action: segueToChat)
+                        .navigationDestination(item: $interpretation) { interpretation in
+                            ChatView(with: interpretation)
+                        }
                     
                     // Resonance
                     resonanceUI($viewModel.selectedResonance)
                     
                     // Done button
                     DButton(
-                        title: "Done",
+                        title: "done",
                         state: $viewModel.buttonState,
                         action: { dismiss() })
                 }
                 .padding()
             }
             .makeshimmer(state: viewModel.contentState, retryButtonUI: retryButtonUI($viewModel.buttonState))
-            .navigationTitle("Dream Interpretation")
+            .navigationTitle("dreamInterpretation")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Done") {
+                    Button("done") {
                         dismiss()
                     }
                     .fontWeight(.medium)
@@ -154,9 +157,12 @@ private extension DreamInterpretationView {
     
     func interpretationTextUI(_ interpretation: String) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("🧠  Interpretation")
-                .font(.headline)
-                .foregroundColor(.appWhite)
+            HStack {
+                Text("🧠")
+                Text("interpretation")
+            }
+            .font(.headline)
+            .foregroundColor(.appWhite)
             
             Text(interpretation)
                 .font(.body)
@@ -181,10 +187,13 @@ private extension DreamInterpretationView {
     }
     
     func resonanceUI(_ selectedResonance: Binding<ResonanceOption>) -> some View {
-        HStack(spacing: 15) {
+        HStack(spacing: 12) {
             ForEach(ResonanceOption.allCases, id: \.self) { option in
                 Button(action: { selectedResonance.wrappedValue = option }) {
-                    Text(option.rawValue)
+                    HStack {
+                        Text(option.emoji)
+                        Text(option.title)
+                    }
                         .font(.body)
                         .foregroundColor(.appWhite)
                         .frame(height: 50)

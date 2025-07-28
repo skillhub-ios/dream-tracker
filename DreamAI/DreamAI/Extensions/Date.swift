@@ -31,4 +31,18 @@ extension Date {
         
         return "\(dateFormatter.string(from: self)) \n\(timeFormatter.string(from: self))"
     }
+    
+    func asShortDateString() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        
+        return "\(dateFormatter.string(from: self))"
+    }
+    
+    func asShortTimeString() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeStyle = .short
+        
+        return "\(dateFormatter.string(from: self))"
+    }
 }

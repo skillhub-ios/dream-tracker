@@ -57,6 +57,7 @@ final class MoodStore: AppDataResettable {
         newMood.id = mood.id
         newMood.title = mood.title
         newMood.emoji = mood.emoji
+        newMood.isDefault = mood.isDefault
         
         saveData()
     }

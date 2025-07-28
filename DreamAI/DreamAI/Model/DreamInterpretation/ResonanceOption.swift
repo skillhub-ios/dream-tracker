@@ -5,12 +5,29 @@
 //  Created by Shaxzod on 15/06/25.
 //
 
-import Foundation
+import SwiftUI
 
 enum ResonanceOption: String, CaseIterable, Identifiable {
-    var id: String { self.rawValue }
+    case yes
+    case aBit
+    case notReally
     
-    case yes = "🥲 Yes"
-    case aBit = "😐 A bit"
-    case notReally = "😶‍🌫️ Not really"
+    var id: String { rawValue }
+    
+    var title: LocalizedStringKey {
+        switch self {
+        case .yes: return "yes"
+        case .aBit: return "a_bit"
+        case .notReally: return "not_really"
+        }
+    }
+    
+    var emoji: String {
+        switch self {
+        case .yes: return "🥲"
+        case .aBit: return "😐"
+        case .notReally: return "😶‍🌫️"
+        }
+    }
 }
+

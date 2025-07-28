@@ -14,7 +14,7 @@ struct ProfileSubscriptionSection: View {
         Section {
             VStack(alignment: .leading, spacing: 24) {
                 HStack {
-                    Text("Subscription")
+                    Text("subscription")
                         .font(.title3)
                         .fontWeight(.bold)
                         .foregroundStyle(
@@ -37,7 +37,7 @@ struct ProfileSubscriptionSection: View {
                 HStack {
                     VStack(alignment: .leading) {
                         if subsriptionVeiwModel.isSubscribed {
-                            Text("Your Plan")
+                            Text("yourPlan")
                                 .font(.headline)
                                 .foregroundColor(.secondary)
                             Text(subsriptionVeiwModel.subscriptionType.title())
@@ -45,7 +45,7 @@ struct ProfileSubscriptionSection: View {
                                 .bold()
                                 .foregroundColor(.primary)
                         } else {
-                            Text("Upgrade")
+                            Text("upgrade")
                                 .font(.title2)
                                 .bold()
                                 .foregroundColor(.primary)

@@ -14,28 +14,21 @@ struct DreamAIApp: App {
     @StateObject private var authManager = AuthManager.shared
     @StateObject private var pushNotificationManager = PushNotificationManager.shared
     @StateObject private var subscriptionViewModel = SubscriptionViewModel()
+    @StateObject private var biometricManager: BiometricManagerNew = .init()
     
     var body: some Scene {
         WindowGroup {
             Group {
-                if authManager.isLoading {
-                    // Show loading screen while checking authentication status
-                    LoadingView()
-                } else if authManager.isAuthenticated {
-                    if authManager.hasCompletedPermissions {
-                        MainView()
-                            .environmentObject(subscriptionViewModel)
-                    } else {
-                        NavigationStack {
-                            PermissionContainerView()
-                        }
-                    }
+                if subscriptionViewModel.onboardingComplete {
+                    MainView()
                 } else {
-                    NavigationStack {
-                        IntroView()
-                    }
+                    OnboardingFlowView()
                 }
             }
+            .environmentObject(biometricManager)
+            .environmentObject(pushNotificationManager)
+            .environmentObject(subscriptionViewModel)
+            .environmentObject(authManager)
         }
     }
 }

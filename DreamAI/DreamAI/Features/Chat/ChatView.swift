@@ -11,6 +11,7 @@ struct ChatView: View {
     
     @StateObject private var chatViewModel: ChatViewModel
     @Environment(\.dismiss) private var dismiss
+    @State private var textHeight: CGFloat = 48
     
     
     init(with interpretation: Interpretation) {
@@ -19,40 +20,58 @@ struct ChatView: View {
     
     var body: some View {
         ZStack(alignment: .bottom) {
-            ScrollView {
-                VStack(spacing: 24) {
-                    quickQuestionsView
-                    MessageCellView(text: String(localized: "chatFirstMessage"), isResponse: true)
-                        .messageAlignment(isResponse: true)
-                    ForEach(chatViewModel.messages) { message in
-                        let isResponse = message.role == "assistant"
-                        MessageCellView(
-                            text: message.text,
-                            isResponse: isResponse)
-                        .messageAlignment(isResponse: isResponse)
+            ScrollViewReader { proxy in
+                ScrollView {
+                    VStack(spacing: 24) {
+                        quickQuestionsView
+                        MessageCellView(text: String(localized: "chatFirstMessage"), isResponse: true)
+                            .messageAlignment(isResponse: true)
+                        ForEach(chatViewModel.messages) { message in
+                            let isResponse = message.role == "assistant"
+                            MessageCellView(
+                                text: message.text,
+                                isResponse: isResponse)
+                            .messageAlignment(isResponse: isResponse)
+                            .id(message.id)
+                        }
+                    }
+                    .padding(.horizontal, 16)
+                }
+                .onChange(of: chatViewModel.messages) { _ in
+                    if let last = chatViewModel.messages.last {
+                        withAnimation {
+                            proxy.scrollTo(last.id, anchor: .bottom)
+                        }
                     }
                 }
-                .padding(.horizontal, 16)
-            }
-            .navigationTitle("aIChat")
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationBarBackButtonHidden()
-            .background {
-                Color.appPurpleDark.opacity(0.75)
-                    .edgesIgnoringSafeArea(.all)
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {
-                        dismiss()
-                    }) {
-                        Text("сancel")
-                            .foregroundColor(.appPurple)
+                .navigationTitle("aIChat")
+                .navigationBarTitleDisplayMode(.inline)
+                .navigationBarBackButtonHidden()
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button(action: {
+                            dismiss()
+                        }) {
+                            Text("сancel")
+                                .foregroundColor(.appPurple)
+                        }
                     }
                 }
-            }
-            MessageInputView()
+                MessageInputView(
+                    messageText: $chatViewModel.messageText,
+                    textHeight: $textHeight
+                ) { text in
+                    Task {
+                        await chatViewModel.sendMessageToAIChat(text)
+                    }
+                }
+                .frame(height: textHeight)
                 .padding(.horizontal, 16)
+            }
+        }
+        .background {
+            Color.appPurpleDark.opacity(0.75)
+                .edgesIgnoringSafeArea(.all)
         }
     }
 }
@@ -65,7 +84,7 @@ private extension ChatView {
                     questionView(question)
                         .onTapGesture {
                             Task {
-                                await chatViewModel.sendMessage(question)
+                                await chatViewModel.sendMessageToAIChat(question)
                             }
                         }
                 }

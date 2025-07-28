@@ -9,19 +9,24 @@ import SwiftUI
 
 struct ProfileFeedbackSection: View {
     @EnvironmentObject var viewModel: ProfileViewModel
-    @State private var language: String = "English"
-    @State private var areNotificationsEnabled: Bool = true
-    @State private var bedtime: Date = Date()
-    @State private var wakeupTime: Date = Date()
+    @StateObject private var pushNotificationManager = PushNotificationManager.shared
     @Environment(\.openURL) private var openURL
     @Environment(\.languageManager) private var languageManager
-
+    @EnvironmentObject private var biometricManager: BiometricManagerNew
+    
+    var notificationBinding: Binding<Bool> {
+        Binding<Bool>(
+            get: { pushNotificationManager.userWantsNotifications },
+            set: { handleNotificationToggle($0) }
+        )
+    }
+    
     var body: some View {
         Section {
             HStack {
                 Image(systemName: "globe")
                     .foregroundColor(.appPurple)
-                Text("Language")
+                Text("language")
                 Spacer()
                 Text(languageManager.currentLanguageDisplayName)
                     .foregroundColor(.secondary)
@@ -31,41 +36,45 @@ struct ProfileFeedbackSection: View {
                 languageManager.openSystemLanguageSettings()
             }
             
-            Toggle(isOn: Binding(
-                get: { viewModel.isFaceIDEnabled },
-                set: { viewModel.userToggledFaceID(to: $0) }
-            )) {
-                HStack {
-                    Image(systemName: "faceid")
-                        .foregroundColor(.appPurple)
-                    Text("Face ID")
-                }
-            }
-            .tint(.appPurple)
+            biometricRow()
             
-            Toggle(isOn: $areNotificationsEnabled) {
+            Toggle(isOn: notificationBinding) {
                 HStack {
                     Image(systemName: "bell.fill")
                         .foregroundColor(.appPurple)
-                    Text("Notifications")
+                    Text("notifications")
                 }
             }
             .tint(.appPurple)
+            .disabled(pushNotificationManager.authorizationStatus == .denied)
+            .opacity(pushNotificationManager.authorizationStatus == .denied ? 0.5 : 1.0)
             
-            if areNotificationsEnabled {
+            if pushNotificationManager.isRegistered {
                 HStack {
-                    Text("Bedtime")
+                    Text("bedtime")
                     Spacer()
-                    DatePicker("", selection: $bedtime, displayedComponents: .hourAndMinute)
+                    DatePicker("", selection: Binding(
+                        get: { pushNotificationManager.bedtime },
+                        set: { newValue in
+                            pushNotificationManager.bedtime = newValue
+                            scheduleNotifications()
+                        }
+                    ), displayedComponents: .hourAndMinute)
                         .labelsHidden()
                         .foregroundColor(.appPurple)
                         .tint(.appPurple)
                 }
                 
                 HStack {
-                    Text("Wake-up")
+                    Text("wakeup")
                     Spacer()
-                    DatePicker("", selection: $wakeupTime, displayedComponents: .hourAndMinute)
+                    DatePicker("", selection: Binding(
+                        get: { pushNotificationManager.wakeup },
+                        set: { newValue in
+                            pushNotificationManager.wakeup = newValue
+                            scheduleNotifications()
+                        }
+                    ), displayedComponents: .hourAndMinute)
                         .labelsHidden()
                         .foregroundColor(.appPurple)
                         .tint(.appPurple)
@@ -78,7 +87,7 @@ struct ProfileFeedbackSection: View {
                 HStack {
                     Image(systemName: "envelope.fill")
                         .foregroundColor(.appPurple)
-                    Text("Write feedback")
+                    Text("writeFeedback")
                     .foregroundColor(.white)
 
                     Spacer()
@@ -86,6 +95,71 @@ struct ProfileFeedbackSection: View {
                     Image(systemName: "chevron.right")
                         .foregroundColor(.gray)
                 }
+            }
+        }
+    }
+    
+    private func handleNotificationToggle(_ enabled: Bool) {
+        Task {
+            if enabled {
+                if pushNotificationManager.authorizationStatus != .authorized {
+                    await pushNotificationManager.requestPermissions()
+                }
+                if pushNotificationManager.authorizationStatus == .authorized {
+                    pushNotificationManager.userWantsNotifications = true
+                    await pushNotificationManager.scheduleDreamReminders(
+                        bedtime: pushNotificationManager.bedtime,
+                        wakeup: pushNotificationManager.wakeup
+                    )
+                }
+            } else {
+                pushNotificationManager.disableNotifications()
+            }
+        }
+    }
+    
+    private func scheduleNotifications() {
+        Task {
+            if pushNotificationManager.isRegistered {
+                await pushNotificationManager.scheduleDreamReminders(
+                    bedtime: pushNotificationManager.bedtime,
+                    wakeup: pushNotificationManager.wakeup
+                )
+            }
+        }
+    }
+
+    func biometricRow() -> some View {
+        HStack {
+            let type = biometricManager.getAvailableBiometricType()
+            Image(systemName: type == .faceID ? "faceid" : (type == .touchID ? "touchid" : "lock.fill"))
+                .foregroundColor(.appPurple)
+            Text(type.description)
+            Spacer()
+            Toggle("", isOn: Binding(
+                get: { biometricManager.isBiometricEnabled },
+                set: { newValue in
+                    if newValue {
+                        enableBiometric()
+                    } else {
+                        biometricManager.disableBiometric()
+                    }
+                }
+            ))
+            .disabled(!biometricManager.isBiometricAvailable())
+            .tint(.appPurple)
+        }
+    }
+
+    private func enableBiometric() {
+        guard biometricManager.isBiometricAvailable() else { return }
+        Task {
+            let result = await biometricManager.requestBiometricPermission(
+                reason: "Verify your identity to activate biometric authentication"
+            )
+            if case .failure(let error) = result {
+                // Можно добавить отображение ошибки через alert
+                print(error.localizedDescription)
             }
         }
     }
