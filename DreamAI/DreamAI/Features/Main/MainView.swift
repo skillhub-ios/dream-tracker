@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MainView: View {
     @StateObject private var viewModel = MainViewModel()
-    @StateObject private var biometricManager = BiometricManager.shared
+    @StateObject private var biometricManager = BiometricManagerNew.shared
     @EnvironmentObject private var subscriptionViewModel: SubscriptionViewModel
     @State private var showProfileView = false
     @State private var showBiometricAlert = false
@@ -71,13 +71,29 @@ struct MainView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         if subscriptionViewModel.isSubscribed {
-                            withAnimation {
-                                subscriptionViewModel.isBlured.toggle()
-                                if subscriptionViewModel.isBlured {
-                                    viewModel.analitics.log(
-                                        .premiumFeatureUsed(
-                                            feature: PremiumFeature.interpretDream,
-                                            screen: ScreenName.main))
+                            if subscriptionViewModel.isBlured {
+                                // Снимаем блюр (разблокировка)
+                                if biometricManager.isBiometricEnabled {
+                                    Task {
+                                        let result = await biometricManager.requestBiometricPermission(reason: "Unlock private content")
+                                        if case .success = result {
+                                            withAnimation {
+                                                subscriptionViewModel.isBlured = false
+                                            }
+                                        } else {
+                                            // Можно показать ошибку/alert
+                                            biometricManager.errorMessage = "Authentication failed"
+                                        }
+                                    }
+                                } else {
+                                    withAnimation {
+                                        subscriptionViewModel.isBlured = false
+                                    }
+                                }
+                            } else {
+                                // Наложение блюра не требует биометрии
+                                withAnimation {
+                                    subscriptionViewModel.isBlured = true
                                 }
                             }
                         } else {

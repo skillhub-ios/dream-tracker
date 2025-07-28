@@ -12,6 +12,7 @@ struct ProfileFeedbackSection: View {
     @StateObject private var pushNotificationManager = PushNotificationManager.shared
     @Environment(\.openURL) private var openURL
     @Environment(\.languageManager) private var languageManager
+    @EnvironmentObject private var biometricManager: BiometricManagerNew
     
     var notificationBinding: Binding<Bool> {
         Binding<Bool>(
@@ -35,17 +36,7 @@ struct ProfileFeedbackSection: View {
                 languageManager.openSystemLanguageSettings()
             }
             
-            Toggle(isOn: Binding(
-                get: { viewModel.isFaceIDEnabled },
-                set: { viewModel.userToggledFaceID(to: $0) }
-            )) {
-                HStack {
-                    Image(systemName: "faceid")
-                        .foregroundColor(.appPurple)
-                    Text("Face ID")
-                }
-            }
-            .tint(.appPurple)
+            biometricRow()
             
             Toggle(isOn: notificationBinding) {
                 HStack {
@@ -134,6 +125,41 @@ struct ProfileFeedbackSection: View {
                     bedtime: pushNotificationManager.bedtime,
                     wakeup: pushNotificationManager.wakeup
                 )
+            }
+        }
+    }
+
+    func biometricRow() -> some View {
+        HStack {
+            let type = biometricManager.getAvailableBiometricType()
+            Image(systemName: type == .faceID ? "faceid" : (type == .touchID ? "touchid" : "lock.fill"))
+                .foregroundColor(.appPurple)
+            Text(type.description)
+            Spacer()
+            Toggle("", isOn: Binding(
+                get: { biometricManager.isBiometricEnabled },
+                set: { newValue in
+                    if newValue {
+                        enableBiometric()
+                    } else {
+                        biometricManager.disableBiometric()
+                    }
+                }
+            ))
+            .disabled(!biometricManager.isBiometricAvailable())
+            .tint(.appPurple)
+        }
+    }
+
+    private func enableBiometric() {
+        guard biometricManager.isBiometricAvailable() else { return }
+        Task {
+            let result = await biometricManager.requestBiometricPermission(
+                reason: "Verify your identity to activate biometric authentication"
+            )
+            if case .failure(let error) = result {
+                // Можно добавить отображение ошибки через alert
+                print(error.localizedDescription)
             }
         }
     }

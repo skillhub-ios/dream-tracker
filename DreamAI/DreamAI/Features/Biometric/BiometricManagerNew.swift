@@ -11,11 +11,13 @@ import Foundation
 // MARK: - BiometricManager
 
 final class BiometricManagerNew: ObservableObject {
+    static let shared = BiometricManagerNew()
     
     // MARK: - Properties
     
     /// Показывает, активна ли биометрия на устройстве
     @Published var isBiometricEnabled: Bool = false
+    @Published var errorMessage: String?
     
     private let context = LAContext()
     private let UDKey = "biometric_enabled"

@@ -624,6 +624,7 @@
 
     },
     "Face ID" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
