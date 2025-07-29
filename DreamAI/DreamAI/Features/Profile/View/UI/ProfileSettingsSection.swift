@@ -12,6 +12,7 @@ struct ProfileSettingsSection: View {
     @EnvironmentObject var viewModel: ProfileViewModel
     @EnvironmentObject private var subscriptionViewModel: SubscriptionViewModel
     @StateObject private var pushNotificationManager = PushNotificationManager.shared
+    @EnvironmentObject private var biometricManager: BiometricManagerNew
     let exportImportAction: () -> Void
     @State private var showAlert = false
     @State private var alertMessage = ""
@@ -32,7 +33,7 @@ struct ProfileSettingsSection: View {
     
     var body: some View {
         Section {
-            iCloudRow(toggle: iCloudBinding)
+            iCloudRow(toggle: $subscriptionViewModel.iCloudEnable)
                 .frame(height: 40)
 //            notificationRow()
 //                .frame(height: 40)
@@ -120,8 +121,39 @@ private extension ProfileSettingsSection {
             Text("Blur Content")
             Spacer()
             if subscriptionViewModel.isSubscribed {
-                Toggle("", isOn: $subscriptionViewModel.isBlured)
-                    .tint(.appPurple)
+                Toggle("", isOn: Binding(
+                    get: { subscriptionViewModel.isBlured },
+                    set: { newValue in
+                        if newValue {
+                            // Наложение блюра не требует биометрии
+                            withAnimation {
+                                subscriptionViewModel.isBlured = true
+                            }
+                        } else {
+                            // Снятие блюра требует биометрической аутентификации
+                            if biometricManager.isBiometricEnabled {
+                                Task {
+                                    let result = await biometricManager.requestBiometricPermission(reason: "Unlock private content")
+                                    if case .success = result {
+                                        withAnimation {
+                                            subscriptionViewModel.isBlured = false
+                                        }
+                                    } else {
+                                        // Можно показать ошибку/alert
+                                        biometricManager.errorMessage = "Authentication failed"
+                                        // Toggle остается в состоянии true (блюр не снимается)
+                                    }
+                                }
+                            } else {
+                                // Если биометрия отключена, снимаем блюр сразу
+                                withAnimation {
+                                    subscriptionViewModel.isBlured = false
+                                }
+                            }
+                        }
+                    }
+                ))
+                .tint(.appPurple)
             } else {
                 Image(systemName: "lock.fill")
                     .font(.title3)
@@ -168,6 +200,7 @@ private extension ProfileSettingsSection {
         ProfileSettingsSection(exportImportAction: {})
             .environmentObject(ProfileViewModel())
             .environmentObject(SubscriptionViewModel())
+            .environmentObject(BiometricManagerNew())
     }
 }
 

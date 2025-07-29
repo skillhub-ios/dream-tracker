@@ -24,12 +24,18 @@ final class SubscriptionViewModel: ObservableObject {
             UserDefaults.standard.set(isBlured, forKey: "isBlured")
         }
     }
+    @Published var iCloudEnable: Bool {
+        didSet {
+            UserDefaults.standard.set(iCloudEnable, forKey: "iCloudEnable")
+        }
+    }
     
     private var cancellables: Set<AnyCancellable> = []
     private let onboardingCompleteKey = "onboardingComplete"
     
     init() {
         self.isBlured = UserDefaults.standard.bool(forKey: "isBlured")
+        self.iCloudEnable = UserDefaults.standard.bool(forKey: "iCloudEnable")
         self.onboardingComplete = UserDefaults.standard.bool(forKey: "onboardingComplete")
         Superwall.configure(apiKey: "pk_8beac5fd94b375e0e1e2df7bb99af2bf66f9fae6e806eca1")
         loadProducts()
