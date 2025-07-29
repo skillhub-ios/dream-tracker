@@ -33,15 +33,19 @@ class OpenAIManager {
         addHeaders(to: &request)
         
         let systemPrompt = """
-            You are an assistant helping the user explore the meaning and possible causes of their dream. Your goal is to discuss details of the dream, ask clarifying questions, and encourage self-reflection — without making definitive interpretations. Keep responses brief and focused.
+            You are an assistant helping the user explore the meaning and possible causes of their dream. Your goal is to discuss details of the dream, ask clarifying questions, and encourage self-reflection — without making definitive interpretations. Keep responses brief and focused. Respond in the same language used by the user in their last message.
             """
         
         let systemMessage: [String: String] = ["role": "system", "content": systemPrompt]
+        let contextMessage: [String: String] = [
+            "role": "system",
+            "content": "The following is a summary of the user's dream:\n\n\(interpretation.dreamSummary)"
+        ]
         let messageDictionaries: [[String: String]] = messages.map {
             ["role": $0.role, "content": $0.text]
         }
         
-        let allMessages = [systemMessage] + messageDictionaries
+        let allMessages = [systemMessage, contextMessage] + messageDictionaries
         
         let body: [String: Any] = [
             "model": "gpt-4",
@@ -104,6 +108,7 @@ class OpenAIManager {
                 6. ALL emoji fields (dreamEmoji, moodInsights.emoji, symbolism.icon) must be actual emoji characters (🐶, 😊, 🌲) NOT text names ("Dog", "Happy", "Tree")
                 7. dreamEmojiBackgroundColor must be a hex color code (e.g., "#FF6B6B", "#4ECDC4", "#45B7D1") that complements the emoji and creates a visually appealing background
                 8. tags must be an array of strings with maximum 2 items, selected from these exact values: "Daydream", "Epic Dream", "Continuous Dream", "Prophetic Dream", "Nightmare", "Night Terror", "Lucid Dream", "False Awakening", "Supernatural Dream", "Telepathic Dream", "Creative Dream", "Healing Dream", "Sleep Paralysis". Choose the most logically fitting tags based on the dream content
+                9. Respond in the same language used by the user in their last message.
                 """
         
         let userMessage = "Please interpret this dream: \(dreamText). Mood: \(mood ?? "not specified")."
