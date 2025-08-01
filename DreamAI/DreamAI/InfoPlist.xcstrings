@@ -1,0 +1,390 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "CFBundleName" : {
+      "comment" : "Bundle name",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DreamAI"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DreamAI"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DreamAI"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "DreamAI"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DreamAI"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DreamAI"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DreamAI"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DreamAI"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DreamAI"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DreamAI"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DreamAI"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DreamAI"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DreamAI"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DreamAI"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DreamAI"
+          }
+        }
+      }
+    },
+    "NSFaceIDUsageDescription" : {
+      "comment" : "Privacy - Face ID Usage Description",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DreamAI يستخدم Face ID للمصادقة الآمنة قبل الوصول إلى بياناتك ورؤى أحلامك."
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DreamAI আপনার ব্যক্তিগত স্বপ্নের ডেটা ও অন্তর্দৃষ্টি অ্যাক্সেসের আগে আপনাকে নিরাপদে প্রমাণীকরণের জন্য Face ID ব্যবহার করে।"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DreamAI verwendet Face ID, um Sie sicher zu authentifizieren, bevor Sie auf Ihre persönlichen Traumdaten und Erkenntnisse zugreifen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "DreamAI uses Face ID to securely authenticate you before accessing your personal dream data and insights."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DreamAI utiliza Face ID para autenticarte de forma segura antes de acceder a tu información personal de tus sueños."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DreamAI utilise Face ID pour vous authentifier de manière sécurisée avant d'accéder à vos données et informations personnelles sur vos rêves."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DreamAI आपके व्यक्तिगत सपनों के डेटा और अंतर्दृष्टि तक पहुँचने से पहले आपको सुरक्षित रूप से प्रमाणित करने के लिए फेस आईडी का उपयोग करता है।"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DreamAI utilizza Face ID per autenticarti in modo sicuro prima di accedere ai tuoi dati e approfondimenti personali sui sogni."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DreamAIは、あなたの個人的な夢データと分析結果にアクセスする前に、Face IDで安全に認証します。"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DreamAI жеке арман деректеріңіз бен түсініктеріңізге қол жеткізбес бұрын сізді қауіпсіз аутентификациялау үшін Face ID пайдаланады."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DreamAI는 개인 꿈 데이터 및 인사이트에 접근하기 전에 Face ID를 사용하여 안전하게 사용자를 인증합니다."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O DreamAI utiliza o Face ID para o autenticar de forma segura antes de aceder aos seus dados e informações pessoais sobre sonhos."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DreamAI folosește Face ID pentru a vă autentifica în siguranță înainte de a accesa datele și informațiile personale despre vise."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DreamAI использует Face ID для безопасной аутентификации перед доступом к вашим личным данным о снах и аналитическим данным."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DreamAI, kişisel rüya verilerinize ve içgörülerinize erişmeden önce sizi güvenli bir şekilde doğrulamak için Face ID kullanır."
+          }
+        }
+      }
+    },
+    "NSMicrophoneUsageDescription" : {
+      "comment" : "Privacy - Microphone Usage Description",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "نحتاج إذن استخدام الميكروفون لتسجيل وصفك لأحلامك."
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "স্বপ্নের বর্ণনা রেকর্ড করতে আমাদের আপনার মাইক্রোফোন অ্যাক্সেসের প্রয়োজন।"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wir benötigen Zugriff auf Ihr Mikrofon, um Ihre Traumerzählung aufzuzeichnen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "We need access to your microphone to record your dream narration."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Necesitamos acceso a tu micrófono para grabar la narración de tus sueños."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nous avons besoin d'accéder à votre microphone pour enregistrer le récit de votre rêve."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "हमें आपके सपने का वर्णन रिकॉर्ड करने के लिए आपके माइक्रोफ़ोन तक पहुँच की आवश्यकता है।"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abbiamo bisogno dell'accesso al tuo microfono per registrare la narrazione dei tuoi sogni."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "夢のナレーションを録音するためにマイクへのアクセスが必要です。"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Түс баяндауын жазу үшін микрофонға қол жеткізуіміз керек."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "꿈 내용을 녹음하려면 마이크 접근 권한이 필요합니다."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Precisamos de acesso ao seu microfone para gravar a narração do seu sonho."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avem nevoie de acces la microfonul dvs. pentru a înregistra narațiunea visului."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нам нужен доступ к вашему микрофону для записи вашего рассказа о сне."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rüya anlatımınızı kaydetmek için mikrofonunuza erişmemiz gerekiyor."
+          }
+        }
+      }
+    },
+    "NSSpeechRecognitionUsageDescription" : {
+      "comment" : "Privacy - Speech Recognition Usage Description",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "نحتاج ميزة التعرف على الكلام لتحويل وصف أحلامك الصوتي إلى نص."
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "আপনার বলা স্বপ্নকে পাঠ্যে রূপান্তর করার জন্য আমাদের বক্তৃতা সনাক্তকরণ প্রয়োজন।"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wir benötigen Spracherkennung, um Ihren gesprochenen Traum in Text umzuwandeln."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "We need speech recognition to convert your spoken dream into text."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Necesitamos el reconocimiento de voz para convertir tu sueño hablado en texto."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nous avons besoin de la reconnaissance vocale pour convertir votre rêve parlé en texte."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "हमें आपके बोले गए सपने को टेक्स्ट में बदलने के लिए वाक् पहचान की आवश्यकता है।"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abbiamo bisogno del riconoscimento vocale per convertire il tuo sogno parlato in testo."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "話された夢をテキストに変換するため、音声認識機能が必要です。"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сөйлеген арманыңызды мәтінге айналдыру үшін сөйлеуді тану қажет."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "음성으로 말한 꿈을 텍스트로 변환하려면 음성 인식 기능이 필요합니다."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Precisamos do reconhecimento de voz para converter o seu sonho falado em texto."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avem nevoie de recunoaștere a vorbirii pentru a transforma visul rostit în text."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нам нужна функция распознавания речи, чтобы преобразовать ваш рассказ о сне в текст."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Söylediğiniz rüyayı metne dönüştürmek için konuşma tanımaya ihtiyacımız var."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
