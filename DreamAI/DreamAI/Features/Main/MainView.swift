@@ -68,44 +68,6 @@ struct MainView: View {
                             .frame(width: 40, height: 40)
                     }
                 }
-//                ToolbarItem(placement: .topBarTrailing) {
-//                    Button {
-//                        if subscriptionViewModel.isSubscribed {
-//                            if subscriptionViewModel.isBlured {
-//                                // Снимаем блюр (разблокировка)
-//                                if biometricManager.isBiometricEnabled {
-//                                    Task {
-//                                        let result = await biometricManager.requestBiometricPermission(reason: "Unlock private content")
-//                                        if case .success = result {
-//                                            withAnimation {
-//                                                subscriptionViewModel.isBlured = false
-//                                            }
-//                                        } else {
-//                                            // Можно показать ошибку/alert
-//                                            biometricManager.errorMessage = "Authentication failed"
-//                                        }
-//                                    }
-//                                } else {
-//                                    withAnimation {
-//                                        subscriptionViewModel.isBlured = false
-//                                    }
-//                                }
-//                            } else {
-//                                // Наложение блюра не требует биометрии
-//                                withAnimation {
-//                                    subscriptionViewModel.isBlured = true
-//                                }
-//                            }
-//                        } else {
-//                            subscriptionViewModel.showPaywall()
-//                        }
-//                    } label: {
-//                        Image(systemName: subscriptionViewModel.isBlured ? "eye" : "eye.slash")
-//                            .resizable()
-//                            .frame(width: 28, height: 24)
-//                            .foregroundStyle(.white)
-//                    }
-//                }
             }
             .sheet(isPresented: $showFloatingPanel) {
                 MainFloatingPanelView(isBlured: $subscriptionViewModel.isBlured)

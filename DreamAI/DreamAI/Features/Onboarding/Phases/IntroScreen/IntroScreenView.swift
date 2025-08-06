@@ -19,7 +19,6 @@ struct IntroScreenView: View {
         VStack(spacing: 24) {
             titleView
             bottonSection
-           
         }
         .frame(maxHeight: .infinity, alignment: .bottom)
         .padding(.horizontal, 16)

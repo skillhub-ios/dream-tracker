@@ -16,6 +16,7 @@
 		3429D1982DF46C6C0066B0DF /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 3429D1972DF46C6C0066B0DF /* GoogleSignIn */; };
 		3429D19A2DF46C6C0066B0DF /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 3429D1992DF46C6C0066B0DF /* GoogleSignInSwift */; };
 		345DE1132E0953DB00D88F88 /* SuperwallKit in Frameworks */ = {isa = PBXBuildFile; productRef = 345DE1122E0953DB00D88F88 /* SuperwallKit */; };
+		A83CBBF72E433F6C000219BE /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = A83CBBF62E433F6C000219BE /* Lottie */; };
 		A8F00CD42E1FD40400B01401 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = A8F00CD32E1FD40400B01401 /* FirebaseAnalytics */; };
 		A8F00CD62E1FD40400B01401 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = A8F00CD52E1FD40400B01401 /* FirebaseCore */; };
 		A8F00CD82E1FD40400B01401 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = A8F00CD72E1FD40400B01401 /* FirebaseCrashlytics */; };
@@ -53,6 +54,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3429D15B2DF459B50066B0DF /* PostgREST in Frameworks */,
+				A83CBBF72E433F6C000219BE /* Lottie in Frameworks */,
 				3429D1592DF459B50066B0DF /* Functions in Frameworks */,
 				A8F00CD62E1FD40400B01401 /* FirebaseCore in Frameworks */,
 				345DE1132E0953DB00D88F88 /* SuperwallKit in Frameworks */,
@@ -128,6 +130,7 @@
 				A8F00CD52E1FD40400B01401 /* FirebaseCore */,
 				A8F00CD72E1FD40400B01401 /* FirebaseCrashlytics */,
 				A8F00CD92E1FD40400B01401 /* FirebaseMessaging */,
+				A83CBBF62E433F6C000219BE /* Lottie */,
 			);
 			productName = DreamAI;
 			productReference = 3429D13A2DF44ABB0066B0DF /* DreamAI.app */;
@@ -176,6 +179,7 @@
 				3429D1962DF46C6C0066B0DF /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				345DE1112E0953DB00D88F88 /* XCRemoteSwiftPackageReference "Superwall-iOS" */,
 				A8F00CD22E1FD40400B01401 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				A83CBBF52E433F6C000219BE /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 3429D13B2DF44ABB0066B0DF /* Products */;
@@ -465,6 +469,14 @@
 				minimumVersion = 4.5.2;
 			};
 		};
+		A83CBBF52E433F6C000219BE /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.2;
+			};
+		};
 		A8F00CD22E1FD40400B01401 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
@@ -520,6 +532,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 345DE1112E0953DB00D88F88 /* XCRemoteSwiftPackageReference "Superwall-iOS" */;
 			productName = SuperwallKit;
+		};
+		A83CBBF62E433F6C000219BE /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A83CBBF52E433F6C000219BE /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
 		};
 		A8F00CD32E1FD40400B01401 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;

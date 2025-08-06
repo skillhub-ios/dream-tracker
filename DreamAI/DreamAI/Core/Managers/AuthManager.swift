@@ -15,6 +15,7 @@ import SwiftUI
 
 protocol AuthManaging {
     var isAuthenticated: Bool { get }
+    var authenticatedIsSkipped: Bool { get }
     var hasCompletedPermissions: Bool { get }
     var user: User? { get }
     var showiCloudSignInAlert: Bool { get set }
@@ -49,6 +50,7 @@ final class AuthManager: ObservableObject, AuthManaging {
     // MARK: - Published Properties
     @Published private(set) var user: User?
     @Published var isAuthenticated: Bool = false
+    @Published var authenticatedIsSkipped: Bool = false
     @Published var hasCompletedPermissions: Bool = false
     @Published var isLoading: Bool = true
     @Published var showiCloudSignInAlert = false

@@ -35,4 +35,5 @@ enum SetupPhase {
     case third
     case fourth
     case finish
+    case wheel
 }

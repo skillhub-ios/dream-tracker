@@ -5648,6 +5648,17 @@
         }
       }
     },
+    "discount" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discount"
+          }
+        }
+      }
+    },
     "done" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -8933,6 +8944,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Google ile Kaydol"
+          }
+        }
+      }
+    },
+    "grabPermament" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grab Your Permanent"
           }
         }
       }
@@ -20081,6 +20103,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Şu anda aklınızda en çok ne var?"
+          }
+        }
+      }
+    },
+    "winOffer" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Win Exclusive Offers"
           }
         }
       }

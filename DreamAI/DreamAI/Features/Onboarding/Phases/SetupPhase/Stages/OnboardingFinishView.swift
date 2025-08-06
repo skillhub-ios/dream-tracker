@@ -11,6 +11,7 @@ struct OnboardingFinishView: View {
     
     @Environment(\.deviceFamily) private var deviceFamily
     @EnvironmentObject private var onboardingViewModel: OnboardingFlowViewModel
+    @EnvironmentObject private var authManager: AuthManager
     
     var body: some View {
         VStack {
@@ -24,7 +25,7 @@ struct OnboardingFinishView: View {
         .frame(maxHeight: .infinity, alignment: .center)
         .sheet(isPresented: .constant(true)) {
             AuthSheetView(mode: .signup, isSkipAllowed: true) {
-                onboardingViewModel.finishOnboarding()
+                authManager.isAuthenticated = false
             }
             .presentationDetents([.fraction(sheetHeight())])
             .interactiveDismissDisabled(true)
@@ -42,4 +43,6 @@ struct OnboardingFinishView: View {
 #Preview {
     OnboardingFinishView()
         .environmentObject(OnboardingFlowViewModel())
+        .environmentObject(PushNotificationManager.shared)
+        .environmentObject(AuthManager.shared)
 }

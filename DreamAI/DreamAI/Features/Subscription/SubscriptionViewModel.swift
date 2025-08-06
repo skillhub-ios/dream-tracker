@@ -33,16 +33,24 @@ final class SubscriptionViewModel: ObservableObject {
     private var cancellables: Set<AnyCancellable> = []
     private let onboardingCompleteKey = "onboardingComplete"
     
+    
     init() {
         self.isBlured = UserDefaults.standard.bool(forKey: "isBlured")
         self.iCloudEnable = UserDefaults.standard.bool(forKey: "iCloudEnable")
         self.onboardingComplete = UserDefaults.standard.bool(forKey: "onboardingComplete")
         Superwall.configure(apiKey: "pk_8beac5fd94b375e0e1e2df7bb99af2bf66f9fae6e806eca1")
+        Superwall.shared.delegate = PaywallManager.shared
         loadProducts()
         addSubscriptions()
     }
     
     func showPaywall() {
+        Superwall.shared.register(placement: "campaign_trigger")
+    }
+    
+    func showPaywallWithCompletion(completion: @escaping (PaywallResult) -> Void) {
+        // Временно сохраняем замыкание
+        PaywallManager.shared.completion = completion
         Superwall.shared.register(placement: "campaign_trigger")
     }
     
@@ -63,9 +71,6 @@ final class SubscriptionViewModel: ObservableObject {
             .sink { [weak self] isFinished in
                 self?.onboardingComplete = isFinished
                 UserDefaults.standard.set(isFinished, forKey: "onboardingComplete")
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    self?.showPaywall()
-                }
             }
             .store(in: &cancellables)
     }
@@ -158,6 +163,44 @@ final class SubscriptionViewModel: ObservableObject {
     }
 }
 
+//typealias PaywallCompletion = (PaywallResult) -> Void
+
+class PaywallManager: SuperwallDelegate {
+    
+    static let shared = PaywallManager()
+    var completion: ((PaywallResult) -> Void)?
+       
+//       func handleSuperwallEvent(withInfo eventInfo: SuperwallEventInfo) {
+//           // Вызываем замыкание и очищаем его
+//           completion?(eventInfo)
+//           completion = nil
+//       }
+    
+    func handleSuperwallEvent(withInfo eventInfo: SuperwallEventInfo) {
+         var didMakePurchase = false
+            switch eventInfo.event {
+            case .transactionComplete, .transactionRestore, .subscriptionStart:
+                didMakePurchase = true
+                
+            case .paywallClose:
+                // Вызываем completion только при закрытии
+                let result: PaywallResult = didMakePurchase ? .purchased : .dismissed
+                completion?(result)
+                completion = nil
+                didMakePurchase = false // Сбрасываем для следующего раза
+                
+            default:
+                break
+            }
+        }
+}
+
+enum PaywallResult {
+    case purchased
+    case dismissed
+}
+
+
 enum SubscriptionType {
     case monthly
     case yearly
@@ -174,3 +217,28 @@ enum SubscriptionType {
         }
     }
 }
+
+
+////     Асинхронное получение результат
+//    typealias PaywallCompletion = (PaywallResult) -> Void
+//
+//    func showPaywallWithClosure(completion: @escaping PaywallCompletion) {
+//        // Временный делегат для обработки результата
+//        let paywallHandler = PaywallHandler(completion: completion)
+//        Superwall.shared.delegate = paywallHandler
+//        Superwall.shared.register(placement: "campaign_trigger")
+//    }
+//
+//    private class PaywallHandler: SuperwallDelegate {
+//        private let completion: PaywallCompletion
+//
+//        init(completion: @escaping PaywallCompletion) {
+//            self.completion = completion
+//        }
+//
+//        func paywall(_ paywall: PaywallViewController, didFinishWith result: PaywallResult, shouldDismiss: Bool) {
+//            completion(result)
+//            // Очищаем делегат после использования
+//            Superwall.shared.delegate = nil
+//        }
+//    }
