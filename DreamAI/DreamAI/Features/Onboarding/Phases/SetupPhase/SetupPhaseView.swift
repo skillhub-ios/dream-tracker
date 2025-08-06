@@ -92,8 +92,8 @@ private extension SetupPhaseView {
                 state = .finish
             }
         case .wheel: print()
-            // paywall со скидкой
-            subscriptionViewModel.showPaywallWithCompletion { _ in
+            // paywall со скидкой. Вне зависимости от результата завершаем
+            subscriptionViewModel.showPaywallWithCompletionDiscount { _ in
                 viewModel.finishOnboarding()
             }
         default: break
@@ -101,7 +101,7 @@ private extension SetupPhaseView {
     }
     
     private func showPaywallAndHandleResult() {
-        subscriptionViewModel.showPaywallWithCompletion { result in
+        subscriptionViewModel.showPaywallWithCompletionDefault { result in
             switch result {
             case .dismissed:
                 // если ничего не купил то ведем на колесо
@@ -113,8 +113,6 @@ private extension SetupPhaseView {
         }
     }
 }
-
-
 
 #Preview {
     NavigationView {

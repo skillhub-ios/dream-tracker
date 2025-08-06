@@ -45,13 +45,17 @@ final class SubscriptionViewModel: ObservableObject {
     }
     
     func showPaywall() {
-        Superwall.shared.register(placement: "campaign_trigger")
+        Superwall.shared.register(placement: "paywall_default")
     }
     
-    func showPaywallWithCompletion(completion: @escaping (PaywallResult) -> Void) {
-        // Временно сохраняем замыкание
+    func showPaywallWithCompletionDefault(completion: @escaping (PaywallResult) -> Void) {
         PaywallManager.shared.completion = completion
-        Superwall.shared.register(placement: "campaign_trigger")
+        Superwall.shared.register(placement: "paywall_default")
+    }
+    
+    func showPaywallWithCompletionDiscount(completion: @escaping (PaywallResult) -> Void) {
+        PaywallManager.shared.completion = completion
+        Superwall.shared.register(placement: "paywall_discount")
     }
     
     private func addSubscriptions() {
