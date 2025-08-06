@@ -118,6 +118,34 @@
           "codeOffers" : [
 
           ],
+          "displayPrice" : "5.99 ₽",
+          "familyShareable" : false,
+          "groupNumber" : 3,
+          "internalID" : "1234567892",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Полный доступ ко всем функциям DreamAI на 1 неделю",
+              "displayName" : "Недельная подписка",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.dreamai.weekly.subscription",
+          "recurringSubscriptionPeriod" : "P1W",
+          "referenceName" : "Weekly Subscription",
+          "subscriptionGroupID" : "21482456",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
           "displayPrice" : "39.99 ₽",
           "familyShareable" : false,
           "groupNumber" : 2,

@@ -47,6 +47,9 @@ final class MoodStore: AppDataResettable {
         } catch {
             print("Ошибка при очистке MoodEntity: \(error)")
         }
+        
+        // Возвращаем дефолтные настроения
+        loadMoods()
     }
     
     // MARK: - Private Functions

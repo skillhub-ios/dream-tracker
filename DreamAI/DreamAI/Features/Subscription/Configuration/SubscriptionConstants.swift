@@ -13,6 +13,7 @@ struct SubscriptionConstants {
     struct ProductIDs {
         static let monthlySubscription = "com.dreamai.monthly.subscription"
         static let yearlySubscription = "com.dreamai.yearly.subscription"
+        static let weeklySubscription = "com.dreamai.weekly.subscription"
         
         static let allProducts = [
             monthlySubscription,
