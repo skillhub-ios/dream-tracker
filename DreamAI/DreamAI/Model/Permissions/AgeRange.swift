@@ -20,7 +20,7 @@ enum AgeRange: String, CaseIterable, Identifiable, Hashable {
     var id: String { rawValue }
     var displayTitle: LocalizedStringKey {
         switch self {
-        case .notToSay: "notToSay"
+        case .notToSay: "preferNotToSay"
         case .under18: "under18"
         case .age18_24: "18–24"
         case .age25_34: "25–34"

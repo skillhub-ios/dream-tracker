@@ -45,6 +45,12 @@ struct SetupPhaseView: View {
                 showPaywallAndHandleResult()
             }
         }
+        .onReceive(subscriptionViewModel.$isSubscribed) { isSubscribed in
+            // если получили собыите подписки, то завершаем
+            if isSubscribed {
+                viewModel.finishOnboarding()
+            }
+        }
     }
 }
 
@@ -83,11 +89,14 @@ private extension SetupPhaseView {
         case .second:
             state = .third
         case .fourth:
-            if authManager.isAuthenticated {
-                // если авторизирован то логин не показываем а сразу paywall
+            if authManager.isAuthenticated && subscriptionViewModel.isSubscribed {
+                // если авторизирован и есть премиум, то завешаем
+                viewModel.finishOnboarding()
+            } else if authManager.isAuthenticated && !subscriptionViewModel.isSubscribed {
+                // если авторизирован и нет премиум, то показываем первый paywall
                 showPaywallAndHandleResult()
             } else {
-                // Если не авторизован, то пытаемся авторизовать
+                // если не аторизовн и есть подписка, то ждем авторизацию
                 isWaitingForAuth = true
                 state = .finish
             }

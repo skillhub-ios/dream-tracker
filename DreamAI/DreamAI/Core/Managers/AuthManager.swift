@@ -182,9 +182,18 @@ final class AuthManager: ObservableObject, AuthManaging {
         }
         
         // Clear all manager data
-            UserManager.shared.clearUserData()
-            await BiometricManager.shared.clearUserData()
-            LanguageManager.shared.clearUserData()
+        UserManager.shared.clearUserData()
+        await BiometricManager.shared.clearUserData()
+        LanguageManager.shared.clearUserData()
+        restartOnboarding()
+    }
+    
+    func restartOnboarding() {
+        NotificationCenter.default.post(
+            name: Notification.Name(PublisherKey.onboardingFinished.rawValue),
+            object: nil,
+            userInfo: ["value": false]
+        )
     }
     
     func markPermissionsCompleted() {

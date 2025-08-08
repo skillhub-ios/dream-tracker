@@ -32,9 +32,6 @@ struct ProfileView: View {
                             Task {
                                try await authManager.signOut()
                             }
-                            withAnimation {
-                                subscriptionViewModel.onboardingComplete = false
-                            }
                         }
                         ProfileFooterLinks()
                             .listRowBackground(Color.appGray4)
@@ -100,5 +97,6 @@ struct ProfileView: View {
         ProfileView()
             .environmentObject(SubscriptionViewModel())
             .environmentObject(OnboardingFlowViewModel())
+            .environmentObject(BiometricManagerNew.shared)
     }
 }
