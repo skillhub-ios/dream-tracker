@@ -24,7 +24,7 @@ struct WheelView: View {
                     .font(.title2.bold())
                     .foregroundStyle(LinearGradient.appPurpleHorizontal)
                 LottieView(
-                    animationName: "wheel",
+                    animationName: "Fortune",
                     loopMode: .playOnce
                 )
                 .frame(width: UIScreen.main.bounds.width - 32)

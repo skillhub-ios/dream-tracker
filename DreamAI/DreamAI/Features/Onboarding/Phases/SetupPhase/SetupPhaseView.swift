@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SetupPhaseView: View {
     
-    @State private var state: SetupPhase = .first
+    @State private var state: SetupPhase = .wheel
     @EnvironmentObject private var authManager: AuthManager
     @EnvironmentObject private var viewModel: OnboardingFlowViewModel
     @EnvironmentObject private var subscriptionViewModel: SubscriptionViewModel
