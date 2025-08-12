@@ -13287,6 +13287,12 @@
             "value" : "C'è un significato in ogni sogno."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "すべての夢に意味がある。"
+          }
+        },
         "kk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13564,6 +13570,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pronto a sbloccare il pieno significato del tuo sogno?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "あなたの夢の本当の意味を解き明かす準備はできましたか？"
           }
         },
         "kk" : {
@@ -14976,6 +14988,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ti aiutiamo a ottenere approfondimenti sui sogni più accurati"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "もっと正確な夢の洞察を得られるようお手伝いします"
           }
         },
         "kk" : {
@@ -19384,6 +19402,12 @@
             "value" : " Cerchiamo di capire come sogni"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "あなたの夢の見方を理解しましょう。"
+          }
+        },
         "kk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20036,6 +20060,12 @@
             "value" : "Stiamo combinando:"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "組み合わせています:"
+          }
+        },
         "kk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20220,6 +20250,12 @@
             "value" : "Abbiamo mappato le tue abitudini di sonno, i tuoi stati d'animo e il tuo stile di sogno. \nCosa otterrai: il tuo viaggio personalizzato nel subconscio"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "あなたの睡眠習慣、気分、そして夢のスタイルを分析しました。\nこれから得られるのは――あなただけの潜在意識への旅。"
+          }
+        },
         "kk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20307,6 +20343,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cosa ti preoccupa di più in questo momento?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今、いちばん気になっていることは？"
           }
         },
         "kk" : {
