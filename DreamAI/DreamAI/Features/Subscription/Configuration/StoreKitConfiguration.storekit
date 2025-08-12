@@ -171,6 +171,39 @@
           "winbackOffers" : [
 
           ]
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "39.99 ₽",
+          "familyShareable" : false,
+          "groupNumber" : 4,
+          "internalID" : "837A8BAC",
+          "introductoryOffer" : {
+            "internalID" : "1234567892",
+            "numberOfPeriods" : 1,
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P1W"
+          },
+          "localizations" : [
+            {
+              "description" : "Полный доступ ко всем функциям DreamAI на 1 год",
+              "displayName" : "Годовая подписка со скидкой",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "dream_yearly_special",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Yearly Subscription With Discount",
+          "subscriptionGroupID" : "21482456",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
         }
       ]
     }
