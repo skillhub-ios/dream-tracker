@@ -27,6 +27,12 @@ struct ProfileView: View {
                         ProfileSettingsSection(exportImportAction: {
                             showExportImport = true
                         })
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            if !subscriptionViewModel.isSubscribed {
+                                subscriptionViewModel.showPaywall()
+                            }
+                        }
                         ProfileFeedbackSection()
                         ProfileExitButton {
                             Task {
