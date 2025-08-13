@@ -77,7 +77,7 @@ private extension MoodsView {
                             if subscriptionViewModel.isSubscribed {
                                 selectedMood = mood
                             } else {
-                                subscriptionViewModel.showPaywall()
+                                subscriptionViewModel.showInternalPaywall()
                             }
                         }) {
                             VStack {
@@ -171,7 +171,7 @@ private extension MoodsView {
             if subscriptionViewModel.isSubscribed {
                 viewModel.moodCreationMode = true
             } else {
-                subscriptionViewModel.showPaywall()
+                subscriptionViewModel.showInternalPaywall()
             }
         } label: {
             VStack {

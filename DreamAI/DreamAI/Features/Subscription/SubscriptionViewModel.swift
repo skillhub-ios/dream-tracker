@@ -58,6 +58,10 @@ final class SubscriptionViewModel: ObservableObject {
         Superwall.shared.register(placement: "paywall_discount")
     }
     
+    func showInternalPaywall() {
+        Superwall.shared.register(placement: "inside_paywall")
+    }
+    
     private func addSubscriptions() {
         Superwall.shared.$subscriptionStatus
             .map(subscriptionDetails)

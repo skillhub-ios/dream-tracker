@@ -55,7 +55,7 @@ struct EditDreamView: View {
                                         feature: PremiumFeature.interpretDream,
                                         screen: ScreenName.editDream))
                             } else {
-                                subscriptionViewModel.showPaywall()
+                                subscriptionViewModel.showInternalPaywall()
                             }
                         }
                     }

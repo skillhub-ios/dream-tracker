@@ -30,7 +30,7 @@ struct ProfileView: View {
                         .contentShape(Rectangle())
                         .onTapGesture {
                             if !subscriptionViewModel.isSubscribed {
-                                subscriptionViewModel.showPaywall()
+                                subscriptionViewModel.showInternalPaywall()
                             }
                         }
                         ProfileFeedbackSection()

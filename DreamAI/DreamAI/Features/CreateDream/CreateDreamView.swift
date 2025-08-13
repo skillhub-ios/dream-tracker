@@ -56,7 +56,7 @@ struct CreateDreamView: View {
                                     feature: PremiumFeature.interpretDream,
                                     screen: ScreenName.createDream))
                             } else {
-                                subscriptionViewModel.showPaywall()
+                                subscriptionViewModel.showInternalPaywall()
                             }
                         }
                         .id(actionButtonId)
